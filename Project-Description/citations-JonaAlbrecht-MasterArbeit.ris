@@ -1,0 +1,1178 @@
+TY  - CONF
+AU  - Albrecht, Simon
+AU  - Reichert, Simon
+AU  - Schmid, Jan
+AU  - Strüker, Jens
+AU  - Neumann, Dirk
+AU  - Fridgen, Gilbert
+TI  - Dynamics of Blockchain Implementation – A Case Study from the Energy Sector
+T1  - Dynamics of Blockchain Implementation – A Case Study from the Energy Sector
+PY  - 2018
+DA  - 2018
+JO  - Proceedings of the 51st Hawaii International Conference on System Sciences
+T2  - Proceedings of the 51st Hawaii International Conference on System Sciences
+UR  - https://aisel.aisnet.org/cgi/viewcontent.cgi?article=1454&context=hicss-51
+ER  - 
+
+TY  - JOUR
+AU  - Alstone, Peter
+AU  - Gershenson, Dimitry
+AU  - Kammen, Daniel M.
+TI  - Decentralized energy systems for clean electricity access
+T1  - Decentralized energy systems for clean electricity access
+PY  - 2015
+DA  - 2015
+JO  - Nature Clim Change 5 (4), S. 305–314
+T2  - Nature Clim Change 5 (4), S. 305–314
+VL  - 5
+IS  - 4
+SP  - 305
+EP  - 314
+DO  - 10.1038/nclimate2512
+ER  - 
+
+TY  - JOUR
+AU  - Andoni, Merlinda
+AU  - Robu, Valentin
+AU  - Flynn, David
+AU  - Abram, Simone
+AU  - Geach, Dale
+AU  - Jenkins, David
+TI  - Blockchain technology in the energy sector: A systematic review of challenges and opportunities
+T1  - Blockchain technology in the energy sector: A systematic review of challenges and opportunities
+PY  - 2019
+DA  - 2019
+JO  - Renewable and Sustainable Energy Reviews 100, S. 143–174
+T2  - Renewable and Sustainable Energy Reviews 100, S. 143–174
+SP  - 143
+EP  - 174
+DO  - 10.1016/j
+ER  - 
+
+TY  - JOUR
+AU  - Androulaki, Elli
+AU  - Barger, Artem
+AU  - Bortnikov, Vita
+AU  - Cachin, Christian
+AU  - Christidis, Konstantinos
+AU  - Caro, Angelo de
+TI  - Hyperledger fabric
+T1  - Hyperledger fabric
+PY  - 2018
+DA  - 2018
+JO  - Rui Oliveira, Pascal Felber und Y. Charlie Hu (Hg.): Proceedings of the Thirteenth EuroSys Conference. EuroSys '18: Thirteenth EuroSys Conference 2018. Porto Portugal, 23 04 2018 26 04 2018. New York, NY, USA: ACM, S. 1–15
+T2  - Rui Oliveira, Pascal Felber und Y. Charlie Hu (Hg.): Proceedings of the Thirteenth EuroSys Conference. EuroSys '18: Thirteenth EuroSys Conference 2018. Porto Portugal, 23 04 2018 26 04 2018. New York, NY, USA: ACM, S. 1–15
+SP  - 1
+EP  - 15
+ER  - 
+
+TY  - ELEC
+AU  - Association of Issuing Bodies
+TI  - AIB 2021 Annual Report
+T1  - AIB 2021 Annual Report
+PY  - 2021
+DA  - 2021
+PB  - AIB
+ER  - 
+
+TY  - ELEC
+AU  - Association of Issuing Bodies
+TI  - Tariffs charged by AIB members to account holders
+T1  - Tariffs charged by AIB members to account holders
+PY  - 2023
+DA  - 2023
+ER  - 
+
+TY  - CHAP
+AU  - Babel, Matthias
+AU  - Gramlich, Vincent
+AU  - Körner, Marc-Fabian
+AU  - Sedlmeir, Johannes
+AU  - Strüker, Jens
+AU  - Zwede, Till
+TI  - Enabling end-to-end digital carbon emission tracing with shielded NFTs
+T1  - Enabling end-to-end digital carbon emission tracing with shielded NFTs
+PY  - 2022
+DA  - 2022
+JO  - Energy Inform 5 (S1)
+T2  - Energy Inform 5 (S1)
+DO  - 10.1186/s42162-022-00199-3
+ER  - 
+
+TY  - CONF
+AU  - Balzani, Luca
+AU  - Corsi, Katia
+TI  - Blockchain and sustainability disclosure: reliable information on renewable energies
+T1  - Blockchain and sustainability disclosure: reliable information on renewable energies
+PY  - 2022
+DA  - 2022
+JO  - Annual Conference of the Italian Chapter of AIS (ITAIS) 2022 Proceedings
+T2  - Annual Conference of the Italian Chapter of AIS (ITAIS) 2022 Proceedings
+UR  - https://aisel.aisnet.org/cgi/viewcontent.cgi?article=1012&context=itais2022
+ER  - 
+
+TY  - CHAP
+AU  - Bhaskar, Abhinav
+AU  - Assadi, Mohsen
+AU  - Nikpey Somehsaraei, Homam
+TI  - Decarbonization of the Iron and Steel Industry with Direct Reduction of Iron Ore with Green Hydrogen
+T1  - Decarbonization of the Iron and Steel Industry with Direct Reduction of Iron Ore with Green Hydrogen
+PY  - 2020
+DA  - 2020
+JO  - Energies 13 (3), S. 758
+T2  - Energies 13 (3), S. 758
+VL  - 13
+IS  - 3
+DO  - 10.3390/en13030758
+ER  - 
+
+TY  - ELEC
+AU  - Bitcoin Wiki
+TI  - Difficulty
+T1  - Difficulty
+PY  - 2011
+DA  - 2011
+UR  - https://en.bitcoin.it/wiki/Difficulty
+ER  - 
+
+TY  - ELEC
+AU  - Bitcoin Wiki
+TI  - Hash
+T1  - Hash
+PY  - 2015
+DA  - 2015
+UR  - https://en.bitcoin.it/wiki/Hash
+ER  - 
+
+TY  - ELEC
+AU  - Bitcoin Wiki
+TI  - Target
+T1  - Target
+PY  - 2016
+DA  - 2016
+UR  - https://en.bitcoin.it/wiki/Target
+ER  - 
+
+TY  - JOUR
+AU  - Bogensperger, Alexander
+AU  - Zeiselmair, Andreas
+TI  - Updating renewable energy certificate markets via integration of smart meter data, improved time resolution and spatial optimization
+T1  - Updating renewable energy certificate markets via integration of smart meter data, improved time resolution and spatial optimization
+PY  - 2020
+DA  - 2020
+JO  - 2020 17th International Conference on the European Energy Market (EEM). 2020 17th International Conference on the European Energy Market (EEM). Stockholm, Sweden, 16.09.2020 - 18.09.2020: IEEE, S. 1–5
+T2  - 2020 17th International Conference on the European Energy Market (EEM). 2020 17th International Conference on the European Energy Market (EEM). Stockholm, Sweden, 16.09.2020 - 18.09.2020: IEEE, S. 1–5
+SP  - 1
+EP  - 5
+ER  - 
+
+TY  - ELEC
+AU  - Brindley, Guy
+AU  - White, Adam
+AU  - Hunt, Hannah
+TI  - Guarantees of Origin and Corporate Procurement Options
+T1  - Guarantees of Origin and Corporate Procurement Options
+PY  - 2021
+DA  - 2021
+PB  - RE-Source
+ER  - 
+
+TY  - GEN
+AU  - Brocke, Jan vom
+AU  - Hevner, Alan
+AU  - Maedche, Alexander.
+TI  - Introduction to Design Science Research
+T1  - Introduction to Design Science Research
+PY  - 2020
+DA  - 2020
+ER  - 
+
+TY  - JOUR
+AU  - Brown, T.
+AU  - Schlachtberger, D.
+AU  - Kies, A.
+AU  - Schramm, S.
+AU  - Greiner, M.
+TI  - Synergies of sector coupling and transmission reinforcement in a cost-optimised, highly renewable European energy system
+T1  - Synergies of sector coupling and transmission reinforcement in a cost-optimised, highly renewable European energy system
+PY  - 2018
+DA  - 2018
+JO  - Energy 160, S. 720–739
+T2  - Energy 160, S. 720–739
+SP  - 720
+EP  - 739
+DO  - 10.1016/j
+ER  - 
+
+TY  - ELEC
+AU  - CertifHy
+TI  - CertifHy Scheme
+T1  - CertifHy Scheme
+PY  - 2022
+DA  - 2022
+ER  - 
+
+TY  - ELEC
+AU  - CertifHy
+TI  - Procedure 1
+T1  - Procedure 1
+PY  - 2022
+DA  - 2022
+ER  - 
+
+TY  - CHAP
+AU  - Chuang, Jules
+AU  - Lien, Hsing-Lung
+AU  - Roche, Akemi Kokubo
+AU  - Liao, Pei-Hsuan
+AU  - Den, Walter
+TI  - Consolidated Climate Markets Mechanism Analysis—Case Studies of China, Japan, and Taiwan
+T1  - Consolidated Climate Markets Mechanism Analysis—Case Studies of China, Japan, and Taiwan
+PY  - 2019
+DA  - 2019
+JO  - Sustainability 11 (22), S. 6478
+T2  - Sustainability 11 (22), S. 6478
+VL  - 11
+IS  - 22
+DO  - 10.3390/su11226478
+ER  - 
+
+TY  - JOUR
+AU  - Coll-Mayor, Debora
+AU  - Notholt, Antonio
+TI  - Distributed Ledger Technologies for the Energy Sector: Facilitating Interoperability Analysis
+T1  - Distributed Ledger Technologies for the Energy Sector: Facilitating Interoperability Analysis
+PY  - 2023
+DA  - 2023
+JO  - IEEE Open J. Power Energy 10, S. 593–604
+T2  - IEEE Open J. Power Energy 10, S. 593–604
+SP  - 593
+EP  - 604
+DO  - 10.1109/OAJPE
+ER  - 
+
+TY  - ELEC
+AU  - Cornélis, Pierre-Yves
+AU  - Lenzen, Michael
+TI  - Core Theme 3 - Guarantees of Origin and Disclosure
+T1  - Core Theme 3 - Guarantees of Origin and Disclosure
+PY  - 2020
+DA  - 2020
+PB  - Concerted Action Renewable Energy Sources Directive
+ER  - 
+
+TY  - JOUR
+AU  - Diffie, W.
+AU  - Hellman, M.
+TI  - New directions in cryptography
+T1  - New directions in cryptography
+PY  - 1976
+DA  - 1976
+JO  - IEEE Trans. Inform. Theory 22 (6), S. 644–654
+T2  - IEEE Trans. Inform. Theory 22 (6), S. 644–654
+VL  - 22
+IS  - 6
+SP  - 644
+EP  - 654
+DO  - 10.1109/TIT
+ER  - 
+
+TY  - JOUR
+AU  - B.
+TI  - The Optimal Location of Nuclear-Power Facilities in the Pacific Northwest
+T1  - The Optimal Location of Nuclear-Power Facilities in the Pacific Northwest
+PY  - 1974
+DA  - 1974
+JO  - Operations Research 22 (3), S. 478–487
+T2  - Operations Research 22 (3), S. 478–487
+VL  - 22
+IS  - 3
+SP  - 478
+EP  - 487
+DO  - 10.1287/opre
+ER  - 
+
+TY  - JOUR
+AU  - Dwork, Cynthia
+AU  - Naor, Moni
+TI  - Pricing via Processing or Combatting Junk Mail
+T1  - Pricing via Processing or Combatting Junk Mail
+PY  - 1993
+DA  - 1993
+JO  - Ernest F. Brickell (Hg.): Advances in Cryptology — CRYPTO’ 92, Bd. 740. Berlin, Heidelberg: Springer Berlin Heidelberg (Lecture Notes in Computer Science), S. 139–147
+T2  - Ernest F. Brickell (Hg.): Advances in Cryptology — CRYPTO’ 92, Bd. 740. Berlin, Heidelberg: Springer Berlin Heidelberg (Lecture Notes in Computer Science), S. 139–147
+SP  - 139
+EP  - 147
+ER  - 
+
+TY  - ELEC
+AU  - EKOenergy
+TI  - What is the CEN Standard process all about? Hg. v. EKOenergy
+T1  - What is the CEN Standard process all about? Hg. v. EKOenergy
+PY  - 2020
+DA  - 2020
+UR  - https://www.ekoenergy.org/what-is-the-cen-standard-process-all-about/
+PB  - EKOenergy
+ER  - 
+
+TY  - ELEC
+AU  - ENTSO-E
+TI  - Views on a Future-Proof Market Design for Guarantees of Origin
+T1  - Views on a Future-Proof Market Design for Guarantees of Origin
+PY  - 2022
+DA  - 2022
+UR  - http://data.europa.eu/eli/dir/2001/77/oj
+ER  - 
+
+TY  - ELEC
+AU  - European Commission
+TI  - Directive (EU) 2018/2001 of the European Parliament and of the Council of 11 December 2018 on the promotion of the use of energy from renewable sources (recast). RED II
+T1  - Directive (EU) 2018/2001 of the European Parliament and of the Council of 11 December 2018 on the promotion of the use of energy from renewable sources (recast). RED II
+PY  - 2018
+DA  - 2018
+UR  - http://data.europa.eu/eli/dir/2018/2001/oj
+ER  - 
+
+TY  - ELEC
+AU  - European Commission
+TI  - Biomethane
+T1  - Biomethane
+PY  - 2022
+DA  - 2022
+UR  - https://energy.ec.europa.eu/topics/renewable-energy/bioenergy/biomethane_en#documents
+ER  - 
+
+TY  - ELEC
+AU  - European Energy Exchange (EEX)
+TI  - EPEX SPOT to launch first pan-European Guarantees of Origin market in 2022
+T1  - EPEX SPOT to launch first pan-European Guarantees of Origin market in 2022
+PY  - 2021
+DA  - 2021
+ER  - 
+
+TY  - ELEC
+AU  - European Renewable Gas Registry (ERGaR)
+TI  - Certificate of Origin (CoO) Scheme - Scheme Rules V1
+T1  - Certificate of Origin (CoO) Scheme - Scheme Rules V1
+PY  - 2022
+DA  - 2022
+ER  - 
+
+TY  - CHAP
+AU  - Ferdous, Md Sadek
+AU  - Cali, Umit
+AU  - Halden, Ugur
+AU  - Prinz, Wolfgang
+TI  - Leveraging self-sovereign identity & distributed ledger technology in renewable energy certificate ecosystems
+T1  - Leveraging self-sovereign identity & distributed ledger technology in renewable energy certificate ecosystems
+PY  - 2023
+DA  - 2023
+JO  - Journal of Cleaner Production 422, S. 138355
+T2  - Journal of Cleaner Production 422, S. 138355
+DO  - 10.1016/j
+ER  - 
+
+TY  - CHAP
+AU  - Fridgen, Gilbert
+AU  - Keller, Robert
+AU  - Körner, Marc-Fabian
+AU  - Schöpf, Michael
+TI  - A holistic view on sector coupling
+T1  - A holistic view on sector coupling
+PY  - 2020
+DA  - 2020
+JO  - Energy Policy 147, S. 111913
+T2  - Energy Policy 147, S. 111913
+DO  - 10.1016/j
+ER  - 
+
+TY  - GEN
+AU  - Garousi, Vahid
+AU  - Felderer, Michael
+AU  - Mäntylä, Mika V.
+TI  - Guidelines for including grey literature and conducting multivocal literature reviews in software engineering
+T1  - Guidelines for including grey literature and conducting multivocal literature reviews in software engineering
+PY  - 2017
+DA  - 2017
+ER  - 
+
+TY  - ELEC
+AU  - Gasgrid Finland
+TI  - Conversion Instructions
+T1  - Conversion Instructions
+PY  - 2022
+DA  - 2022
+PB  - Gasgrid Finland
+ER  - 
+
+TY  - JOUR
+AU  - Glenk, Gunther
+AU  - Reichelstein, Stefan
+TI  - Economics of converting renewable power to hydrogen
+T1  - Economics of converting renewable power to hydrogen
+PY  - 2019
+DA  - 2019
+JO  - Nat Energy 4 (3), S. 216–222
+T2  - Nat Energy 4 (3), S. 216–222
+VL  - 4
+IS  - 3
+SP  - 216
+EP  - 222
+DO  - 10.1038/s41560-019-0326-1
+ER  - 
+
+TY  - ELEC
+AU  - Gramlich, Vincent
+AU  - Paetzold, Felix
+AU  - Strüker, Jens
+AU  - Philipp, Richard
+AU  - Schlösser, Moritz
+AU  - Zimmermann, Hendrik
+TI  - “Rethinking Blockchain’s Electricity Consumption – A Guide to Electricity-Efficient Design of Decentralized Data-Infrastructure
+T1  - “Rethinking Blockchain’s Electricity Consumption – A Guide to Electricity-Efficient Design of Decentralized Data-Infrastructure
+PY  - 2023
+DA  - 2023
+PB  - Deutsche Energie Agentur GmbH
+ER  - 
+
+TY  - JOUR
+AU  - Hamburger, Ákos
+TI  - Is guarantee of origin really an effective energy policy tool in Europe? A critical approach
+T1  - Is guarantee of origin really an effective energy policy tool in Europe? A critical approach
+PY  - 2019
+DA  - 2019
+JO  - Society and Economy 41 (4), S. 487–507
+T2  - Society and Economy 41 (4), S. 487–507
+VL  - 41
+IS  - 4
+SP  - 487
+EP  - 507
+DO  - 10.1556/204
+ER  - 
+
+TY  - JOUR
+AU  - Hast, A.
+AU  - Syri, S.
+AU  - Jokiniemi, J.
+AU  - Huuskonen, M.
+AU  - Cross, S.
+TI  - Review of green electricity products in the United Kingdom, Germany and Finland
+T1  - Review of green electricity products in the United Kingdom, Germany and Finland
+PY  - 2015
+DA  - 2015
+JO  - Renewable and Sustainable Energy Reviews 42, S. 1370–1384
+T2  - Renewable and Sustainable Energy Reviews 42, S. 1370–1384
+SP  - 1370
+EP  - 1384
+DO  - 10.1016/j
+ER  - 
+
+TY  - CHAP
+AU  - Heffron, Raphael
+AU  - Körner, Marc-Fabian
+AU  - Wagner, Jonathan
+AU  - Weibelzahl, Martin
+AU  - Fridgen, Gilbert
+TI  - Industrial demand-side flexibility: A key element of a just energy transition and industrial development
+T1  - Industrial demand-side flexibility: A key element of a just energy transition and industrial development
+PY  - 2020
+DA  - 2020
+JO  - Applied Energy 269, S. 115026
+T2  - Applied Energy 269, S. 115026
+DO  - 10.1016/j
+ER  - 
+
+TY  - CHAP
+AU  - Hevner
+AU  - March
+AU  - Park
+AU  - Ram
+TI  - Design Science in Information Systems Research
+T1  - Design Science in Information Systems Research
+PY  - 2004
+DA  - 2004
+JO  - MIS Quarterly 28 (1), S. 75
+T2  - MIS Quarterly 28 (1), S. 75
+VL  - 28
+IS  - 1
+DO  - 10.2307/25148625
+ER  - 
+
+TY  - CHAP
+AU  - Hevner, Alan R.
+TI  - A Three Cycle View of Design Science Research
+T1  - A Three Cycle View of Design Science Research
+PY  - 2007
+DA  - 2007
+JO  - Scandinavian Journal of Information Systems (Vol. 19: Iss. 2, Article 4.)
+T2  - Scandinavian Journal of Information Systems (Vol. 19: Iss. 2, Article 4.)
+UR  - https://aisel.aisnet.org/sjis/vol19/iss2/4
+ER  - 
+
+TY  - JOUR
+AU  - Hulshof, Daan
+AU  - Jepma, Catrinus
+AU  - Mulder, Machiel
+TI  - Performance of markets for European renewable energy certificates
+T1  - Performance of markets for European renewable energy certificates
+PY  - 2019
+DA  - 2019
+JO  - Energy Policy 128, S. 697–710
+T2  - Energy Policy 128, S. 697–710
+SP  - 697
+EP  - 710
+DO  - 10.1016/j
+ER  - 
+
+TY  - GEN
+AU  - Hunhevicz, Jens
+AU  - Hall, Daniel
+TI  - Do you need a blockchain in construction? Use case categories and decision framework for DLT design options. Advanced Engineering Informatics. Volume 45, 101094. ISSN 1474-0346. doi: 10
+T1  - Do you need a blockchain in construction? Use case categories and decision framework for DLT design options. Advanced Engineering Informatics. Volume 45, 101094. ISSN 1474-0346. doi: 10
+PY  - 2020
+DA  - 2020
+ER  - 
+
+TY  - ELEC
+AU  - Hyperleder Foundation
+TI  - Hyperledger Fabric Gateway Nodejs
+T1  - Hyperledger Fabric Gateway Nodejs
+PY  - 2022
+DA  - 2022
+UR  - https://hyperledger.github.io/fabric-gateway/main/api/node/
+ER  - 
+
+TY  - ELEC
+AU  - Hyperleder Foundation
+TI  - Hyperledger Fabric Certificate Authority Documentation - release1
+T1  - Hyperledger Fabric Certificate Authority Documentation - release1
+PY  - 2023
+DA  - 2023
+ER  - 
+
+TY  - ELEC
+AU  - Hyperleder Foundation
+TI  - Hyperledger Fabric Documentation - release2
+T1  - Hyperledger Fabric Documentation - release2
+PY  - 2023
+DA  - 2023
+UR  - https://hyperledger-fabric.readthedocs.io/en/release-2.5/identity/identity.html
+ER  - 
+
+TY  - ELEC
+AU  - Hyperledger Foundation
+TI  - Hyperledger Caliper Documentation v0
+T1  - Hyperledger Caliper Documentation v0
+PY  - 2022
+DA  - 2022
+UR  - https://hyperledger.github.io/caliper/v0.5.0/getting-started/
+ER  - 
+
+TY  - ELEC
+AU  - HyXchange
+TI  - Results from the Dutch Hydroge certificate pilot: advancing the trade of clean hydrogen. Unter Mitarbeit von Juriaan van Tillburg
+T1  - Results from the Dutch Hydroge certificate pilot: advancing the trade of clean hydrogen. Unter Mitarbeit von Juriaan van Tillburg
+PY  - 2022
+DA  - 2022
+UR  - https://hyxchange.nl/document-library/
+PB  - HyXchange
+ER  - 
+
+TY  - ELEC
+AU  - IEA
+TI  - Outlook for biogas and Prospects for organic growth World Energy Outlook Special Report - Biogas and biomethane. Prospects for organic growth
+T1  - Outlook for biogas and Prospects for organic growth World Energy Outlook Special Report - Biogas and biomethane. Prospects for organic growth
+PY  - 2020
+DA  - 2020
+PB  - International Energy Agency (IEA)
+ER  - 
+
+TY  - ELEC
+AU  - International Renewable Energy Agency (IRENA)
+TI  - HYDROGEN FROM RENEWABLE POWER Hydrogen from renewable power: Technology outlook for the energy transition. Unter Mitarbeit von Emanuele Taibi, Raul Miranda (IRENA), Wouter Vanhoudt,Thomas Winkel, Jean-Christophe Lanoix and Frederic Barth (Hinicio)
+T1  - HYDROGEN FROM RENEWABLE POWER Hydrogen from renewable power: Technology outlook for the energy transition. Unter Mitarbeit von Emanuele Taibi, Raul Miranda (IRENA), Wouter Vanhoudt,Thomas Winkel, Jean-Christophe Lanoix and Frederic Barth (Hinicio)
+PY  - 2018
+DA  - 2018
+ER  - 
+
+TY  - CHAP
+AU  - Johns, Tim
+TI  - Green energy tariffs often 'misleading'
+T1  - Green energy tariffs often 'misleading'
+PY  - 2021
+DA  - 2021
+JO  - BBC News 2021, 01.04.2021
+T2  - BBC News 2021, 01.04.2021
+UR  - https://www.bbc.com/news/business-56602674
+ER  - 
+
+TY  - JOUR
+AU  - Johnson, Don
+AU  - Menezes, Alfred
+AU  - Vanstone, Scott
+TI  - The Elliptic Curve Digital Signature Algorithm (ECDSA)
+T1  - The Elliptic Curve Digital Signature Algorithm (ECDSA)
+PY  - 2001
+DA  - 2001
+JO  - IJIS 1 (1), S. 36–63
+T2  - IJIS 1 (1), S. 36–63
+VL  - 1
+IS  - 1
+SP  - 36
+EP  - 63
+DO  - 10.1007/s102070100002
+ER  - 
+
+TY  - CHAP
+AU  - Jones, Kevin
+AU  - James, Mark
+AU  - Huebner, Heather
+TI  - DO YOU KNOW WHO OWNS YOUR SOLAR ENERGY? THE GROWING PRACTICE OF SEPARATING RENEWABLE ATTRIBUTES FROM RENEWABLE ENERGY DEVELOPMENT AND ITS IMPACT ON MEETING OUR CLIMATE GOALS
+T1  - DO YOU KNOW WHO OWNS YOUR SOLAR ENERGY? THE GROWING PRACTICE OF SEPARATING RENEWABLE ATTRIBUTES FROM RENEWABLE ENERGY DEVELOPMENT AND ITS IMPACT ON MEETING OUR CLIMATE GOALS
+PY  - 2017
+DA  - 2017
+JO  - Fordham Envtl. L. Rev. 197
+T2  - Fordham Envtl. L. Rev. 197
+UR  - https://ir.lawnet.fordham.edu/elr/vol28/iss2/2
+ER  - 
+
+TY  - CHAP
+AU  - Jonynas, Rolandas
+AU  - Puida, Egidijus
+AU  - Poškas, Robertas
+AU  - Paukštaitis, Linas
+AU  - Jouhara, Hussam
+AU  - Gudzinskas, Juozas
+TI  - Renewables for district heating: The case of Lithuania
+T1  - Renewables for district heating: The case of Lithuania
+PY  - 2020
+DA  - 2020
+JO  - Energy 211, S. 119064
+T2  - Energy 211, S. 119064
+DO  - 10.1016/j
+ER  - 
+
+TY  - CHAP
+AU  - Knirsch, Fabian
+AU  - Brunner, Clemens
+AU  - Unterweger, Andreas
+AU  - Engel, Dominik
+TI  - Decentralized and permission-less green energy certificates with GECKO
+T1  - Decentralized and permission-less green energy certificates with GECKO
+PY  - 2020
+DA  - 2020
+JO  - Energy Inform 3 (1)
+T2  - Energy Inform 3 (1)
+VL  - 3
+IS  - 1
+ER  - 
+
+TY  - GEN
+AU  - Körner, Marc-Fabian
+TI  - The Digital and Sustainable Transformation of Electricity Systems : Understanding Information Systems Enabled Flexibility
+T1  - The Digital and Sustainable Transformation of Electricity Systems : Understanding Information Systems Enabled Flexibility
+PY  - 2021
+DA  - 2021
+ER  - 
+
+TY  - CHAP
+AU  - Körner, Marc-Fabian
+AU  - Sedlmeir, Johannes
+AU  - Weibelzahl, Martin
+AU  - Fridgen, Gilbert
+AU  - Heine, Moreen
+AU  - Neumann, Christoph
+TI  - Systemic risks in electricity systems: A perspective on the potential of digital technologies
+T1  - Systemic risks in electricity systems: A perspective on the potential of digital technologies
+PY  - 2022
+DA  - 2022
+JO  - Energy Policy 164, S. 112901
+T2  - Energy Policy 164, S. 112901
+DO  - 10.1016/j
+ER  - 
+
+TY  - JOUR
+AU  - Lamport, Leslie
+TI  - The part-time parliament
+T1  - The part-time parliament
+PY  - 1998
+DA  - 1998
+JO  - ACM Trans. Comput. Syst. 16 (2), S. 133–169
+T2  - ACM Trans. Comput. Syst. 16 (2), S. 133–169
+VL  - 16
+IS  - 2
+SP  - 133
+EP  - 169
+DO  - 10.1145/279227
+ER  - 
+
+TY  - JOUR
+AU  - Lamport, Leslie
+AU  - Shostak, Robert
+AU  - Pease, Marshall
+TI  - The Byzantine Generals Problem
+T1  - The Byzantine Generals Problem
+PY  - 1982
+DA  - 1982
+JO  - ACM Trans. Program. Lang. Syst. 4 (3), S. 382–401
+T2  - ACM Trans. Program. Lang. Syst. 4 (3), S. 382–401
+VL  - 4
+IS  - 3
+SP  - 382
+EP  - 401
+DO  - 10.1145/357172
+ER  - 
+
+TY  - JOUR
+AU  - Li, Peixian
+AU  - Ng, Jeremy
+AU  - Lu, Yujie
+TI  - Accelerating the adoption of renewable energy certificate: Insights from a survey of corporate renewable procurement in Singapore
+T1  - Accelerating the adoption of renewable energy certificate: Insights from a survey of corporate renewable procurement in Singapore
+PY  - 2022
+DA  - 2022
+JO  - Renewable Energy 199, S. 1272–1282
+T2  - Renewable Energy 199, S. 1272–1282
+SP  - 1272
+EP  - 1282
+DO  - 10.1016/j
+ER  - 
+
+TY  - JOUR
+AU  - Liu, Tianhao
+AU  - Zhang, Dongdong
+AU  - Wang, Shuyao
+AU  - Wu, Thomas
+TI  - Standardized modelling and economic optimization of multi-carrier energy systems considering energy storage and demand response
+T1  - Standardized modelling and economic optimization of multi-carrier energy systems considering energy storage and demand response
+PY  - 2019
+DA  - 2019
+JO  - Energy Conversion and Management 182, S. 126–142
+T2  - Energy Conversion and Management 182, S. 126–142
+SP  - 126
+EP  - 142
+DO  - 10.1016/j
+ER  - 
+
+TY  - JOUR
+AU  - Mol, Arthur
+AU  - Oosterveer, Peter
+TI  - Certification of Markets, Markets of Certificates: Tracing Sustainability in Global Agro-Food Value Chains
+T1  - Certification of Markets, Markets of Certificates: Tracing Sustainability in Global Agro-Food Value Chains
+PY  - 2015
+DA  - 2015
+JO  - Sustainability 7 (9), S. 12258–12278
+T2  - Sustainability 7 (9), S. 12258–12278
+VL  - 7
+IS  - 9
+SP  - 12258
+EP  - 12278
+DO  - 10.3390/su70912258
+ER  - 
+
+TY  - ELEC
+AU  - Moody, Phil
+AU  - Lehtovaara, Marko
+AU  - Verwimp, Katrien
+AU  - Desaulniers, Annie
+AU  - Matosic, Milenko
+TI  - Establishing technical requirements & facilitating the standardisation process for guarantees of origin on the basis of Dir (EU) 2018/2001. Task 3
+T1  - Establishing technical requirements & facilitating the standardisation process for guarantees of origin on the basis of Dir (EU) 2018/2001. Task 3
+PY  - 2020
+DA  - 2020
+ER  - 
+
+TY  - JOUR
+AU  - Mould, Karen
+AU  - Silva, Fabio
+AU  - Knott, Shane F.
+AU  - O'Regan, Brian
+TI  - A comparative analysis of biogas and hydrogen, and the impact of the certificates and blockchain new paradigms
+T1  - A comparative analysis of biogas and hydrogen, and the impact of the certificates and blockchain new paradigms
+PY  - 2022
+DA  - 2022
+JO  - International Journal of Hydrogen Energy 47 (93), S. 39303–39318
+T2  - International Journal of Hydrogen Energy 47 (93), S. 39303–39318
+VL  - 47
+IS  - 93
+SP  - 39303
+EP  - 39318
+DO  - 10.1016/j
+ER  - 
+
+TY  - ELEC
+AU  - Nakamoto, Satoshi
+TI  - Bitcoin: A Peer-to-Peer Electronic Cash System
+T1  - Bitcoin: A Peer-to-Peer Electronic Cash System
+PY  - 2008
+DA  - 2008
+UR  - https://bitcoin.org/bitcoin.pdf
+ER  - 
+
+TY  - CONF
+AU  - Nofuentes, Alvaro
+AU  - Hernandez, Juan Jose
+AU  - Pons, Lucas
+TI  - Blockchain-based Guarantees of Origin issuing platform
+T1  - Blockchain-based Guarantees of Origin issuing platform
+PY  - 2022
+DA  - 2022
+JO  - 2022 18th International Conference on the European Energy Market (EEM). 2022 18th International Conference on the European Energy Market (EEM)
+T2  - 2022 18th International Conference on the European Energy Market (EEM). 2022 18th International Conference on the European Energy Market (EEM)
+ER  - 
+
+TY  - JOUR
+AU  - Ljubljana, Slovenia, 13.09.2022 - 15.09.2022: IEEE, S. 1–4. Ølnes, Svein
+AU  - Rubach, Synnøve
+AU  - Kildal, Hans Petter
+AU  - Bøen, Marius Røthe
+TI  - 10. Exploring the Use of Blockchain Technology in the Guarantees of Origin Value Chain
+T1  - 10. Exploring the Use of Blockchain Technology in the Guarantees of Origin Value Chain
+PY  - 2022
+DA  - 2022
+JO  - Heidi Hogset, Johanne Alteren, Bjørn Jæger und Solveig Straume (Hg.): Bærekraft: Universitetsforlaget, S. 198–217. Ongaro, Diego; Ousterhout, John: In search of an understandable consensus algorithm. In: 2014 USENIX Annual Technical Conference: 2014 USENIX Annual Technical Conference
+T2  - Heidi Hogset, Johanne Alteren, Bjørn Jæger und Solveig Straume (Hg.): Bærekraft: Universitetsforlaget, S. 198–217. Ongaro, Diego; Ousterhout, John: In search of an understandable consensus algorithm. In: 2014 USENIX Annual Technical Conference: 2014 USENIX Annual Technical Conference
+SP  - 198
+EP  - 217
+UR  - https://web.stanford.edu/~ouster/cgi-bin/papers/raft-atc14
+ER  - 
+
+TY  - JOUR
+AU  - Österle, Hubert
+AU  - Becker, Jörg
+AU  - Frank, Ulrich
+AU  - Hess, Thomas
+AU  - Karagiannis, Dimitris
+AU  - Krcmar, Helmut
+TI  - Memorandum on design-oriented information systems research
+T1  - Memorandum on design-oriented information systems research
+PY  - 2011
+DA  - 2011
+JO  - European Journal of Information Systems 20 (1), S. 7–10
+T2  - European Journal of Information Systems 20 (1), S. 7–10
+VL  - 20
+IS  - 1
+SP  - 7
+EP  - 10
+DO  - 10.1057/ejis
+ER  - 
+
+TY  - ELEC
+AU  - Peffers, Ken
+AU  - Tuunanen, Tuure
+AU  - Rothenberger, Marcus
+AU  - Chatterjee, S..
+TI  - A design science research methodology for information systems research. Journal of Management Information Systems
+T1  - A design science research methodology for information systems research. Journal of Management Information Systems
+PY  - 2007
+DA  - 2007
+ER  - 
+
+TY  - ELEC
+AU  - Renewable Gas Trade Centre in Europe (REGATRACE)
+TI  - D2
+T1  - D2
+PY  - 2020
+DA  - 2020
+ER  - 
+
+TY  - JOUR
+AU  - Sachs, Thomas
+AU  - Gründler, Anna
+AU  - Rusic, Milos
+AU  - Fridgen, Gilbert
+TI  - Framing Microgrid Design from a Business and Information Systems Engineering Perspective
+T1  - Framing Microgrid Design from a Business and Information Systems Engineering Perspective
+PY  - 2019
+DA  - 2019
+JO  - Bus Inf Syst Eng 61 (6), S. 729–744
+T2  - Bus Inf Syst Eng 61 (6), S. 729–744
+VL  - 61
+IS  - 6
+SP  - 729
+EP  - 744
+DO  - 10.1007/s12599-018-00573-0
+ER  - 
+
+TY  - ELEC
+AU  - Sailer, Katharina
+AU  - Matosic, Milenko
+AU  - Reinholz, Toni
+AU  - Stefanie Königsberger, Andreas Wolf
+AU  - Franz Keuschnig (AGCS)
+AU  - Katrien Verwimp (AIB)
+TI  - D4
+T1  - D4
+PY  - 2021
+DA  - 2021
+UR  - https://www.regatrace.eu/wp-content/uploads/2021/02/REGATRACE-D4.1.pdf
+ER  - 
+
+TY  - JOUR
+AU  - Sedlmeir, Johannes
+AU  - Völter, Fabiane
+AU  - Strüker, Jens
+TI  - The next stage of green electricity labeling
+T1  - The next stage of green electricity labeling
+PY  - 2021
+DA  - 2021
+JO  - SIGENERGY Energy Inform. Rev. 1 (1), S. 20–31
+T2  - SIGENERGY Energy Inform. Rev. 1 (1), S. 20–31
+VL  - 1
+IS  - 1
+SP  - 20
+EP  - 31
+DO  - 10.1145/3508467
+ER  - 
+
+TY  - JOUR
+AU  - Shabanpour-Haghighi, Amin
+AU  - Karimaghaei, Mina
+TI  - An overview on multi-carrier energy networks: From a concept to future trends and challenges
+T1  - An overview on multi-carrier energy networks: From a concept to future trends and challenges
+PY  - 2022
+DA  - 2022
+JO  - International Journal of Hydrogen Energy 47 (9), S. 6164–6186
+T2  - International Journal of Hydrogen Energy 47 (9), S. 6164–6186
+VL  - 47
+IS  - 9
+SP  - 6164
+EP  - 6186
+DO  - 10.1016/j
+ER  - 
+
+TY  - GEN
+AU  - Simon, Herbert Alexander
+TI  - The sciences of the artificial
+T1  - The sciences of the artificial
+PY  - 1996
+DA  - 1996
+ER  - 
+
+TY  - ELEC
+AU  - Strüker, Jens
+AU  - Körner, Marc-Fabian
+AU  - Leinauer, Christina
+TI  - Digitale CO2-Nachweise: Aufbruch für die nachhaltige Transformation der europäischen Wirtschaft
+T1  - Digitale CO2-Nachweise: Aufbruch für die nachhaltige Transformation der europäischen Wirtschaft
+PY  - 2022
+DA  - 2022
+PB  - EPICO KlimaInnovation
+ER  - 
+
+TY  - ELEC
+AU  - Styles, Alexandra
+AU  - Claas-Reuther, Jonathan
+TI  - Guarantees of origin for green district heating: legal framework and design options. Project report as part of the living labs for the energy transition IW3 - Integrierte WärmeWende Wilhelmsburg
+T1  - Guarantees of origin for green district heating: legal framework and design options. Project report as part of the living labs for the energy transition IW3 - Integrierte WärmeWende Wilhelmsburg
+PY  - 2023
+DA  - 2023
+PB  - Hamburg Institut
+ER  - 
+
+TY  - ELEC
+AU  - Styles, Alexandra
+AU  - Claas-Reuther, Jonathan
+AU  - Maaß, Christian
+TI  - Entwertung von Herkunftsnachweisen für die Verlustenergie von Netzbetreibern: Rechtliche und regulatorische Rahmenbedingungen. Gutachten im Auftrag der SchleswigHolstein Netz AG und TenneT TSO GmbH
+T1  - Entwertung von Herkunftsnachweisen für die Verlustenergie von Netzbetreibern: Rechtliche und regulatorische Rahmenbedingungen. Gutachten im Auftrag der SchleswigHolstein Netz AG und TenneT TSO GmbH
+PY  - 2021
+DA  - 2021
+PB  - Hamburg Institut
+ER  - 
+
+TY  - CHAP
+AU  - Thellufsen, Jakob Zinck
+AU  - Lund, Henrik
+AU  - Sorknæs, Peter
+AU  - Nielsen, Steffen
+AU  - Chang, Miguel
+AU  - Mathiesen, Brian Vad
+TI  - Beyond sector coupling: Utilizing energy grids in sector coupling to improve the European energy transition
+T1  - Beyond sector coupling: Utilizing energy grids in sector coupling to improve the European energy transition
+PY  - 2023
+DA  - 2023
+JO  - Smart Energy 12, S. 100116
+T2  - Smart Energy 12, S. 100116
+DO  - 10.1016/j
+ER  - 
+
+TY  - CHAP
+AU  - Tkachuk, Roman-Valentyn
+AU  - Ilie, Dragos
+AU  - Robert, Remi
+AU  - Kebande, Victor
+AU  - Tutschku, Kurt
+TI  - On the performance and scalability of consensus mechanisms in privacy-enabled decentralized renewable energy marketplace
+T1  - On the performance and scalability of consensus mechanisms in privacy-enabled decentralized renewable energy marketplace
+PY  - 2023
+DA  - 2023
+JO  - Ann. Telecommun
+T2  - Ann. Telecommun
+DO  - 10.1007/s12243-023-00973-8
+ER  - 
+
+TY  - GEN
+AU  - Umweltbundesamt
+TI  - Verordnung zur Einrichtung des Regionalnachweisregisters, zur Fortentwicklung des Herkunftsnachweisregisters und zur Änderung der Herkunfts- und Regionalnachweis-Gebührenverordnung
+T1  - Verordnung zur Einrichtung des Regionalnachweisregisters, zur Fortentwicklung des Herkunftsnachweisregisters und zur Änderung der Herkunfts- und Regionalnachweis-Gebührenverordnung
+PY  - 2018
+DA  - 2018
+ER  - 
+
+TY  - GEN
+AU  - Online verfügbar unter https://www.umweltbundesamt.de/sites/default/files/medien/372/dokumente/hkrndv_und_gebue hrenvo_mit_begruendung_nichtamtliche_lesefassung_20190111.pdf, zuletzt geprüft am 13.12.2023. van Diessen, Marijn
+TI  - Guarantees of origin: Playing a vital role in decarbonization
+T1  - Guarantees of origin: Playing a vital role in decarbonization
+PY  - 2024
+DA  - 2024
+PB  - McKinsey & Co
+ER  - 
+
+TY  - ELEC
+AU  - Online verfügbar unter https://www.mckinsey.com/industries/electric-power-and- natural-gas/our-insights/guarantees-of-origin-playing-a-vital-role-in- decarbonization?utm_source=dlvr.it&utm_medium=linkedin, zuletzt geprüft am 31.01.2024. van Stein-Callenfels, Remco
+AU  - Verwimp, Katrien
+AU  - Moody, Phil
+AU  - Klimscheffskij, Markus
+AU  - Kovacs, Attila
+AU  - Belin, Flore
+TI  - Draft revision proposal for the EN16325 standard on guarantees of origin related to energy. Technical support for RES policy development and implementation: Establishing technical requirements & facilitating the standardisation process for guarantees of origin on the basis of Dir (EU) 2018/2001. Task 2, Developing technical requirements for the extended coverage of GO, Part 2 (Version 2). European Commission
+T1  - Draft revision proposal for the EN16325 standard on guarantees of origin related to energy. Technical support for RES policy development and implementation: Establishing technical requirements & facilitating the standardisation process for guarantees of origin on the basis of Dir (EU) 2018/2001. Task 2, Developing technical requirements for the extended coverage of GO, Part 2 (Version 2). European Commission
+PY  - 2021
+DA  - 2021
+ER  - 
+
+TY  - CHAP
+AU  - Velazquez Abad, Anthony
+AU  - Dodds, Paul E.
+TI  - Green hydrogen characterisation initiatives: Definitions, standards, guarantees of origin, and challenges
+T1  - Green hydrogen characterisation initiatives: Definitions, standards, guarantees of origin, and challenges
+PY  - 2020
+DA  - 2020
+JO  - Energy Policy 138, S. 111300
+T2  - Energy Policy 138, S. 111300
+DO  - 10.1016/j
+ER  - 
+
+TY  - ELEC
+AU  - Verwimp, Katrien
+AU  - Aalto, Martin
+AU  - Switten, Liesbeth
+AU  - Decorte, Mieke
+AU  - Kramer, Katharina
+AU  - Edel, Matthias
+TI  - D4
+T1  - D4
+PY  - 2021
+DA  - 2021
+PB  - Renewable Gas Trade Centre in Europe (REGATRACE)
+ER  - 
+
+TY  - ELEC
+AU  - Verwimp, Katrien
+AU  - Aalto, Martin
+AU  - Switten, Liesbeth
+AU  - Decorte, Mieke
+AU  - Kramer, Katharina
+AU  - Edel, Matthias
+TI  - D4
+T1  - D4
+PY  - 2022
+DA  - 2022
+UR  - https://www.regatrace.eu/wp-content/uploads/2022/10/REGATRACE-D4.4.pdf
+PB  - Renewable Gas Trade Centre in Europe (REGATRACE)
+ER  - 
+
+TY  - ELEC
+AU  - Verwimp, Katrien
+AU  - Moody, Phil
+AU  - van Stein-Callenfels, Remco
+AU  - Kovacs, Attila
+AU  - Vanhoudt, Wouter
+AU  - Barth, Frederic
+TI  - Technical support for RES policy development and implementation. Establishing technical requirements & facilitating the standardisation process for guarantees of origin on the basis of Dir (EU 2018/2001) Task 1
+T1  - Technical support for RES policy development and implementation. Establishing technical requirements & facilitating the standardisation process for guarantees of origin on the basis of Dir (EU 2018/2001) Task 1
+PY  - 2020
+DA  - 2020
+PB  - European Commission (FaSTGO)
+ER  - 
+
+TY  - CONF
+AU  - Wang, Caixia
+AU  - Li, Ziqian
+AU  - Ye, Xiaoning
+AU  - Li, Qionghui
+AU  - Lei, Xuejiao
+AU  - Yuan, Wei
+AU  - Shi, Zhiyong
+TI  - Design of the renewable portfolio standards based renewable energy certificate trading mechanism in China
+T1  - Design of the renewable portfolio standards based renewable energy certificate trading mechanism in China
+PY  - 2019
+DA  - 2019
+JO  - 8th Renewable Power Generation Conference (RPG 2019). 8th Renewable Power Generation Conference (RPG 2019). Shanghai, China, 24-25 Oct. 2019: Institution of Engineering and Technology, 51 (6 pp.)-51 (6 pp.)
+T2  - 8th Renewable Power Generation Conference (RPG 2019). 8th Renewable Power Generation Conference (RPG 2019). Shanghai, China, 24-25 Oct. 2019: Institution of Engineering and Technology, 51 (6 pp.)-51 (6 pp.)
+ER  - 
+
+TY  - JOUR
+AU  - Watson, Richard T.
+AU  - Howells, Jeffrey
+AU  - Boudreau, Marie-Claude
+TI  - Energy Informatics: Initial Thoughts on Data and Process Management
+T1  - Energy Informatics: Initial Thoughts on Data and Process Management
+PY  - 2012
+DA  - 2012
+JO  - Jan vom Brocke, Stefan Seidel und Jan Recker (Hg.): Green Business Process Management. Berlin, Heidelberg: Springer Berlin Heidelberg, S. 147–159
+T2  - Jan vom Brocke, Stefan Seidel und Jan Recker (Hg.): Green Business Process Management. Berlin, Heidelberg: Springer Berlin Heidelberg, S. 147–159
+SP  - 147
+EP  - 159
+ER  - 
+
+TY  - CHAP
+AU  - Webster, Jane
+AU  - Watson, Richard
+TI  - Analyzing the Past to Prepare for the future
+T1  - Analyzing the Past to Prepare for the future
+PY  - 2002
+DA  - 2002
+JO  - MIS Quarterly, Vol. 26, No. 2
+T2  - MIS Quarterly, Vol. 26, No. 2
+UR  - https://www.jstor.org/stable/4132319
+ER  - 
+
+TY  - JOUR
+AU  - Will, Christian
+AU  - Jochem, Patrick
+AU  - Fichtner, Wolf
+TI  - Defining a day-ahead spot market for unbundled time-specific renewable energy certificates
+T1  - Defining a day-ahead spot market for unbundled time-specific renewable energy certificates
+PY  - 2017
+DA  - 2017
+JO  - 2017 14th International Conference on the European Energy Market (EEM). 2017 14th International Conference on the European Energy Market (EEM). Dresden, Germany, 06.06.2017 - 09.06.2017: IEEE, S. 1–6
+T2  - 2017 14th International Conference on the European Energy Market (EEM). 2017 14th International Conference on the European Energy Market (EEM). Dresden, Germany, 06.06.2017 - 09.06.2017: IEEE, S. 1–6
+SP  - 1
+EP  - 6
+ER  - 
+
+TY  - CONF
+AU  - Wüst, K.
+AU  - Gervais, A.
+TI  - "Do you Need a Blockchain?," 2018 Crypto Valley Conference on Blockchain Technology (CVCBT), Zug, Switzerland, 2018, pp
+T1  - "Do you Need a Blockchain?," 2018 Crypto Valley Conference on Blockchain Technology (CVCBT), Zug, Switzerland, 2018, pp
+PY  - 2018
+DA  - 2018
+ER  - 
+
+TY  - JOUR
+AU  - Zhang, Xuesen
+AU  - Guo, Qinglei
+AU  - Zheng, Shangzhuo
+AU  - Li, Hongwei
+TI  - Research on Coordination Mechanism and Cross-Chain Technology of Carbon Emission Trading Market and Green Electricity Trading Market
+T1  - Research on Coordination Mechanism and Cross-Chain Technology of Carbon Emission Trading Market and Green Electricity Trading Market
+PY  - 2023
+DA  - 2023
+JO  - Wenping Cao, Cungang Hu und Xiangping Chen (Hg.): Proceedings of the 3rd International Symposium on New Energy and Electrical Technology, Bd. 1017. Singapore: Springer Nature Singapore (Lecture Notes in Electrical Engineering), S. 629–640
+T2  - Wenping Cao, Cungang Hu und Xiangping Chen (Hg.): Proceedings of the 3rd International Symposium on New Energy and Electrical Technology, Bd. 1017. Singapore: Springer Nature Singapore (Lecture Notes in Electrical Engineering), S. 629–640
+SP  - 629
+EP  - 640
+ER  - 
