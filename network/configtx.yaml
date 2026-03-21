@@ -1,7 +1,7 @@
 ---
 # ---------------------------------------------------------------------------
 # Tiered GO Platform — Channel Configuration
-# Roles: Issuer (Tier 1), Producer (Tier 2), Consumer (Tier 3)
+# Roles: Issuer (Tier 1), EProducer / HProducer (Tier 2), Buyer (Tier 3)
 # ---------------------------------------------------------------------------
 Organizations:
   - &OrdererOrg
@@ -45,47 +45,68 @@ Organizations:
       - Host: peer0.issuer1.go-platform.com
         Port: 7051
 
-  - &Producer1
-    Name: Producer1
-    ID: producer1MSP
-    MSPDir: organizations/peerOrganizations/producer1.go-platform.com/msp
+  - &EProducer1
+    Name: EProducer1
+    ID: eproducer1MSP
+    MSPDir: organizations/peerOrganizations/eproducer1.go-platform.com/msp
     Policies:
       Readers:
         Type: Signature
-        Rule: "OR('producer1MSP.admin', 'producer1MSP.peer', 'producer1MSP.client')"
+        Rule: "OR('eproducer1MSP.admin', 'eproducer1MSP.peer', 'eproducer1MSP.client')"
       Writers:
         Type: Signature
-        Rule: "OR('producer1MSP.admin', 'producer1MSP.client')"
+        Rule: "OR('eproducer1MSP.admin', 'eproducer1MSP.client')"
       Admins:
         Type: Signature
-        Rule: "OR('producer1MSP.admin')"
+        Rule: "OR('eproducer1MSP.admin')"
       Endorsement:
         Type: Signature
-        Rule: "OR('producer1MSP.peer')"
+        Rule: "OR('eproducer1MSP.peer')"
     AnchorPeers:
-      - Host: peer0.producer1.go-platform.com
+      - Host: peer0.eproducer1.go-platform.com
         Port: 9051
 
-  - &Consumer1
-    Name: Consumer1
-    ID: consumer1MSP
-    MSPDir: organizations/peerOrganizations/consumer1.go-platform.com/msp
+  - &HProducer1
+    Name: HProducer1
+    ID: hproducer1MSP
+    MSPDir: organizations/peerOrganizations/hproducer1.go-platform.com/msp
     Policies:
       Readers:
         Type: Signature
-        Rule: "OR('consumer1MSP.admin', 'consumer1MSP.peer', 'consumer1MSP.client')"
+        Rule: "OR('hproducer1MSP.admin', 'hproducer1MSP.peer', 'hproducer1MSP.client')"
       Writers:
         Type: Signature
-        Rule: "OR('consumer1MSP.admin', 'consumer1MSP.client')"
+        Rule: "OR('hproducer1MSP.admin', 'hproducer1MSP.client')"
       Admins:
         Type: Signature
-        Rule: "OR('consumer1MSP.admin')"
+        Rule: "OR('hproducer1MSP.admin')"
       Endorsement:
         Type: Signature
-        Rule: "OR('consumer1MSP.peer')"
+        Rule: "OR('hproducer1MSP.peer')"
     AnchorPeers:
-      - Host: peer0.consumer1.go-platform.com
+      - Host: peer0.hproducer1.go-platform.com
         Port: 11051
+
+  - &Buyer1
+    Name: Buyer1
+    ID: buyer1MSP
+    MSPDir: organizations/peerOrganizations/buyer1.go-platform.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('buyer1MSP.admin', 'buyer1MSP.peer', 'buyer1MSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('buyer1MSP.admin', 'buyer1MSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('buyer1MSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('buyer1MSP.peer')"
+    AnchorPeers:
+      - Host: peer0.buyer1.go-platform.com
+        Port: 13051
 
 # ---------------------------------------------------------------------------
 Capabilities:
@@ -188,5 +209,6 @@ Profiles:
       <<: *ApplicationDefaults
       Organizations:
         - *Issuer1
-        - *Producer1
-        - *Consumer1
+        - *EProducer1
+        - *HProducer1
+        - *Buyer1

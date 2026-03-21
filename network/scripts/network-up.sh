@@ -1,60 +1,182 @@
 #!/bin/bash
 # network-up.sh — Bring up the GO Platform network
+# 4 orgs: Issuer, Electricity Producer, Hydrogen Producer, Buyer
+# 4-node Raft orderer cluster
 # Usage: ./network-up.sh
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 NETWORK_DIR="$(dirname "$SCRIPT_DIR")"
+REPO_DIR="$(dirname "$NETWORK_DIR")"
 CHANNEL_NAME="goplatformchannel"
 
-echo "====== Starting GO Platform Network ======"
+# Fabric binaries
+export PATH="${REPO_DIR}/fabric-bin/bin:$PATH"
+export FABRIC_CFG_PATH="$NETWORK_DIR"
 
-# 1. Start CAs
-echo "--- Starting Certificate Authorities ---"
-docker compose -f "$NETWORK_DIR/docker/docker-compose-ca.yaml" up -d
-sleep 3
+# Org definitions: name mspID peerPort
+ORGS=(
+  "issuer1:issuer1MSP:7051"
+  "eproducer1:eproducer1MSP:9051"
+  "hproducer1:hproducer1MSP:11051"
+  "buyer1:buyer1MSP:13051"
+)
 
-# 2. Generate crypto material (placeholder — implement with fabric-ca-client)
-echo "--- Generating crypto material ---"
-echo "TODO: Implement crypto material generation using fabric-ca-client"
-echo "  - Enroll CA admins"
-echo "  - Register and enroll peers, orderers, users"
-echo "  - Generate MSP directories"
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+NC='\033[0m'
 
-# 3. Start orderers
-echo "--- Starting Orderer Cluster ---"
+log()  { echo -e "${GREEN}[✓]${NC} $1"; }
+info() { echo -e "${CYAN}[→]${NC} $1"; }
+fail() { echo -e "${RED}[✗]${NC} $1"; exit 1; }
+
+set_peer_env() {
+  local org=$1 msp=$2 port=$3
+  export CORE_PEER_TLS_ENABLED=true
+  export CORE_PEER_LOCALMSPID="$msp"
+  export CORE_PEER_TLS_ROOTCERT_FILE="$NETWORK_DIR/organizations/peerOrganizations/${org}.go-platform.com/peers/peer0.${org}.go-platform.com/tls/ca.crt"
+  export CORE_PEER_MSPCONFIGPATH="$NETWORK_DIR/organizations/peerOrganizations/${org}.go-platform.com/users/Admin@${org}.go-platform.com/msp"
+  export CORE_PEER_ADDRESS="localhost:${port}"
+}
+
+echo "=============================================="
+echo "  GO Platform Network — Starting"
+echo "=============================================="
+echo ""
+
+# ─── Step 0: Clean previous state ───────────────────────────────────────────
+info "Cleaning previous state..."
+"$SCRIPT_DIR/network-down.sh" 2>/dev/null || true
+sudo rm -rf "$NETWORK_DIR/organizations" "$NETWORK_DIR/channel-artifacts"
+log "Clean"
+
+# ─── Step 1: Generate crypto material ────────────────────────────────────────
+info "Generating crypto material with cryptogen..."
+cryptogen generate --config="$NETWORK_DIR/crypto-config.yaml" --output="$NETWORK_DIR/organizations"
+log "Crypto material generated"
+
+# ─── Step 2: Generate channel genesis block ──────────────────────────────────
+info "Generating channel genesis block..."
+mkdir -p "$NETWORK_DIR/channel-artifacts"
+configtxgen -profile GOPlatformChannel \
+  -outputBlock "$NETWORK_DIR/channel-artifacts/${CHANNEL_NAME}.block" \
+  -channelID "$CHANNEL_NAME"
+log "Genesis block: channel-artifacts/${CHANNEL_NAME}.block"
+
+# ─── Step 3: Start orderer cluster ──────────────────────────────────────────
+info "Starting orderer cluster (4-node Raft)..."
 docker compose -f "$NETWORK_DIR/docker/docker-compose-orderer.yaml" up -d
-sleep 5
+sleep 3
+log "Orderers started"
 
-# 4. Start peers
-echo "--- Starting Issuer Peer ---"
+# ─── Step 4: Start all peers ────────────────────────────────────────────────
+info "Starting peers and CouchDB instances..."
 docker compose -f "$NETWORK_DIR/docker/docker-compose-issuer.yaml" up -d
-
-echo "--- Starting Producer Peer ---"
-docker compose -f "$NETWORK_DIR/docker/docker-compose-producer.yaml" up -d
-
-echo "--- Starting Consumer Peer ---"
-docker compose -f "$NETWORK_DIR/docker/docker-compose-consumer.yaml" up -d
+docker compose -f "$NETWORK_DIR/docker/docker-compose-eproducer.yaml" up -d
+docker compose -f "$NETWORK_DIR/docker/docker-compose-hproducer.yaml" up -d
+docker compose -f "$NETWORK_DIR/docker/docker-compose-buyer.yaml" up -d
 sleep 5
+log "All peers started"
 
-# 5. Create channel
-echo "--- Creating Channel: $CHANNEL_NAME ---"
-echo "TODO: Implement channel creation using osnadmin or configtxgen + peer channel create"
-echo "  configtxgen -profile GOPlatformChannel -outputBlock $CHANNEL_NAME.block -channelID $CHANNEL_NAME"
-echo "  osnadmin channel join --channelID $CHANNEL_NAME --config-block $CHANNEL_NAME.block -o orderer1.go-platform.com:9443"
+# ─── Step 5: Join orderers to channel ────────────────────────────────────────
+info "Joining orderers to channel..."
+for i in 1 2 3 4; do
+  ADMIN_PORT=$((9442 + i))
+  ORDERER_TLS="$NETWORK_DIR/organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer${i}.go-platform.com/tls"
+  osnadmin channel join \
+    --channelID "$CHANNEL_NAME" \
+    --config-block "$NETWORK_DIR/channel-artifacts/${CHANNEL_NAME}.block" \
+    -o "localhost:${ADMIN_PORT}" \
+    --ca-file "$ORDERER_TLS/ca.crt" \
+    --client-cert "$ORDERER_TLS/server.crt" \
+    --client-key "$ORDERER_TLS/server.key"
+  log "  orderer${i} joined channel"
+done
 
-# 6. Join peers to channel
-echo "--- Joining Peers to Channel ---"
-echo "TODO: peer channel join -b $CHANNEL_NAME.block for each org"
+# ─── Step 6: Join peers to channel ──────────────────────────────────────────
+info "Joining peers to channel..."
+ORDERER_CA="$NETWORK_DIR/organizations/ordererOrganizations/orderer.go-platform.com/msp/tlscacerts/tlsca.orderer.go-platform.com-cert.pem"
 
-# 7. Set anchor peers
-echo "--- Setting Anchor Peers ---"
-echo "TODO: peer channel update for each org's anchor peer"
+for entry in "${ORGS[@]}"; do
+  IFS=':' read -r org msp port <<< "$entry"
+  set_peer_env "$org" "$msp" "$port"
+  peer channel join -b "$NETWORK_DIR/channel-artifacts/${CHANNEL_NAME}.block"
+  log "  peer0.${org} joined channel"
+done
 
-echo "====== GO Platform Network Started ======"
+# ─── Step 7: Set anchor peers ───────────────────────────────────────────────
+info "Setting anchor peers..."
+for entry in "${ORGS[@]}"; do
+  IFS=':' read -r org msp port <<< "$entry"
+  set_peer_env "$org" "$msp" "$port"
+
+  # Fetch current config
+  peer channel fetch config "$NETWORK_DIR/channel-artifacts/config_block.pb" \
+    -o localhost:7050 --ordererTLSHostnameOverride orderer1.go-platform.com \
+    -c "$CHANNEL_NAME" --tls --cafile "$ORDERER_CA" 2>/dev/null
+
+  # Decode to JSON
+  configtxlator proto_decode --input "$NETWORK_DIR/channel-artifacts/config_block.pb" \
+    --type common.Block 2>/dev/null \
+    | jq '.data.data[0].payload.data.config' > "$NETWORK_DIR/channel-artifacts/${org}_config.json"
+
+  # Modify — add anchor peer
+  jq --arg msp "$msp" --arg host "peer0.${org}.go-platform.com" --argjson port "$port" \
+    '.channel_group.groups.Application.groups[$msp].values += {
+      "AnchorPeers": {
+        "mod_policy": "Admins",
+        "value": {"anchor_peers": [{"host": $host, "port": $port}]},
+        "version": "0"
+      }
+    }' "$NETWORK_DIR/channel-artifacts/${org}_config.json" \
+    > "$NETWORK_DIR/channel-artifacts/${org}_modified_config.json"
+
+  # Encode both
+  configtxlator proto_encode --input "$NETWORK_DIR/channel-artifacts/${org}_config.json" \
+    --type common.Config --output "$NETWORK_DIR/channel-artifacts/${org}_config.pb" 2>/dev/null
+  configtxlator proto_encode --input "$NETWORK_DIR/channel-artifacts/${org}_modified_config.json" \
+    --type common.Config --output "$NETWORK_DIR/channel-artifacts/${org}_modified_config.pb" 2>/dev/null
+
+  # Compute update delta
+  if configtxlator compute_update --channel_id "$CHANNEL_NAME" \
+    --original "$NETWORK_DIR/channel-artifacts/${org}_config.pb" \
+    --updated "$NETWORK_DIR/channel-artifacts/${org}_modified_config.pb" \
+    --output "$NETWORK_DIR/channel-artifacts/${org}_anchor_update.pb" 2>/dev/null; then
+
+    # Wrap in envelope
+    configtxlator proto_decode --input "$NETWORK_DIR/channel-artifacts/${org}_anchor_update.pb" \
+      --type common.ConfigUpdate 2>/dev/null \
+      | jq '{"payload":{"header":{"channel_header":{"channel_id":"'"$CHANNEL_NAME"'","type":2}},"data":{"config_update":.}}}' \
+      | configtxlator proto_encode --type common.Envelope \
+        --output "$NETWORK_DIR/channel-artifacts/${org}_anchor_update_tx.pb" 2>/dev/null
+
+    # Submit
+    peer channel update -f "$NETWORK_DIR/channel-artifacts/${org}_anchor_update_tx.pb" \
+      -c "$CHANNEL_NAME" -o localhost:7050 \
+      --ordererTLSHostnameOverride orderer1.go-platform.com \
+      --tls --cafile "$ORDERER_CA"
+    log "  Anchor peer set for $msp"
+  else
+    log "  Anchor peer already set for $msp (no update needed)"
+  fi
+done
+
+# ─── Done ────────────────────────────────────────────────────────────────────
+echo ""
+echo "=============================================="
+echo "  GO Platform Network — RUNNING"
+echo "=============================================="
+echo ""
+echo "Channel: $CHANNEL_NAME"
+echo ""
 echo "Peers:"
-echo "  Issuer:   peer0.issuer1.go-platform.com:7051"
-echo "  Producer: peer0.producer1.go-platform.com:9051"
-echo "  Consumer: peer0.consumer1.go-platform.com:11051"
-echo "Orderers:   7050, 8050, 9050, 10050"
-echo "CAs:        7054, 8054, 9054, 10054"
+echo "  Issuer:            peer0.issuer1.go-platform.com:7051"
+echo "  E-Producer:        peer0.eproducer1.go-platform.com:9051"
+echo "  H-Producer:        peer0.hproducer1.go-platform.com:11051"
+echo "  Buyer:             peer0.buyer1.go-platform.com:13051"
+echo ""
+echo "Orderers:            7050, 8050, 9050, 10050"
+echo "CouchDB:             5984, 7984, 9984, 11984"
+echo ""
+echo "Next: ./deploy-chaincode.sh"

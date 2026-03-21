@@ -1,0 +1,53 @@
+# Docker Compose for the Hydrogen Producer organization (Tier 2)
+version: '3.7'
+
+networks:
+  go-platform:
+    name: go-platform_network
+
+services:
+  couchdb.hproducer1:
+    extends:
+      file: ../base.yaml
+      service: couchdb-base
+    container_name: couchdb.hproducer1
+    ports:
+      - 9984:5984
+    volumes:
+      - couchdb.hproducer1:/opt/couchdb/data
+    networks:
+      - go-platform
+
+  peer0.hproducer1.go-platform.com:
+    extends:
+      file: ../base.yaml
+      service: peer-base
+    container_name: peer0.hproducer1.go-platform.com
+    environment:
+      - CORE_PEER_ID=peer0.hproducer1.go-platform.com
+      - CORE_PEER_ADDRESS=peer0.hproducer1.go-platform.com:11051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:11051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.hproducer1.go-platform.com:11052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:11052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.hproducer1.go-platform.com:11051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.hproducer1.go-platform.com:11051
+      - CORE_PEER_LOCALMSPID=hproducer1MSP
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.hproducer1:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../organizations/peerOrganizations/hproducer1.go-platform.com/peers/peer0.hproducer1.go-platform.com/msp:/etc/hyperledger/fabric/msp
+      - ../organizations/peerOrganizations/hproducer1.go-platform.com/peers/peer0.hproducer1.go-platform.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.hproducer1.go-platform.com:/var/hyperledger/production
+    ports:
+      - 11051:11051
+    depends_on:
+      - couchdb.hproducer1
+    networks:
+      - go-platform
+
+volumes:
+  couchdb.hproducer1:
+  peer0.hproducer1.go-platform.com:
