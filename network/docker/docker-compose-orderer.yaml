@@ -1,0 +1,85 @@
+# Docker Compose for the orderer cluster (4-node Raft)
+version: '3.7'
+
+networks:
+  go-platform:
+    name: go-platform_network
+
+services:
+  orderer1.go-platform.com:
+    extends:
+      file: ../base.yaml
+      service: orderer-base
+    container_name: orderer1.go-platform.com
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+    volumes:
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/msp:/var/hyperledger/orderer/msp
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/tls:/var/hyperledger/orderer/tls
+      - orderer1.go-platform.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+      - 9443:9443
+    networks:
+      - go-platform
+
+  orderer2.go-platform.com:
+    extends:
+      file: ../base.yaml
+      service: orderer-base
+    container_name: orderer2.go-platform.com
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=8050
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+    volumes:
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer2.go-platform.com/msp:/var/hyperledger/orderer/msp
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer2.go-platform.com/tls:/var/hyperledger/orderer/tls
+      - orderer2.go-platform.com:/var/hyperledger/production/orderer
+    ports:
+      - 8050:8050
+      - 9444:9443
+    networks:
+      - go-platform
+
+  orderer3.go-platform.com:
+    extends:
+      file: ../base.yaml
+      service: orderer-base
+    container_name: orderer3.go-platform.com
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=9050
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+    volumes:
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer3.go-platform.com/msp:/var/hyperledger/orderer/msp
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer3.go-platform.com/tls:/var/hyperledger/orderer/tls
+      - orderer3.go-platform.com:/var/hyperledger/production/orderer
+    ports:
+      - 9050:9050
+      - 9445:9443
+    networks:
+      - go-platform
+
+  orderer4.go-platform.com:
+    extends:
+      file: ../base.yaml
+      service: orderer-base
+    container_name: orderer4.go-platform.com
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=10050
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+    volumes:
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer4.go-platform.com/msp:/var/hyperledger/orderer/msp
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer4.go-platform.com/tls:/var/hyperledger/orderer/tls
+      - orderer4.go-platform.com:/var/hyperledger/production/orderer
+    ports:
+      - 10050:10050
+      - 9446:9443
+    networks:
+      - go-platform
+
+volumes:
+  orderer1.go-platform.com:
+  orderer2.go-platform.com:
+  orderer3.go-platform.com:
+  orderer4.go-platform.com:

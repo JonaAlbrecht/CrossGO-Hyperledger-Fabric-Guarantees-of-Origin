@@ -1,0 +1,192 @@
+---
+# ---------------------------------------------------------------------------
+# Tiered GO Platform — Channel Configuration
+# Roles: Issuer (Tier 1), Producer (Tier 2), Consumer (Tier 3)
+# ---------------------------------------------------------------------------
+Organizations:
+  - &OrdererOrg
+    Name: OrdererOrg
+    ID: OrdererMSP
+    MSPDir: organizations/ordererOrganizations/orderer.go-platform.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('OrdererMSP.admin')"
+    OrdererEndpoints:
+      - orderer1.go-platform.com:7050
+      - orderer2.go-platform.com:8050
+      - orderer3.go-platform.com:9050
+      - orderer4.go-platform.com:10050
+
+  - &Issuer1
+    Name: Issuer1
+    ID: issuer1MSP
+    MSPDir: organizations/peerOrganizations/issuer1.go-platform.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('issuer1MSP.admin', 'issuer1MSP.peer', 'issuer1MSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('issuer1MSP.admin', 'issuer1MSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('issuer1MSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('issuer1MSP.peer')"
+    AnchorPeers:
+      - Host: peer0.issuer1.go-platform.com
+        Port: 7051
+
+  - &Producer1
+    Name: Producer1
+    ID: producer1MSP
+    MSPDir: organizations/peerOrganizations/producer1.go-platform.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('producer1MSP.admin', 'producer1MSP.peer', 'producer1MSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('producer1MSP.admin', 'producer1MSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('producer1MSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('producer1MSP.peer')"
+    AnchorPeers:
+      - Host: peer0.producer1.go-platform.com
+        Port: 9051
+
+  - &Consumer1
+    Name: Consumer1
+    ID: consumer1MSP
+    MSPDir: organizations/peerOrganizations/consumer1.go-platform.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('consumer1MSP.admin', 'consumer1MSP.peer', 'consumer1MSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('consumer1MSP.admin', 'consumer1MSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('consumer1MSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('consumer1MSP.peer')"
+    AnchorPeers:
+      - Host: peer0.consumer1.go-platform.com
+        Port: 11051
+
+# ---------------------------------------------------------------------------
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Orderer: &OrdererCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_0: true
+
+# ---------------------------------------------------------------------------
+Application: &ApplicationDefaults
+  Organizations:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+# ---------------------------------------------------------------------------
+Orderer: &OrdererDefaults
+  OrdererType: etcdraft
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  EtcdRaft:
+    Consenters:
+      - Host: orderer1.go-platform.com
+        Port: 7050
+        ClientTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/tls/server.crt
+        ServerTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/tls/server.crt
+      - Host: orderer2.go-platform.com
+        Port: 8050
+        ClientTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer2.go-platform.com/tls/server.crt
+        ServerTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer2.go-platform.com/tls/server.crt
+      - Host: orderer3.go-platform.com
+        Port: 9050
+        ClientTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer3.go-platform.com/tls/server.crt
+        ServerTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer3.go-platform.com/tls/server.crt
+      - Host: orderer4.go-platform.com
+        Port: 10050
+        ClientTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer4.go-platform.com/tls/server.crt
+        ServerTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer4.go-platform.com/tls/server.crt
+  Organizations:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+  Capabilities:
+    <<: *OrdererCapabilities
+
+# ---------------------------------------------------------------------------
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+  Capabilities:
+    <<: *ChannelCapabilities
+
+# ---------------------------------------------------------------------------
+Profiles:
+  GOPlatformChannel:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *Issuer1
+        - *Producer1
+        - *Consumer1
