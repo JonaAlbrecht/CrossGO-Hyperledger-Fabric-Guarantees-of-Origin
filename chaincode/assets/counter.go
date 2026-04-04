@@ -1,6 +1,7 @@
 package assets
 
 import (
+	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
@@ -77,18 +78,21 @@ func GenerateID(ctx contractapi.TransactionContextInterface, prefix string, suff
 	return prefix + shortHash, nil
 }
 
-// GenerateCommitment produces a SHA-256 commitment of a quantity value with a random salt.
-// ADR-009: This enables selective disclosure — the quantity is hidden on the public ledger
+// GenerateCommitment produces a SHA-256 commitment of a quantity value with a
+// cryptographically random salt.
+// ADR-009: Selective disclosure — the quantity is hidden on the public ledger
 // but can be revealed to a verifier by disclosing the salt.
+// ADR-017 (v6.0): Salt is now generated via crypto/rand instead of being derived
+// from the transaction ID. A txID-derived salt is predictable — an attacker who
+// knows the txID can brute-force plausible MWh values (typically 0–1000 range)
+// in milliseconds. A 128-bit random salt makes brute-force infeasible.
 // Returns (commitmentHex, saltHex).
 func GenerateCommitment(ctx contractapi.TransactionContextInterface, quantity float64) (string, string, error) {
-	txID := ctx.GetStub().GetTxID()
-	if txID == "" {
-		return "", "", fmt.Errorf("transaction ID is empty")
+	saltBytes := make([]byte, 16) // 128-bit random salt
+	if _, err := rand.Read(saltBytes); err != nil {
+		return "", "", fmt.Errorf("failed to generate random salt: %v", err)
 	}
-	// Use txID as the salt source — deterministic per transaction, unique per GO
-	salt := sha256.Sum256([]byte(txID + "_commitment_salt"))
-	saltHex := hex.EncodeToString(salt[:16])
+	saltHex := hex.EncodeToString(saltBytes)
 	// Commitment = SHA-256(quantity_string || saltHex)
 	quantityStr := strconv.FormatFloat(quantity, 'f', -1, 64)
 	commitInput := quantityStr + "||" + saltHex

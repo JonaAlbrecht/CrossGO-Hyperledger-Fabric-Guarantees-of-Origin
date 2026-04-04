@@ -31,7 +31,11 @@ type QueryContract struct {
 
 // GetCurrentEGOsList returns all active electricity GOs from the public world state.
 // ADR-007: Filters out cancelled/transferred GOs (tombstone pattern).
+// DEPRECATED (ADR-022, v6.0): Use GetCurrentEGOsListPaginated instead.
+// This function performs unbounded range scans that degrade CouchDB performance
+// as GO count grows. It will be removed in v8.0.
 func (c *QueryContract) GetCurrentEGOsList(ctx contractapi.TransactionContextInterface) ([]*assets.ElectricityGO, error) {
+	log.Println("WARNING: GetCurrentEGOsList is deprecated (ADR-022). Use GetCurrentEGOsListPaginated.")
 	resultsIterator, err := ctx.GetStub().GetStateByRange("eGO", "eGO~")
 	if err != nil {
 		return nil, fmt.Errorf("error getting eGO state range: %v", err)
@@ -85,7 +89,9 @@ func (c *QueryContract) GetCurrentEGOsListPaginated(ctx contractapi.TransactionC
 
 // GetCurrentHGOsList returns all active hydrogen GOs from the public world state.
 // ADR-007: Filters out cancelled/transferred GOs.
+// DEPRECATED (ADR-022, v6.0): Use GetCurrentHGOsListPaginated instead.
 func (c *QueryContract) GetCurrentHGOsList(ctx contractapi.TransactionContextInterface) ([]*assets.GreenHydrogenGO, error) {
+	log.Println("WARNING: GetCurrentHGOsList is deprecated (ADR-022). Use GetCurrentHGOsListPaginated.")
 	resultsIterator, err := ctx.GetStub().GetStateByRange("hGO", "hGO~")
 	if err != nil {
 		return nil, fmt.Errorf("error getting hGO state range: %v", err)
@@ -514,7 +520,9 @@ func (c *QueryContract) QueryPrivateHGOsByAmount(ctx contractapi.TransactionCont
 
 // GetCurrentBGOsList returns all active biogas GOs from the public world state.
 // ADR-015: Biogas carrier support. ADR-007: Filters tombstoned GOs.
+// DEPRECATED (ADR-022, v6.0): Use GetCurrentBGOsListPaginated instead.
 func (c *QueryContract) GetCurrentBGOsList(ctx contractapi.TransactionContextInterface) ([]*assets.BiogasGO, error) {
+	log.Println("WARNING: GetCurrentBGOsList is deprecated (ADR-022). Use GetCurrentBGOsListPaginated.")
 	resultsIterator, err := ctx.GetStub().GetStateByRange("bGO", "bGO~")
 	if err != nil {
 		return nil, fmt.Errorf("error getting bGO state range: %v", err)

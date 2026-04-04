@@ -4,7 +4,9 @@ const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
  * Workload: biogas:CreateBiogasGO — creates bGOs via transient data.
- * Run as eproducer1 identity (producer role with biogas device).
+ * Uses the eproducer1-biogas-device identity with attributes:
+ * biogastrustedDevice=true, maxOutput=500, technologyType=anaerobic_digestion
+ * (ADR-027: device identity fix for Caliper benchmarking).
  */
 class CreateBiogasGOWorkload extends WorkloadModuleBase {
     constructor() {
@@ -30,6 +32,8 @@ class CreateBiogasGOWorkload extends WorkloadModuleBase {
             contractId: 'golifecycle',
             contractFunction: 'biogas:CreateBiogasGO',
             contractArguments: [],
+            invokerMspId: 'eproducer1MSP',
+            invokerIdentity: 'eproducer1-biogas-device',
             timeout: 60,
             transientMap: { bGO: JSON.stringify(bGOData) }
         };

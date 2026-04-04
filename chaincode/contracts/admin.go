@@ -28,7 +28,7 @@ type AdminContract struct {
 // ADR-013: Clients call this before invoking other functions to verify compatibility.
 func (c *AdminContract) GetVersion(ctx contractapi.TransactionContextInterface) (*VersionInfo, error) {
 	return &VersionInfo{
-		Version:     "5.0.0",
+		Version:     "7.0.0",
 		ChaincodeID: "golifecycle",
 		SupportedAPIs: []string{
 			"issuance/v1",
@@ -38,6 +38,8 @@ func (c *AdminContract) GetVersion(ctx contractapi.TransactionContextInterface) 
 			"query/v1",
 			"device/v1",
 			"admin/v1",
+			"bridge/v1",
+			"oracle/v1",
 		},
 		BreakingChange: false,
 	}, nil

@@ -36,6 +36,16 @@ organizations:
             path: '../../network/organizations/peerOrganizations/eproducer1.go-platform.com/users/Admin@eproducer1.go-platform.com/msp/keystore/priv_sk'
           clientSignedCert:
             path: '../../network/organizations/peerOrganizations/eproducer1.go-platform.com/users/Admin@eproducer1.go-platform.com/msp/signcerts/Admin@eproducer1.go-platform.com-cert.pem'
+        - name: 'eproducer1-electricity-device'
+          clientPrivateKey:
+            path: './device-identities/electricity-device/msp/keystore/priv_sk'
+          clientSignedCert:
+            path: './device-identities/electricity-device/msp/signcerts/cert.pem'
+        - name: 'eproducer1-biogas-device'
+          clientPrivateKey:
+            path: './device-identities/biogas-device/msp/keystore/priv_sk'
+          clientSignedCert:
+            path: './device-identities/biogas-device/msp/signcerts/cert.pem'
     connectionProfile:
       path: './connection-profiles/ccp-eproducer1.yaml'
       discover: true

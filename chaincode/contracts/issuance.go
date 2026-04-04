@@ -9,6 +9,7 @@ import (
 	"github.com/JonaAlbrecht/HLF-GOconversionissuance-JA-MA/chaincode/access"
 	"github.com/JonaAlbrecht/HLF-GOconversionissuance-JA-MA/chaincode/assets"
 	"github.com/JonaAlbrecht/HLF-GOconversionissuance-JA-MA/chaincode/util"
+	"github.com/hyperledger/fabric-chaincode-go/pkg/statebased"
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
@@ -147,6 +148,24 @@ func (c *IssuanceContract) CreateElectricityGO(ctx contractapi.TransactionContex
 		return err
 	}
 
+	// ADR-019 (v6.0): Set state-based endorsement policy on the new GO key.
+	// Only the owning producer and the issuer can endorse future modifications
+	// (transfers, cancellations) of this specific asset.
+	ep, err := statebased.NewStateEP(nil)
+	if err != nil {
+		return fmt.Errorf("failed to create state endorsement policy: %v", err)
+	}
+	if err := ep.AddOrgs(statebased.RoleTypePeer, clientMSP, "issuer1MSP"); err != nil {
+		return fmt.Errorf("failed to add orgs to endorsement policy: %v", err)
+	}
+	epBytes, err := ep.Policy()
+	if err != nil {
+		return fmt.Errorf("failed to serialize endorsement policy: %v", err)
+	}
+	if err := ctx.GetStub().SetStateValidationParameter(eGOID, epBytes); err != nil {
+		return fmt.Errorf("failed to set state endorsement policy: %v", err)
+	}
+
 	// ADR-016: Emit lifecycle event for off-chain CQRS indexer
 	return util.EmitLifecycleEvent(ctx, util.LifecycleEvent{
 		EventType: util.EventGOCreated,
@@ -270,6 +289,22 @@ func (c *IssuanceContract) CreateHydrogenGO(ctx contractapi.TransactionContextIn
 	collection := access.GetCollectionForOrg(clientMSP)
 	if err := util.WriteHGOToLedger(ctx, pub, priv, collection); err != nil {
 		return err
+	}
+
+	// ADR-019 (v6.0): Set state-based endorsement policy on the new GO key.
+	ep, err := statebased.NewStateEP(nil)
+	if err != nil {
+		return fmt.Errorf("failed to create state endorsement policy: %v", err)
+	}
+	if err := ep.AddOrgs(statebased.RoleTypePeer, clientMSP, "issuer1MSP"); err != nil {
+		return fmt.Errorf("failed to add orgs to endorsement policy: %v", err)
+	}
+	epBytes, err := ep.Policy()
+	if err != nil {
+		return fmt.Errorf("failed to serialize endorsement policy: %v", err)
+	}
+	if err := ctx.GetStub().SetStateValidationParameter(hGOID, epBytes); err != nil {
+		return fmt.Errorf("failed to set state endorsement policy: %v", err)
 	}
 
 	// ADR-016: Emit lifecycle event for off-chain CQRS indexer

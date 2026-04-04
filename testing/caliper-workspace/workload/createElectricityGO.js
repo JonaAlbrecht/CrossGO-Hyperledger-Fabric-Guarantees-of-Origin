@@ -4,7 +4,9 @@ const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
  * Workload: issuance:CreateElectricityGO — creates eGOs via transient data.
- * Run as eproducer1 identity (producer role).
+ * Uses the eproducer1-electricity-device identity which has the required X.509
+ * attributes: electricitytrustedDevice=true, maxEfficiency=100, emissionIntensity=50,
+ * technologyType=solar (ADR-027: device identity fix for Caliper benchmarking).
  */
 class CreateElectricityGOWorkload extends WorkloadModuleBase {
     constructor() {
@@ -28,6 +30,8 @@ class CreateElectricityGOWorkload extends WorkloadModuleBase {
             contractId: 'golifecycle',
             contractFunction: 'issuance:CreateElectricityGO',
             contractArguments: [],
+            invokerMspId: 'eproducer1MSP',
+            invokerIdentity: 'eproducer1-electricity-device',
             timeout: 60,
             transientMap: { eGO: JSON.stringify(eGOData) }
         };
