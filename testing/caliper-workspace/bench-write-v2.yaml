@@ -1,0 +1,60 @@
+test:
+  workers:
+    type: local
+    number: 10
+  rounds:
+    # Serial writes — 1 at a time
+    - label: RegisterDevice-serial
+      description: Register devices serially (backlog=1)
+      txNumber: 30
+      rateControl:
+        type: fixed-load
+        opts:
+          startTps: 2
+          transactionLoad: 1
+      workload:
+        module: workload/registerDevice.js
+
+    # Low concurrency writes
+    - label: RegisterDevice-5tps
+      description: Register devices at 5 TPS
+      txNumber: 50
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 5
+      workload:
+        module: workload/registerDevice.js
+
+    # Medium concurrency writes
+    - label: RegisterDevice-10tps
+      description: Register devices at 10 TPS
+      txNumber: 100
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 10
+      workload:
+        module: workload/registerDevice.js
+
+    # Higher concurrency writes
+    - label: RegisterDevice-25tps
+      description: Register devices at 25 TPS
+      txNumber: 250
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 25
+      workload:
+        module: workload/registerDevice.js
+
+    # Stress test writes
+    - label: RegisterDevice-50tps
+      description: Register devices at 50 TPS
+      txNumber: 500
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 50
+      workload:
+        module: workload/registerDevice.js

@@ -1,0 +1,53 @@
+name: GO Platform Caliper Benchmark
+version: "2.0.0"
+
+caliper:
+  blockchain: fabric
+
+info:
+  Version: 2.5.12
+  Size: 4 Orgs, 4 Peers, 4 Orderers (Raft)
+  Distribution: Single Host (Hetzner VM)
+  StateDB: CouchDB
+
+channels:
+  - channelName: goplatformchannel
+    contracts:
+      - id: golifecycle
+
+organizations:
+  - mspid: issuer1MSP
+    identities:
+      certificates:
+        - name: 'issuer1-admin'
+          clientPrivateKey:
+            path: '../../network/organizations/peerOrganizations/issuer1.go-platform.com/users/Admin@issuer1.go-platform.com/msp/keystore/priv_sk'
+          clientSignedCert:
+            path: '../../network/organizations/peerOrganizations/issuer1.go-platform.com/users/Admin@issuer1.go-platform.com/msp/signcerts/Admin@issuer1.go-platform.com-cert.pem'
+    connectionProfile:
+      path: './connection-profiles/ccp-issuer1.yaml'
+      discover: true
+
+  - mspid: eproducer1MSP
+    identities:
+      certificates:
+        - name: 'eproducer1-admin'
+          clientPrivateKey:
+            path: '../../network/organizations/peerOrganizations/eproducer1.go-platform.com/users/Admin@eproducer1.go-platform.com/msp/keystore/priv_sk'
+          clientSignedCert:
+            path: '../../network/organizations/peerOrganizations/eproducer1.go-platform.com/users/Admin@eproducer1.go-platform.com/msp/signcerts/Admin@eproducer1.go-platform.com-cert.pem'
+    connectionProfile:
+      path: './connection-profiles/ccp-eproducer1.yaml'
+      discover: true
+
+  - mspid: buyer1MSP
+    identities:
+      certificates:
+        - name: 'buyer1-admin'
+          clientPrivateKey:
+            path: '../../network/organizations/peerOrganizations/buyer1.go-platform.com/users/Admin@buyer1.go-platform.com/msp/keystore/priv_sk'
+          clientSignedCert:
+            path: '../../network/organizations/peerOrganizations/buyer1.go-platform.com/users/Admin@buyer1.go-platform.com/msp/signcerts/Admin@buyer1.go-platform.com-cert.pem'
+    connectionProfile:
+      path: './connection-profiles/ccp-buyer1.yaml'
+      discover: true

@@ -1,0 +1,15 @@
+test:
+  workers:
+    type: local
+    number: 1
+  rounds:
+    - label: Seed-Devices
+      description: Pre-register 30 devices for read benchmarks
+      txNumber: 30
+      rateControl:
+        type: fixed-load
+        opts:
+          startTps: 2
+          transactionLoad: 1
+      workload:
+        module: workload/registerDevice.js

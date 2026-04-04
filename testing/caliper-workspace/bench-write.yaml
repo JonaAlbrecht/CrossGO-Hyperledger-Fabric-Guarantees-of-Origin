@@ -1,0 +1,17 @@
+test:
+  workers:
+    type: local
+    number: 1
+  rounds:
+    # Fixed-load: maintains target backlog of unfinished txns
+    # With 1 worker and transactionLoad=1, effectively serial
+    - label: RegisterDevice-serial
+      description: Register devices serially (backlog=1 worker)
+      txNumber: 30
+      rateControl:
+        type: fixed-load
+        opts:
+          startTps: 2
+          transactionLoad: 1
+      workload:
+        module: workload/registerDevice.js

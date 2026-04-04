@@ -142,7 +142,7 @@ Application: &ApplicationDefaults
 # ---------------------------------------------------------------------------
 Orderer: &OrdererDefaults
   OrdererType: etcdraft
-  BatchTimeout: 2s
+  BatchTimeout: 500ms
   BatchSize:
     MaxMessageCount: 10
     AbsoluteMaxBytes: 99 MB
@@ -151,20 +151,20 @@ Orderer: &OrdererDefaults
     Consenters:
       - Host: orderer1.go-platform.com
         Port: 7050
-        ClientTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/tls/server.crt
-        ServerTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/tls/server.crt
+        ClientTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.orderer.go-platform.com/tls/server.crt
+        ServerTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.orderer.go-platform.com/tls/server.crt
       - Host: orderer2.go-platform.com
         Port: 8050
-        ClientTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer2.go-platform.com/tls/server.crt
-        ServerTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer2.go-platform.com/tls/server.crt
+        ClientTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer2.orderer.go-platform.com/tls/server.crt
+        ServerTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer2.orderer.go-platform.com/tls/server.crt
       - Host: orderer3.go-platform.com
         Port: 9050
-        ClientTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer3.go-platform.com/tls/server.crt
-        ServerTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer3.go-platform.com/tls/server.crt
+        ClientTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer3.orderer.go-platform.com/tls/server.crt
+        ServerTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer3.orderer.go-platform.com/tls/server.crt
       - Host: orderer4.go-platform.com
         Port: 10050
-        ClientTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer4.go-platform.com/tls/server.crt
-        ServerTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer4.go-platform.com/tls/server.crt
+        ClientTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer4.orderer.go-platform.com/tls/server.crt
+        ServerTLSCert: organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer4.orderer.go-platform.com/tls/server.crt
   Organizations:
   Policies:
     Readers:

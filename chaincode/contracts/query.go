@@ -18,7 +18,8 @@ type QueryContract struct {
 
 // GetCurrentEGOsList returns all electricity GOs from the public world state.
 func (c *QueryContract) GetCurrentEGOsList(ctx contractapi.TransactionContextInterface) ([]*assets.ElectricityGO, error) {
-	resultsIterator, err := ctx.GetStub().GetStateByRange("eGO0", "eGO999999999")
+	// Range covers both legacy (eGO1, eGO2) and new (eGO_<hash>) ID formats
+	resultsIterator, err := ctx.GetStub().GetStateByRange("eGO", "eGO~")
 	if err != nil {
 		return nil, fmt.Errorf("error getting eGO state range: %v", err)
 	}
@@ -28,7 +29,8 @@ func (c *QueryContract) GetCurrentEGOsList(ctx contractapi.TransactionContextInt
 
 // GetCurrentHGOsList returns all hydrogen GOs from the public world state.
 func (c *QueryContract) GetCurrentHGOsList(ctx contractapi.TransactionContextInterface) ([]*assets.GreenHydrogenGO, error) {
-	resultsIterator, err := ctx.GetStub().GetStateByRange("hGO0", "hGO999999999")
+	// Range covers both legacy (hGO1, hGO2) and new (hGO_<hash>) ID formats
+	resultsIterator, err := ctx.GetStub().GetStateByRange("hGO", "hGO~")
 	if err != nil {
 		return nil, fmt.Errorf("error getting hGO state range: %v", err)
 	}

@@ -1,0 +1,539 @@
+2026.04.04-12:26:42.705 info  [caliper] [cli-launch-manager] 	Set workspace path: /root/hlf-go/repo/testing/caliper-workspace
+2026.04.04-12:26:42.706 info  [caliper] [cli-launch-manager] 	Set benchmark configuration path: /root/hlf-go/repo/testing/caliper-workspace/bench-write.yaml
+2026.04.04-12:26:42.706 info  [caliper] [cli-launch-manager] 	Set network configuration path: /root/hlf-go/repo/testing/caliper-workspace/network-config.yaml
+2026.04.04-12:26:42.706 info  [caliper] [cli-launch-manager] 	Set SUT type: fabric
+2026.04.04-12:26:42.710 info  [caliper] [benchmark-validator] 	No observer specified, will default to `none`
+2026.04.04-12:26:42.710 info  [caliper] [caliper-engine] 	Starting benchmark flow
+2026.04.04-12:26:42.710 info  [caliper] [caliper-engine] 	Skipping start commands due to benchmark flow conditioning
+2026.04.04-12:26:42.710 info  [caliper] [caliper-engine] 	Skipping initialization phase due to benchmark flow conditioning
+2026.04.04-12:26:42.710 info  [caliper] [caliper-engine] 	Skipping install smart contract phase due to benchmark flow conditioning
+2026.04.04-12:26:43.053 info  [caliper] [FabricConnectorFactory] 	Initializing peer gateway connector compatible with installed fabric-gateway SDK: 1.5.0
+2026.04.04-12:26:43.066 info  [caliper] [IdentityManager] 	Adding issuer1-admin (admin=false) as issuer1-admin for organization issuer1MSP
+2026.04.04-12:26:43.067 info  [caliper] [IdentityManager] 	Adding eproducer1-admin (admin=false) as _eproducer1MSP_eproducer1-admin for organization eproducer1MSP
+2026.04.04-12:26:43.069 info  [caliper] [IdentityManager] 	Adding buyer1-admin (admin=false) as _buyer1MSP_buyer1-admin for organization buyer1MSP
+2026.04.04-12:26:43.070 info  [caliper] [monitor.js] 	No resource monitors specified
+2026.04.04-12:26:43.071 info  [caliper] [default-observer] 	Observer interval set to 5000 milliseconds
+2026.04.04-12:26:43.073 info  [caliper] [round-orchestrator] 	Preparing worker connections
+2026.04.04-12:26:43.073 info  [caliper] [worker-orchestrator] 	Launching worker 1 of 1
+2026.04.04-12:26:43.078 info  [caliper] [worker-orchestrator] 	Messenger not configured, entering configure phase...
+2026.04.04-12:26:43.078 info  [caliper] [worker-orchestrator] 	No existing workers detected, entering worker launch phase...
+2026.04.04-12:26:43.078 info  [caliper] [worker-orchestrator] 	Waiting for 1 workers to be connected...
+2026.04.04-12:26:43.324 info  [caliper] [cli-launch-worker] 	Set workspace path: /root/hlf-go/repo/testing/caliper-workspace
+2026.04.04-12:26:43.325 info  [caliper] [cli-launch-worker] 	Set benchmark configuration path: /root/hlf-go/repo/testing/caliper-workspace/bench-write.yaml
+2026.04.04-12:26:43.325 info  [caliper] [cli-launch-worker] 	Set network configuration path: /root/hlf-go/repo/testing/caliper-workspace/network-config.yaml
+2026.04.04-12:26:43.325 info  [caliper] [cli-launch-worker] 	Set SUT type: fabric
+2026.04.04-12:26:43.342 info  [caliper] [worker-orchestrator] 	1 workers connected, progressing to worker assignment phase.
+2026.04.04-12:26:43.342 info  [caliper] [worker-orchestrator] 	Workers currently unassigned, awaiting index assignment...
+2026.04.04-12:26:43.343 info  [caliper] [worker-orchestrator] 	Waiting for 1 workers to be assigned...
+2026.04.04-12:26:43.358 info  [caliper] [worker-orchestrator] 	1 workers assigned, progressing to worker initialization phase.
+2026.04.04-12:26:43.358 info  [caliper] [worker-orchestrator] 	Waiting for 1 workers to be ready...
+2026.04.04-12:26:43.359 info  [caliper] [worker-message-handler] 	Initializing Worker#0...
+2026.04.04-12:26:43.728 info  [caliper] [FabricConnectorFactory] 	Initializing peer gateway connector compatible with installed fabric-gateway SDK: 1.5.0
+2026.04.04-12:26:43.734 info  [caliper] [IdentityManager] 	Adding issuer1-admin (admin=false) as issuer1-admin for organization issuer1MSP
+2026.04.04-12:26:43.735 info  [caliper] [IdentityManager] 	Adding eproducer1-admin (admin=false) as _eproducer1MSP_eproducer1-admin for organization eproducer1MSP
+2026.04.04-12:26:43.736 info  [caliper] [IdentityManager] 	Adding buyer1-admin (admin=false) as _buyer1MSP_buyer1-admin for organization buyer1MSP
+2026.04.04-12:26:43.738 info  [caliper] [worker-message-handler] 	Worker#0 initialized
+2026.04.04-12:26:43.739 info  [caliper] [worker-orchestrator] 	1 workers ready, progressing to test preparation phase.
+2026.04.04-12:26:43.740 info  [caliper] [round-orchestrator] 	Started round 1 (RegisterDevice-serial-1w)
+2026.04.04-12:26:43.741 info  [caliper] [worker-message-handler] 	Preparing Worker#0 for Round#0
+2026.04.04-12:26:43.779 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user issuer1-admin
+2026.04.04-12:26:43.784 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:26:43.787 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _buyer1MSP_buyer1-admin
+2026.04.04-12:26:43.788 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 0 is starting...
+2026.04.04-12:26:43.788 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user issuer1-admin
+2026.04.04-12:26:43.789 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:26:43.789 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _buyer1MSP_buyer1-admin
+2026.04.04-12:26:43.789 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.issuer1.go-platform.com
+2026.04.04-12:26:43.789 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.04-12:26:43.789 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.buyer1.go-platform.com
+2026.04.04-12:26:43.789 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 0 is completed
+2026.04.04-12:26:43.790 info  [caliper] [worker-message-handler] 	Worker#0 prepared for Round#0
+2026.04.04-12:26:43.791 info  [caliper] [worker-orchestrator] 	1 workers prepared, progressing to test phase.
+2026.04.04-12:26:43.792 info  [caliper] [round-orchestrator] 	Monitors successfully started
+2026.04.04-12:26:43.793 info  [caliper] [worker-message-handler] 	Worker#0 is starting Round#0
+2026.04.04-12:26:43.797 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user issuer1-admin
+2026.04.04-12:26:43.803 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:26:43.805 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _buyer1MSP_buyer1-admin
+2026.04.04-12:26:43.806 info  [caliper] [caliper-worker] 	Worker #0 starting workload loop
+2026.04.04-12:26:45.706 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:45.708 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:45.709 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:45.710 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:45.711 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:45.711 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:45.712 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:45.713 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:45.714 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:47.690 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:47.692 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:47.693 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:47.693 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:47.693 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:47.694 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:47.694 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:47.694 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:47.694 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:48.811 info  [caliper] [default-observer] 	[RegisterDevice-serial-1w Round 0 Transaction Info] - Submitted: 21 Succ: 2 Fail:18 Unfinished:1
+2026.04.04-12:26:49.690 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:49.691 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:49.692 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:49.693 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:49.694 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:49.694 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:49.694 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:49.694 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:49.695 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:51.686 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:51.686 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:51.687 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:51.687 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:51.687 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:51.687 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:51.687 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:51.688 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:51.688 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:53.685 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:53.686 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:53.687 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:53.687 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:53.687 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:53.689 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:53.689 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:53.689 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:53.689 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:53.796 info  [caliper] [default-observer] 	[RegisterDevice-serial-1w Round 0 Transaction Info] - Submitted: 46 Succ: 4 Fail:36 Unfinished:6
+2026.04.04-12:26:55.695 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:55.696 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:55.698 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:55.698 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:55.698 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:55.698 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:55.698 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:55.699 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:55.699 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:57.685 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:57.685 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:57.686 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:57.687 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:57.688 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:57.688 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:57.688 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:57.688 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:57.688 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:58.797 info  [caliper] [default-observer] 	[RegisterDevice-serial-1w Round 0 Transaction Info] - Submitted: 71 Succ: 7 Fail:63 Unfinished:1
+2026.04.04-12:26:59.693 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:59.694 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:59.695 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:59.695 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:59.696 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:59.696 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:59.697 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:59.697 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:26:59.698 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:01.688 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:01.689 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:01.690 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:01.690 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:01.691 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:01.691 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:01.691 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:01.691 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:01.692 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:03.695 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:03.696 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:03.696 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:03.698 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:03.698 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:03.698 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:03.698 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:03.698 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:03.698 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:03.798 info  [caliper] [default-observer] 	[RegisterDevice-serial-1w Round 0 Transaction Info] - Submitted: 100 Succ: 10 Fail:90 Unfinished:0
+2026.04.04-12:27:04.712 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user issuer1-admin
+2026.04.04-12:27:04.712 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:27:04.713 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _buyer1MSP_buyer1-admin
+2026.04.04-12:27:04.713 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.issuer1.go-platform.com
+2026.04.04-12:27:04.713 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.04-12:27:04.713 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.buyer1.go-platform.com
+2026.04.04-12:27:04.713 info  [caliper] [worker-message-handler] 	Worker#0 finished Round#0
+2026.04.04-12:27:09.717 info  [caliper] [default-observer] 	Resetting txCount indicator count
+2026.04.04-12:27:09.718 info  [caliper] [report-builder] 	### Test result ###
+2026.04.04-12:27:09.724 info  [caliper] [report-builder] 	
++--------------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+| Name                     | Succ | Fail | Send Rate (TPS) | Max Latency (s) | Min Latency (s) | Avg Latency (s) | Throughput (TPS) |
+|--------------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| RegisterDevice-serial-1w | 10   | 90   | 5.1             | 1.90            | 1.88            | 1.89            | 5.0              |
++--------------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+
+2026.04.04-12:27:09.725 info  [caliper] [round-orchestrator] 	Finished round 1 (RegisterDevice-serial-1w) in 19.906 seconds
+2026.04.04-12:27:09.725 info  [caliper] [monitor.js] 	Stopping all monitors
+2026.04.04-12:27:09.725 info  [caliper] [round-orchestrator] 	Waiting 5 seconds for the next round...
+2026.04.04-12:27:14.729 info  [caliper] [round-orchestrator] 	Started round 2 (RegisterDevice-serial-10tps)
+2026.04.04-12:27:14.731 info  [caliper] [worker-message-handler] 	Preparing Worker#0 for Round#1
+2026.04.04-12:27:14.734 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user issuer1-admin
+2026.04.04-12:27:14.737 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:27:14.740 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _buyer1MSP_buyer1-admin
+2026.04.04-12:27:14.740 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 1 is starting...
+2026.04.04-12:27:14.741 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user issuer1-admin
+2026.04.04-12:27:14.741 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:27:14.741 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _buyer1MSP_buyer1-admin
+2026.04.04-12:27:14.741 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.issuer1.go-platform.com
+2026.04.04-12:27:14.741 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.04-12:27:14.741 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.buyer1.go-platform.com
+2026.04.04-12:27:14.741 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 1 is completed
+2026.04.04-12:27:14.741 info  [caliper] [worker-message-handler] 	Worker#0 prepared for Round#1
+2026.04.04-12:27:14.742 info  [caliper] [worker-orchestrator] 	1 workers prepared, progressing to test phase.
+2026.04.04-12:27:14.742 info  [caliper] [round-orchestrator] 	Monitors successfully started
+2026.04.04-12:27:14.742 info  [caliper] [worker-message-handler] 	Worker#0 is starting Round#1
+2026.04.04-12:27:14.745 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user issuer1-admin
+2026.04.04-12:27:14.748 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:27:14.750 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _buyer1MSP_buyer1-admin
+2026.04.04-12:27:14.750 info  [caliper] [caliper-worker] 	Worker #0 starting workload loop
+2026.04.04-12:27:15.731 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:15.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:15.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:15.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:15.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:15.734 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:15.734 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:15.734 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:15.734 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:16.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:16.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:16.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:16.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:16.734 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:16.735 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:16.735 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:16.735 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:16.735 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:17.731 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:17.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:17.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:17.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:17.734 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:17.734 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:17.735 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:17.735 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:17.736 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:18.730 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:18.731 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:18.731 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:18.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:18.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:18.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:18.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:18.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:18.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:19.737 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:19.738 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:19.738 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:19.739 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:19.740 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:19.740 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:19.740 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:19.740 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:19.740 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:19.743 info  [caliper] [default-observer] 	[RegisterDevice-serial-10tps Round 1 Transaction Info] - Submitted: 40 Succ: 4 Fail:36 Unfinished:0
+2026.04.04-12:27:20.722 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:20.723 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:20.724 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:20.724 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:20.724 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:20.725 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:20.725 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:20.725 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:20.725 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:21.730 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:21.731 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:21.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:21.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:21.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:21.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:21.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:21.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:21.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:22.734 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:22.734 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:22.734 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:22.735 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:22.735 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:22.735 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:22.735 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:22.735 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:22.735 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:23.726 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:23.727 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:23.727 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:23.729 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:23.729 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:23.729 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:23.729 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:23.729 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:23.729 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:24.730 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:24.731 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:24.731 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:24.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:24.732 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:24.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:24.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:24.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:24.733 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:24.744 info  [caliper] [default-observer] 	[RegisterDevice-serial-10tps Round 1 Transaction Info] - Submitted: 91 Succ: 9 Fail:81 Unfinished:1
+2026.04.04-12:27:25.757 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user issuer1-admin
+2026.04.04-12:27:25.757 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:27:25.757 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _buyer1MSP_buyer1-admin
+2026.04.04-12:27:25.757 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.issuer1.go-platform.com
+2026.04.04-12:27:25.757 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.04-12:27:25.757 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.buyer1.go-platform.com
+2026.04.04-12:27:25.758 info  [caliper] [worker-message-handler] 	Worker#0 finished Round#1
+2026.04.04-12:27:30.760 info  [caliper] [default-observer] 	Resetting txCount indicator count
+2026.04.04-12:27:30.761 info  [caliper] [report-builder] 	### Test result ###
+2026.04.04-12:27:30.762 info  [caliper] [report-builder] 	
++-----------------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+| Name                        | Succ | Fail | Send Rate (TPS) | Max Latency (s) | Min Latency (s) | Avg Latency (s) | Throughput (TPS) |
+|-----------------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| RegisterDevice-serial-10tps | 10   | 90   | 10.1            | 0.98            | 0.97            | 0.98            | 10.0             |
++-----------------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+
+2026.04.04-12:27:30.762 info  [caliper] [round-orchestrator] 	Finished round 2 (RegisterDevice-serial-10tps) in 10.005 seconds
+2026.04.04-12:27:30.762 info  [caliper] [monitor.js] 	Stopping all monitors
+2026.04.04-12:27:30.763 info  [caliper] [round-orchestrator] 	Waiting 5 seconds for the next round...
+2026.04.04-12:27:35.768 info  [caliper] [round-orchestrator] 	Started round 3 (RegisterDevice-serial-20tps)
+2026.04.04-12:27:35.769 info  [caliper] [worker-message-handler] 	Preparing Worker#0 for Round#2
+2026.04.04-12:27:35.774 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user issuer1-admin
+2026.04.04-12:27:35.777 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:27:35.781 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _buyer1MSP_buyer1-admin
+2026.04.04-12:27:35.781 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 2 is starting...
+2026.04.04-12:27:35.782 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user issuer1-admin
+2026.04.04-12:27:35.782 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:27:35.782 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _buyer1MSP_buyer1-admin
+2026.04.04-12:27:35.782 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.issuer1.go-platform.com
+2026.04.04-12:27:35.783 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.04-12:27:35.783 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.buyer1.go-platform.com
+2026.04.04-12:27:35.783 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 2 is completed
+2026.04.04-12:27:35.783 info  [caliper] [worker-message-handler] 	Worker#0 prepared for Round#2
+2026.04.04-12:27:35.784 info  [caliper] [worker-orchestrator] 	1 workers prepared, progressing to test phase.
+2026.04.04-12:27:35.784 info  [caliper] [round-orchestrator] 	Monitors successfully started
+2026.04.04-12:27:35.784 info  [caliper] [worker-message-handler] 	Worker#0 is starting Round#2
+2026.04.04-12:27:35.788 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user issuer1-admin
+2026.04.04-12:27:35.791 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:27:35.795 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _buyer1MSP_buyer1-admin
+2026.04.04-12:27:35.795 info  [caliper] [caliper-worker] 	Worker #0 starting workload loop
+2026.04.04-12:27:36.326 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.327 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.327 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.328 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.329 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.329 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.329 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.329 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.329 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.828 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.828 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.829 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.830 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.830 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.830 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.830 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.830 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:36.830 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.328 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.328 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.329 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.329 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.330 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.331 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.332 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.332 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.332 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.818 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.818 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.819 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.819 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.819 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.820 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.820 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.820 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:37.820 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.324 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.325 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.326 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.326 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.327 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.327 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.327 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.327 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.327 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.827 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.827 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.828 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.828 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.828 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.828 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.828 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.828 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:38.828 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.333 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.333 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.334 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.334 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.335 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.335 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.336 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.336 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.336 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.816 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.817 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.817 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.818 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.818 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.818 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.818 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.818 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:39.818 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.317 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.317 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.317 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.317 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.318 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.318 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.318 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.318 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.318 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.785 info  [caliper] [default-observer] 	[RegisterDevice-serial-20tps Round 2 Transaction Info] - Submitted: 81 Succ: 7 Fail:63 Unfinished:11
+2026.04.04-12:27:40.834 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.835 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.836 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.837 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.837 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.837 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.837 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.837 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:40.838 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:41.852 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user issuer1-admin
+2026.04.04-12:27:41.852 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:27:41.852 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _buyer1MSP_buyer1-admin
+2026.04.04-12:27:41.852 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.issuer1.go-platform.com
+2026.04.04-12:27:41.853 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.04-12:27:41.853 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.buyer1.go-platform.com
+2026.04.04-12:27:41.853 info  [caliper] [worker-message-handler] 	Worker#0 finished Round#2
+2026.04.04-12:27:46.855 info  [caliper] [default-observer] 	Resetting txCount indicator count
+2026.04.04-12:27:46.855 info  [caliper] [report-builder] 	### Test result ###
+2026.04.04-12:27:46.856 info  [caliper] [report-builder] 	
++-----------------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+| Name                        | Succ | Fail | Send Rate (TPS) | Max Latency (s) | Min Latency (s) | Avg Latency (s) | Throughput (TPS) |
+|-----------------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| RegisterDevice-serial-20tps | 10   | 90   | 20.2            | 0.54            | 0.52            | 0.53            | 19.8             |
++-----------------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+
+2026.04.04-12:27:46.857 info  [caliper] [round-orchestrator] 	Finished round 3 (RegisterDevice-serial-20tps) in 5.055 seconds
+2026.04.04-12:27:46.857 info  [caliper] [monitor.js] 	Stopping all monitors
+2026.04.04-12:27:46.857 info  [caliper] [round-orchestrator] 	Waiting 5 seconds for the next round...
+2026.04.04-12:27:51.862 info  [caliper] [round-orchestrator] 	Started round 4 (RegisterDevice-5workers-10tps)
+2026.04.04-12:27:51.863 info  [caliper] [worker-message-handler] 	Preparing Worker#0 for Round#3
+2026.04.04-12:27:51.869 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user issuer1-admin
+2026.04.04-12:27:51.873 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:27:51.877 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _buyer1MSP_buyer1-admin
+2026.04.04-12:27:51.877 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 3 is starting...
+2026.04.04-12:27:51.878 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user issuer1-admin
+2026.04.04-12:27:51.878 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:27:51.878 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _buyer1MSP_buyer1-admin
+2026.04.04-12:27:51.878 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.issuer1.go-platform.com
+2026.04.04-12:27:51.878 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.04-12:27:51.879 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.buyer1.go-platform.com
+2026.04.04-12:27:51.879 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 3 is completed
+2026.04.04-12:27:51.879 info  [caliper] [worker-message-handler] 	Worker#0 prepared for Round#3
+2026.04.04-12:27:51.879 info  [caliper] [worker-orchestrator] 	1 workers prepared, progressing to test phase.
+2026.04.04-12:27:51.879 info  [caliper] [round-orchestrator] 	Monitors successfully started
+2026.04.04-12:27:51.880 info  [caliper] [worker-message-handler] 	Worker#0 is starting Round#3
+2026.04.04-12:27:51.883 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user issuer1-admin
+2026.04.04-12:27:51.887 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:27:51.890 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _buyer1MSP_buyer1-admin
+2026.04.04-12:27:51.891 info  [caliper] [caliper-worker] 	Worker #0 starting workload loop
+2026.04.04-12:27:52.880 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:52.881 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:52.881 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:52.882 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:52.882 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:52.882 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:52.882 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:52.882 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:52.882 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:53.882 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:53.883 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:53.883 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:53.884 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:53.885 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:53.885 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:53.885 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:53.885 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:53.885 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:54.876 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:54.877 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:54.878 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:54.879 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:54.879 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:54.880 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:54.880 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:54.880 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:54.880 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:55.878 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:55.878 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:55.879 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:55.879 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:55.879 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:55.879 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:55.879 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:55.880 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:55.880 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:56.872 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:56.873 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:56.873 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:56.874 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:56.875 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:56.875 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:56.875 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:56.875 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:56.875 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [device:RegisterDevice] using arguments [],  with error: Error: Failed to submit trasaction with status code: 11
+2026.04.04-12:27:56.881 info  [caliper] [default-observer] 	[RegisterDevice-5workers-10tps Round 3 Transaction Info] - Submitted: 40 Succ: 4 Fail:36 Unfinished:0
+2026.04.04-12:27:57.897 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user issuer1-admin
+2026.04.04-12:27:57.897 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1-admin
+2026.04.04-12:27:57.897 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _buyer1MSP_buyer1-admin
+2026.04.04-12:27:57.897 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.issuer1.go-platform.com
+2026.04.04-12:27:57.897 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.04-12:27:57.897 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.buyer1.go-platform.com
+2026.04.04-12:27:57.897 info  [caliper] [worker-message-handler] 	Worker#0 finished Round#3
+2026.04.04-12:28:02.899 info  [caliper] [default-observer] 	Resetting txCount indicator count
+2026.04.04-12:28:02.900 info  [caliper] [report-builder] 	### Test result ###
+2026.04.04-12:28:02.901 info  [caliper] [report-builder] 	
++-------------------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+| Name                          | Succ | Fail | Send Rate (TPS) | Max Latency (s) | Min Latency (s) | Avg Latency (s) | Throughput (TPS) |
+|-------------------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| RegisterDevice-5workers-10tps | 5    | 45   | 10.2            | 0.99            | 0.98            | 0.99            | 10.0             |
++-------------------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+
+2026.04.04-12:28:02.901 info  [caliper] [round-orchestrator] 	Finished round 4 (RegisterDevice-5workers-10tps) in 5.004 seconds
+2026.04.04-12:28:02.901 info  [caliper] [monitor.js] 	Stopping all monitors
+2026.04.04-12:28:02.902 info  [caliper] [report-builder] 	### All test results ###
+2026.04.04-12:28:02.903 info  [caliper] [report-builder] 	
++-------------------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+| Name                          | Succ | Fail | Send Rate (TPS) | Max Latency (s) | Min Latency (s) | Avg Latency (s) | Throughput (TPS) |
+|-------------------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| RegisterDevice-serial-1w      | 10   | 90   | 5.1             | 1.90            | 1.88            | 1.89            | 5.0              |
+|-------------------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| RegisterDevice-serial-10tps   | 10   | 90   | 10.1            | 0.98            | 0.97            | 0.98            | 10.0             |
+|-------------------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| RegisterDevice-serial-20tps   | 10   | 90   | 20.2            | 0.54            | 0.52            | 0.53            | 19.8             |
+|-------------------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| RegisterDevice-5workers-10tps | 5    | 45   | 10.2            | 0.99            | 0.98            | 0.99            | 10.0             |
++-------------------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+
+2026.04.04-12:28:02.917 info  [caliper] [report-builder] 	Generated report with path /root/hlf-go/repo/testing/caliper-workspace/report.html
+2026.04.04-12:28:02.918 info  [caliper] [monitor.js] 	Stopping all monitors
+2026.04.04-12:28:02.918 info  [caliper] [worker-orchestrator] 	Sending exit message to connected workers
+2026.04.04-12:28:02.918 info  [caliper] [round-orchestrator] 	Benchmark finished in 79.178 seconds. Total rounds: 4. Successful rounds: 4. Failed rounds: 0.
+2026.04.04-12:28:02.919 info  [caliper] [caliper-engine] 	Skipping end command due to benchmark flow conditioning
+2026.04.04-12:28:02.919 info  [caliper] [cli-launch-manager] 	Benchmark successfully finished!
+2026.04.04-12:28:02.919 info  [caliper] [worker-message-handler] 	Worker#0 is exiting

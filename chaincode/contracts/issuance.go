@@ -100,12 +100,11 @@ func (c *IssuanceContract) CreateElectricityGO(ctx contractapi.TransactionContex
 		return fmt.Errorf("production method mismatch: expected %s, got %s", technologyType, input.ElectricityProductionMethod)
 	}
 
-	// Bug fix #1, #2: persistent on-chain counter
-	nextID, err := assets.GetNextID(ctx, assets.CounterKeyEGO)
+	// ADR-001: transaction-ID-derived deterministic ID (no shared counter)
+	eGOID, err := assets.GenerateID(ctx, assets.PrefixEGO, 0)
 	if err != nil {
-		return fmt.Errorf("error getting next eGO ID: %v", err)
+		return fmt.Errorf("error generating eGO ID: %v", err)
 	}
-	eGOID := "eGO" + strconv.Itoa(nextID)
 
 	creationTime, err := util.GetTimestamp(ctx)
 	if err != nil {
@@ -204,11 +203,11 @@ func (c *IssuanceContract) CreateHydrogenGO(ctx contractapi.TransactionContextIn
 		return fmt.Errorf("GO rejected — output rate is suspiciously high")
 	}
 
-	nextID, err := assets.GetNextID(ctx, assets.CounterKeyHGO)
+	// ADR-001: transaction-ID-derived deterministic ID (no shared counter)
+	hGOID, err := assets.GenerateID(ctx, assets.PrefixHGO, 0)
 	if err != nil {
-		return fmt.Errorf("error getting next hGO ID: %v", err)
+		return fmt.Errorf("error generating hGO ID: %v", err)
 	}
-	hGOID := "hGO" + strconv.Itoa(nextID)
 
 	creationTime, err := util.GetTimestamp(ctx)
 	if err != nil {

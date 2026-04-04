@@ -15,8 +15,8 @@ services:
       - ORDERER_GENERAL_LISTENPORT=7050
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
     volumes:
-      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/msp:/var/hyperledger/orderer/msp
-      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/tls:/var/hyperledger/orderer/tls
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/msp:/crypto/orderer/msp
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/tls:/crypto/orderer/tls
       - orderer1.go-platform.com:/var/hyperledger/production/orderer
     ports:
       - 7050:7050
@@ -33,8 +33,8 @@ services:
       - ORDERER_GENERAL_LISTENPORT=8050
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
     volumes:
-      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer2.go-platform.com/msp:/var/hyperledger/orderer/msp
-      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer2.go-platform.com/tls:/var/hyperledger/orderer/tls
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer2.go-platform.com/msp:/crypto/orderer/msp
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer2.go-platform.com/tls:/crypto/orderer/tls
       - orderer2.go-platform.com:/var/hyperledger/production/orderer
     ports:
       - 8050:8050
@@ -51,8 +51,8 @@ services:
       - ORDERER_GENERAL_LISTENPORT=9050
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
     volumes:
-      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer3.go-platform.com/msp:/var/hyperledger/orderer/msp
-      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer3.go-platform.com/tls:/var/hyperledger/orderer/tls
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer3.go-platform.com/msp:/crypto/orderer/msp
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer3.go-platform.com/tls:/crypto/orderer/tls
       - orderer3.go-platform.com:/var/hyperledger/production/orderer
     ports:
       - 9050:9050
@@ -69,8 +69,8 @@ services:
       - ORDERER_GENERAL_LISTENPORT=10050
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
     volumes:
-      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer4.go-platform.com/msp:/var/hyperledger/orderer/msp
-      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer4.go-platform.com/tls:/var/hyperledger/orderer/tls
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer4.go-platform.com/msp:/crypto/orderer/msp
+      - ../organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer4.go-platform.com/tls:/crypto/orderer/tls
       - orderer4.go-platform.com:/var/hyperledger/production/orderer
     ports:
       - 10050:10050

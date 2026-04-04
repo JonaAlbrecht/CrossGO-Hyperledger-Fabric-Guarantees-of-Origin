@@ -1,0 +1,41 @@
+name: "GO Platform - Buyer1"
+version: "1.0.0"
+client:
+  organization: buyer1
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+
+channels:
+  goplatformchannel:
+    orderers:
+      - orderer1.go-platform.com
+    peers:
+      peer0.buyer1.go-platform.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+organizations:
+  buyer1:
+    mspid: buyer1MSP
+    peers:
+      - peer0.buyer1.go-platform.com
+
+orderers:
+  orderer1.go-platform.com:
+    url: grpcs://localhost:7050
+    grpcOptions:
+      ssl-target-name-override: localhost
+    tlsCACerts:
+      path: '../../network/organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/tls/ca.crt'
+
+peers:
+  peer0.buyer1.go-platform.com:
+    url: grpcs://localhost:13051
+    grpcOptions:
+      ssl-target-name-override: peer0.buyer1.go-platform.com
+    tlsCACerts:
+      path: '../../network/organizations/peerOrganizations/buyer1.go-platform.com/peers/peer0.buyer1.go-platform.com/tls/ca.crt'

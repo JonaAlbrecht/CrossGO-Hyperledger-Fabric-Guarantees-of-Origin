@@ -202,6 +202,7 @@ func (c *ConversionContract) IssuehGO(ctx contractapi.TransactionContextInterfac
 	// Build the hydrogen GO incrementally
 	var hGOPrivate assets.GreenHydrogenGOPrivateDetails
 	var toDelete []string
+	suffixCounter := 0
 
 	// Bug fix #3: track accumulated hydrogen emissions separately
 	var accumulatedHEmissions float64
@@ -251,12 +252,12 @@ func (c *ConversionContract) IssuehGO(ctx contractapi.TransactionContextInterfac
 
 			toDelete = append(toDelete, inputGO.AssetID)
 
-			// Create consumption declaration for this fully consumed eGO
-			consumptionID, err := assets.GetNextID(ctx, assets.CounterKeyEConsumption)
+			// ADR-001: transaction-ID-derived deterministic ID
+			consumptionKey, err := assets.GenerateID(ctx, assets.PrefixEConsumption, suffixCounter)
 			if err != nil {
-				return fmt.Errorf("error getting consumption ID: %v", err)
+				return fmt.Errorf("error generating consumption ID: %v", err)
 			}
-			consumptionKey := "eCon" + strconv.Itoa(consumptionID)
+			suffixCounter++
 			declaration := assets.ConsumptionDeclarationElectricity{
 				Consumptionkey:              consumptionKey,
 				CancelledGOID:               inputGO.AssetID,
@@ -291,11 +292,12 @@ func (c *ConversionContract) IssuehGO(ctx contractapi.TransactionContextInterfac
 			// If there's a remainder, create a new eGO for it
 			remainderMWh := inputGO.AmountMWh - neededMWh
 			if remainderMWh > 0.0001 { // floating point tolerance
-				remainderNextID, err := assets.GetNextID(ctx, assets.CounterKeyEGO)
+				// ADR-001: transaction-ID-derived deterministic ID for remainder
+				remainderEGOID, err := assets.GenerateID(ctx, assets.PrefixEGO, suffixCounter)
 				if err != nil {
-					return fmt.Errorf("error getting remainder eGO ID: %v", err)
+					return fmt.Errorf("error generating remainder eGO ID: %v", err)
 				}
-				remainderEGOID := "eGO" + strconv.Itoa(remainderNextID)
+				suffixCounter++
 				remainderPub := &assets.ElectricityGO{
 					AssetID:          remainderEGOID,
 					CreationDateTime: inputGO.CreationDateTime,
@@ -319,12 +321,12 @@ func (c *ConversionContract) IssuehGO(ctx contractapi.TransactionContextInterfac
 			// Delete original eGO
 			toDelete = append(toDelete, inputGO.AssetID)
 
-			// Consumption declaration for the consumed portion
-			consumptionID, err := assets.GetNextID(ctx, assets.CounterKeyEConsumption)
+			// ADR-001: transaction-ID-derived deterministic ID
+			consumptionKey, err := assets.GenerateID(ctx, assets.PrefixEConsumption, suffixCounter)
 			if err != nil {
-				return fmt.Errorf("error getting consumption ID: %v", err)
+				return fmt.Errorf("error generating consumption ID: %v", err)
 			}
-			consumptionKey := "eCon" + strconv.Itoa(consumptionID)
+			suffixCounter++
 			declaration := assets.ConsumptionDeclarationElectricity{
 				Consumptionkey:              consumptionKey,
 				CancelledGOID:               inputGO.AssetID,
@@ -350,12 +352,11 @@ func (c *ConversionContract) IssuehGO(ctx contractapi.TransactionContextInterfac
 		}
 	}
 
-	// Create the hydrogen GO
-	nextHGOID, err := assets.GetNextID(ctx, assets.CounterKeyHGO)
+	// ADR-001: transaction-ID-derived deterministic ID for the hydrogen GO
+	hGOID, err := assets.GenerateID(ctx, assets.PrefixHGO, suffixCounter)
 	if err != nil {
-		return fmt.Errorf("error getting next hGO ID: %v", err)
+		return fmt.Errorf("error generating hGO ID: %v", err)
 	}
-	hGOID := "hGO" + strconv.Itoa(nextHGOID)
 
 	// Bug fix #3: use accumulated emissions, not the remaining backlog emissions
 	hGOPrivate.EmissionsHydrogen = accumulatedHEmissions

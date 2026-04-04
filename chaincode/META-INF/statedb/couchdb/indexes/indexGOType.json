@@ -1,0 +1,8 @@
+{
+  "index": {
+    "fields": ["GOType", "CreationDateTime"]
+  },
+  "ddoc": "indexGOTypeDoc",
+  "name": "indexGOType",
+  "type": "json"
+}

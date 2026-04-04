@@ -12,18 +12,22 @@ OrdererOrgs:
         SANS:
           - localhost
           - 127.0.0.1
+          - orderer1.go-platform.com
       - Hostname: orderer2
         SANS:
           - localhost
           - 127.0.0.1
+          - orderer2.go-platform.com
       - Hostname: orderer3
         SANS:
           - localhost
           - 127.0.0.1
+          - orderer3.go-platform.com
       - Hostname: orderer4
         SANS:
           - localhost
           - 127.0.0.1
+          - orderer4.go-platform.com
 
 PeerOrgs:
   - Name: issuer1

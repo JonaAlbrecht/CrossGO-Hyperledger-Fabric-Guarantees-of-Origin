@@ -76,12 +76,11 @@ func SplitElectricityGO(
 		DeviceID:                    original.DeviceID,
 	}
 
-	// Get a new ID for the remainder
-	nextID, err := assets.GetNextID(ctx, assets.CounterKeyEGO)
+	// ADR-001: transaction-ID-derived deterministic ID (no shared counter)
+	remainderID, err := assets.GenerateID(ctx, assets.PrefixEGO, 0)
 	if err != nil {
-		return nil, nil, nil, fmt.Errorf("error getting new eGO ID for remainder: %v", err)
+		return nil, nil, nil, fmt.Errorf("error generating new eGO ID for remainder: %v", err)
 	}
-	remainderID := fmt.Sprintf("eGO%d", nextID)
 
 	remainderPublic = &assets.ElectricityGO{
 		AssetID:          remainderID,
@@ -150,11 +149,11 @@ func SplitHydrogenGO(
 		DeviceID:                    original.DeviceID,
 	}
 
-	nextID, err := assets.GetNextID(ctx, assets.CounterKeyHGO)
+	// ADR-001: transaction-ID-derived deterministic ID (no shared counter)
+	remainderID, err := assets.GenerateID(ctx, assets.PrefixHGO, 0)
 	if err != nil {
-		return nil, nil, nil, fmt.Errorf("error getting new hGO ID for remainder: %v", err)
+		return nil, nil, nil, fmt.Errorf("error generating new hGO ID for remainder: %v", err)
 	}
-	remainderID := fmt.Sprintf("hGO%d", nextID)
 
 	remainderPublic = &assets.GreenHydrogenGO{
 		AssetID:          remainderID,

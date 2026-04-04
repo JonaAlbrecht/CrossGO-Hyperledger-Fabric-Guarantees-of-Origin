@@ -1,0 +1,190 @@
+test:
+  workers:
+    type: local
+    number: 10
+  rounds:
+    # ============================================================
+    # POINT-READ SCALABILITY (GetDevice) — push to throughput ceiling
+    # ============================================================
+
+    - label: GetDevice-100tps
+      description: Point query at 100 TPS
+      txNumber: 500
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 100
+      workload:
+        module: workload/getDevice.js
+        arguments:
+          maxDeviceId: 26
+
+    - label: GetDevice-250tps
+      description: Point query at 250 TPS
+      txNumber: 1250
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 250
+      workload:
+        module: workload/getDevice.js
+        arguments:
+          maxDeviceId: 26
+
+    - label: GetDevice-500tps
+      description: Point query at 500 TPS
+      txNumber: 2500
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 500
+      workload:
+        module: workload/getDevice.js
+        arguments:
+          maxDeviceId: 26
+
+    - label: GetDevice-750tps
+      description: Point query at 750 TPS
+      txNumber: 3750
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 750
+      workload:
+        module: workload/getDevice.js
+        arguments:
+          maxDeviceId: 26
+
+    - label: GetDevice-1000tps
+      description: Point query at 1000 TPS
+      txNumber: 5000
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1000
+      workload:
+        module: workload/getDevice.js
+        arguments:
+          maxDeviceId: 26
+
+    - label: GetDevice-1500tps
+      description: Point query at 1500 TPS — find the ceiling
+      txNumber: 7500
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1500
+      workload:
+        module: workload/getDevice.js
+        arguments:
+          maxDeviceId: 26
+
+    - label: GetDevice-2000tps
+      description: Point query at 2000 TPS — stress test
+      txNumber: 10000
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2000
+      workload:
+        module: workload/getDevice.js
+        arguments:
+          maxDeviceId: 26
+
+    # ============================================================
+    # RANGE-QUERY SCALABILITY (ListDevices) — heavier per tx
+    # ============================================================
+
+    - label: ListDevices-100tps
+      description: Range query all devices at 100 TPS
+      txNumber: 500
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 100
+      workload:
+        module: workload/listDevices.js
+
+    - label: ListDevices-250tps
+      description: Range query at 250 TPS
+      txNumber: 1250
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 250
+      workload:
+        module: workload/listDevices.js
+
+    - label: ListDevices-500tps
+      description: Range query at 500 TPS
+      txNumber: 2500
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 500
+      workload:
+        module: workload/listDevices.js
+
+    - label: ListDevices-750tps
+      description: Range query at 750 TPS — ceiling from run4
+      txNumber: 3750
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 750
+      workload:
+        module: workload/listDevices.js
+
+    - label: ListDevices-1000tps
+      description: Range query at 1000 TPS — beyond ceiling
+      txNumber: 5000
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1000
+      workload:
+        module: workload/listDevices.js
+
+    # ============================================================
+    # GetCurrentEGOsList SCALABILITY (empty collection)
+    # ============================================================
+
+    - label: GetCurrentEGOsList-250tps
+      description: Range query eGOs at 250 TPS
+      txNumber: 1250
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 250
+      workload:
+        module: workload/getCurrentEGOsList.js
+
+    - label: GetCurrentEGOsList-500tps
+      description: Range query eGOs at 500 TPS
+      txNumber: 2500
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 500
+      workload:
+        module: workload/getCurrentEGOsList.js
+
+    - label: GetCurrentEGOsList-1000tps
+      description: Range query eGOs at 1000 TPS
+      txNumber: 5000
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1000
+      workload:
+        module: workload/getCurrentEGOsList.js
+
+    - label: GetCurrentEGOsList-1500tps
+      description: Range query eGOs at 1500 TPS
+      txNumber: 7500
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1500
+      workload:
+        module: workload/getCurrentEGOsList.js

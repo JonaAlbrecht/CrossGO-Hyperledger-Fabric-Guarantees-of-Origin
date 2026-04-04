@@ -1,6 +1,7 @@
-# GO Platform v2 — Architecture Diagrams
+# GO Platform v3 — Architecture Diagrams
 
-> Auto-generated architecture diagrams for the Hyperledger Fabric Guarantee of Origin platform.
+> Architecture diagrams for the Hyperledger Fabric Guarantee of Origin platform.
+> Updated for v3.0 (hash-based IDs, CouchDB indexes, reduced BatchTimeout).
 > Diagrams use [Mermaid](https://mermaid.js.org/) syntax and render natively on GitHub.
 
 ---
@@ -134,7 +135,7 @@ graph LR
         HGO["GreenHydrogenGO<br/>GreenHydrogenGOPrivateDetails<br/>GreenHydrogenGOBacklog"]
         CERT["CancellationStatementE/H<br/>ConsumptionDeclarationE/H"]
         DEV["Device<br/>SmartMeter │ OutputMeter"]
-        CTR["Counter<br/>GetNextID()"]
+        CTR["Counter<br/>GenerateID() — SHA-256 hash"]
     end
 
     subgraph access["access/"]
@@ -312,35 +313,71 @@ graph TB
 ```mermaid
 graph LR
     subgraph WorldState["World State (Public Ledger)"]
-        WS1["eGO_1 → {AssetID, CreationDateTime, GOType}"]
-        WS2["hGO_1 → {AssetID, CreationDateTime, GOType}"]
-        WS3["device_1 → {DeviceID, Type, OwnerOrg, Status}"]
-        WS4["eCancellation_1 → {statement data}"]
-        WS5["counter_eGO → 42"]
-        WS6["orgRole_issuer1MSP → issuer"]
+        WS1["eGO_a1b2c3d4... → {AssetID, CreationDateTime, GOType}"]
+        WS2["hGO_f9e8d7c6... → {AssetID, CreationDateTime, GOType}"]
+        WS3["device_000499e6... → {DeviceID, Type, OwnerOrg, Status}"]
+        WS4["eCancel_11223344... → {statement data}"]
+        WS5["orgRole_issuer1MSP → issuer"]
     end
 
     subgraph PDC1["privateDetails-producer1MSP"]
-        PD1["eGO_1 → {OwnerID, AmountMWh,<br/>Emissions, ProductionMethod, DeviceID}"]
-        PD2["hGO_1 → {OwnerID, Kilos,<br/>Emissions, InputData, DeviceID}"]
+        PD1["eGO_a1b2c3d4... → {OwnerID, AmountMWh,<br/>Emissions, ProductionMethod, DeviceID}"]
+        PD2["hGO_f9e8d7c6... → {OwnerID, Kilos,<br/>Emissions, InputData, DeviceID}"]
     end
 
     subgraph PDC2["privateDetails-consumer1MSP"]
-        PD3["eGO_2 → {OwnerID, AmountMWh, ...}"]
+        PD3["eGO_b3c4d5e6... → {OwnerID, AmountMWh, ...}"]
     end
 
     subgraph PDC3["publicGOcollection"]
         PD4["Shared metadata accessible<br/>to all channel members"]
     end
 
+    subgraph Indexes["CouchDB Composite Indexes"]
+        IDX1["indexOwner: [OwnerID, GOType]"]
+        IDX2["indexGOType: [GOType, CreationDateTime]"]
+    end
+
     WS1 -.->|private details in| PDC1
     WS2 -.->|private details in| PDC1
+    PDC1 -.->|accelerated by| Indexes
 
     classDef public fill:#dcfce7,stroke:#16a34a
     classDef private fill:#fce7f3,stroke:#db2777
     classDef shared fill:#dbeafe,stroke:#2563eb
+    classDef index fill:#fef3c7,stroke:#d97706
 
-    class WS1,WS2,WS3,WS4,WS5,WS6 public
+    class WS1,WS2,WS3,WS4,WS5 public
     class PD1,PD2,PD3 private
     class PD4 shared
+    class IDX1,IDX2 index
+```
+
+---
+
+## 6. v3.0 ID Generation Flow
+
+Shows how v3.0 generates contention-free IDs from the transaction ID, eliminating the MVCC_READ_CONFLICT bottleneck.
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Peer as Endorsing Peer
+    participant CC as Chaincode
+    participant Ledger as World State
+
+    Note over Client,Ledger: v2.0 — Sequential Counter (MVCC_READ_CONFLICT)
+    Client->>Peer: Submit RegisterDevice
+    Peer->>CC: Invoke
+    CC->>Ledger: GetState("counter_device") → 42
+    CC->>Ledger: PutState("counter_device", 43)
+    CC->>Ledger: PutState("device43", {...})
+    Note right of Ledger: ❌ If another tx in same block<br/>also read counter=42 → MVCC conflict
+
+    Note over Client,Ledger: v3.0 — Hash-Based ID (No shared state)
+    Client->>Peer: Submit RegisterDevice
+    Peer->>CC: Invoke (txID = abc123...)
+    CC->>CC: SHA-256("abc123..._0")[:8] → "a1b2c3d4e5f6a7b8"
+    CC->>Ledger: PutState("device_a1b2c3d4e5f6a7b8", {...})
+    Note right of Ledger: ✅ No shared state read —<br/>parallel writes succeed
 ```

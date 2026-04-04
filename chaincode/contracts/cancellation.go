@@ -5,7 +5,6 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/JonaAlbrecht/HLF-GOconversionissuance-JA-MA/chaincode/access"
@@ -65,6 +64,7 @@ func (c *CancellationContract) ClaimRenewableAttributesElectricity(ctx contracta
 	timecheck := now - ExpiryPeriod
 
 	var claimedAmount float64
+	suffixCounter := 0
 
 	for i := 0; claimedAmount < cancelAmount; i++ {
 		if i >= len(eGOList) {
@@ -88,11 +88,12 @@ func (c *CancellationContract) ClaimRenewableAttributesElectricity(ctx contracta
 			return fmt.Errorf("eGO %s is expired", eGOPrivate.AssetID)
 		}
 
-		cancelKeyID, err := assets.GetNextID(ctx, assets.CounterKeyECancellation)
+		// ADR-001: transaction-ID-derived deterministic ID
+		eCancelKey, err := assets.GenerateID(ctx, assets.PrefixECancellation, suffixCounter)
 		if err != nil {
-			return fmt.Errorf("error getting cancellation key: %v", err)
+			return fmt.Errorf("error generating cancellation key: %v", err)
 		}
-		eCancelKey := "eCancel" + strconv.Itoa(cancelKeyID)
+		suffixCounter++
 
 		claimedAmount += eGOPrivate.AmountMWh
 
@@ -143,12 +144,12 @@ func (c *CancellationContract) ClaimRenewableAttributesElectricity(ctx contracta
 				return fmt.Errorf("failed to marshal cancellation statement: %v", err)
 			}
 
-			// Create remainder eGO
-			remainderNextID, err := assets.GetNextID(ctx, assets.CounterKeyEGO)
+			// ADR-001: transaction-ID-derived deterministic ID for remainder
+			remainderID, err := assets.GenerateID(ctx, assets.PrefixEGO, suffixCounter)
 			if err != nil {
-				return fmt.Errorf("error getting remainder eGO ID: %v", err)
+				return fmt.Errorf("error generating remainder eGO ID: %v", err)
 			}
-			remainderID := "eGO" + strconv.Itoa(remainderNextID)
+			suffixCounter++
 
 			// Bug fix #8: preserve original creation timestamp on remainder
 			remainderPub := &assets.ElectricityGO{
@@ -226,6 +227,7 @@ func (c *CancellationContract) ClaimRenewableAttributesHydrogen(ctx contractapi.
 	}
 
 	var claimedKilos float64
+	suffixCounter := 0
 
 	for i := 0; claimedKilos < cancelAmount; i++ {
 		if i >= len(hGOList) {
@@ -245,11 +247,12 @@ func (c *CancellationContract) ClaimRenewableAttributesHydrogen(ctx contractapi.
 			return fmt.Errorf("failed to unmarshal hGO: %v", err)
 		}
 
-		cancelKeyID, err := assets.GetNextID(ctx, assets.CounterKeyHCancellation)
+		// ADR-001: transaction-ID-derived deterministic ID
+		hCancelKey, err := assets.GenerateID(ctx, assets.PrefixHCancellation, suffixCounter)
 		if err != nil {
-			return fmt.Errorf("error getting cancellation key: %v", err)
+			return fmt.Errorf("error generating cancellation key: %v", err)
 		}
-		hCancelKey := "hCancel" + strconv.Itoa(cancelKeyID)
+		suffixCounter++
 
 		claimedKilos += hGOPrivate.Kilosproduced
 
@@ -279,12 +282,12 @@ func (c *CancellationContract) ClaimRenewableAttributesHydrogen(ctx contractapi.
 				return fmt.Errorf("failed to write hGO cancellation: %v", err)
 			}
 
-			// Bug fix #10: ConsumptionDeclarationHydrogen.ConsumptionDateTime is int64
-			consumptionID, err := assets.GetNextID(ctx, assets.CounterKeyHConsumption)
+			// ADR-001: transaction-ID-derived deterministic ID
+			hConsumptionKey, err := assets.GenerateID(ctx, assets.PrefixHConsumption, suffixCounter)
 			if err != nil {
-				return fmt.Errorf("error getting consumption ID: %v", err)
+				return fmt.Errorf("error generating consumption ID: %v", err)
 			}
-			hConsumptionKey := "hCon" + strconv.Itoa(consumptionID)
+			suffixCounter++
 			consumption := assets.ConsumptionDeclarationHydrogen{
 				Consumptionkey:           hConsumptionKey,
 				CancelledGOID:            hGOPrivate.AssetID,
@@ -329,12 +332,12 @@ func (c *CancellationContract) ClaimRenewableAttributesHydrogen(ctx contractapi.
 				return fmt.Errorf("failed to marshal hGO cancellation: %v", err)
 			}
 
-			// Create remainder hGO
-			remainderNextID, err := assets.GetNextID(ctx, assets.CounterKeyHGO)
+			// ADR-001: transaction-ID-derived deterministic ID for remainder
+			remainderID, err := assets.GenerateID(ctx, assets.PrefixHGO, suffixCounter)
 			if err != nil {
-				return fmt.Errorf("error getting remainder hGO ID: %v", err)
+				return fmt.Errorf("error generating remainder hGO ID: %v", err)
 			}
-			remainderID := "hGO" + strconv.Itoa(remainderNextID)
+			suffixCounter++
 
 			// Bug fix #9: deep-copy for remainder too
 			remainderDeclarations := make([]string, len(hGOPrivate.ConsumptionDeclarations))

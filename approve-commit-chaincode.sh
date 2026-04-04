@@ -1,24 +1,20 @@
 #!/bin/bash
-# deploy-chaincode.sh — Package, install, approve, and commit the GO lifecycle chaincode
-# Usage: ./deploy-chaincode.sh
+# approve-commit-chaincode.sh — Approve and commit already-installed chaincode
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-NETWORK_DIR="$(dirname "$SCRIPT_DIR")"
-REPO_DIR="$(dirname "$NETWORK_DIR")"
-CHANNEL_NAME="goplatformchannel"
-CHAINCODE_NAME="golifecycle"
-CHAINCODE_VERSION="2.0"
+REPO_DIR=/root/hlf-go/repo
+NETWORK_DIR=$REPO_DIR/network
+CHANNEL_NAME=goplatformchannel
+CHAINCODE_NAME=golifecycle
+CHAINCODE_VERSION=2.0
 CHAINCODE_SEQUENCE=1
-CHAINCODE_PATH="$REPO_DIR/chaincode"
-COLLECTIONS_CONFIG="$REPO_DIR/collections/collection-config.json"
+COLLECTIONS_CONFIG=$REPO_DIR/collections/collection-config.json
 
-export PATH="${REPO_DIR}/fabric-bin/bin:$PATH"
-export FABRIC_CFG_PATH="$NETWORK_DIR"
+export PATH=$REPO_DIR/fabric-bin/bin:$PATH
+export FABRIC_CFG_PATH=$NETWORK_DIR
 
-ORDERER_CA="$NETWORK_DIR/organizations/ordererOrganizations/orderer.go-platform.com/msp/tlscacerts/tlsca.orderer.go-platform.com-cert.pem"
+ORDERER_CA=$NETWORK_DIR/organizations/ordererOrganizations/orderer.go-platform.com/msp/tlscacerts/tlsca.orderer.go-platform.com-cert.pem
 
-# Org definitions: name mspID peerPort
 ORGS=(
   "issuer1:issuer1MSP:7051"
   "eproducer1:eproducer1MSP:9051"
@@ -35,31 +31,12 @@ set_peer_env() {
   export CORE_PEER_ADDRESS="localhost:${port}"
 }
 
-echo "====== Deploying Chaincode: $CHAINCODE_NAME v$CHAINCODE_VERSION ======"
-
-# 1. Package chaincode
-echo "--- Packaging Chaincode ---"
-set_peer_env issuer1 issuer1MSP 7051
-peer lifecycle chaincode package "${CHAINCODE_NAME}.tar.gz" \
-  --path "$CHAINCODE_PATH" \
-  --lang golang \
-  --label "${CHAINCODE_NAME}_${CHAINCODE_VERSION}"
-echo "  Packaged: ${CHAINCODE_NAME}.tar.gz"
-
-# 2. Install on each org's peer
-for entry in "${ORGS[@]}"; do
-  IFS=':' read -r org msp port <<< "$entry"
-  echo "--- Installing on ${org} ---"
-  set_peer_env "$org" "$msp" "$port"
-  peer lifecycle chaincode install "${CHAINCODE_NAME}.tar.gz"
-done
-
-# 3. Get package ID
+# Get package ID
 set_peer_env issuer1 issuer1MSP 7051
 PACKAGE_ID=$(peer lifecycle chaincode queryinstalled --output json | jq -r ".installed_chaincodes[] | select(.label==\"${CHAINCODE_NAME}_${CHAINCODE_VERSION}\") | .package_id")
 echo "Package ID: $PACKAGE_ID"
 
-# 4. Approve for each org
+# Approve for each org
 for entry in "${ORGS[@]}"; do
   IFS=':' read -r org msp port <<< "$entry"
   echo "--- Approving for ${org} ---"
@@ -76,7 +53,7 @@ for entry in "${ORGS[@]}"; do
     --tls --cafile "$ORDERER_CA"
 done
 
-# 5. Check commit readiness
+# Check commit readiness
 echo "--- Checking Commit Readiness ---"
 set_peer_env issuer1 issuer1MSP 7051
 peer lifecycle chaincode checkcommitreadiness \
@@ -87,7 +64,7 @@ peer lifecycle chaincode checkcommitreadiness \
   --collections-config "$COLLECTIONS_CONFIG" \
   --output json
 
-# 6. Build peer address and TLS root cert args
+# Build peer connection args
 PEER_CONN_ARGS=""
 for entry in "${ORGS[@]}"; do
   IFS=':' read -r org msp port <<< "$entry"
@@ -95,7 +72,7 @@ for entry in "${ORGS[@]}"; do
   PEER_CONN_ARGS="$PEER_CONN_ARGS --tlsRootCertFiles $NETWORK_DIR/organizations/peerOrganizations/${org}.go-platform.com/peers/peer0.${org}.go-platform.com/tls/ca.crt"
 done
 
-# 7. Commit
+# Commit
 echo "--- Committing Chaincode ---"
 set_peer_env issuer1 issuer1MSP 7051
 peer lifecycle chaincode commit \
@@ -109,19 +86,19 @@ peer lifecycle chaincode commit \
   --tls --cafile "$ORDERER_CA" \
   $PEER_CONN_ARGS
 
-# 8. Verify
+# Verify
 echo "--- Verifying ---"
 peer lifecycle chaincode querycommitted --channelID "$CHANNEL_NAME" --name "$CHAINCODE_NAME" --output json
 
-# 9. Initialize ledger — register org roles
-echo "--- Initializing Ledger (registering org roles) ---"
+# Initialize ledger
+echo "--- Initializing Ledger ---"
 peer chaincode invoke \
   -o localhost:7050 \
   --ordererTLSHostnameOverride localhost \
   -C "$CHANNEL_NAME" -n "$CHAINCODE_NAME" \
   --tls --cafile "$ORDERER_CA" \
   $PEER_CONN_ARGS \
-  -c '{"function":"device:InitLedger","Args":["issuer1MSP"]}'
+  -c '{"function":"DeviceContract:InitLedger","Args":["issuer1MSP"]}'
 sleep 2
 
 for role_entry in "eproducer1MSP:producer" "hproducer1MSP:producer" "buyer1MSP:consumer"; do
@@ -132,16 +109,9 @@ for role_entry in "eproducer1MSP:producer" "hproducer1MSP:producer" "buyer1MSP:c
     -C "$CHANNEL_NAME" -n "$CHAINCODE_NAME" \
     --tls --cafile "$ORDERER_CA" \
     $PEER_CONN_ARGS \
-    -c "{\"function\":\"device:RegisterOrgRole\",\"Args\":[\"${rmsp}\",\"${rrole}\"]}"
+    -c "{\"function\":\"DeviceContract:RegisterOrgRole\",\"Args\":[\"${rmsp}\",\"${rrole}\"]}"
   sleep 1
 done
 
 echo ""
 echo "====== Chaincode Deployed & Initialized ======"
-echo "Org roles registered:"
-echo "  issuer1MSP     → issuer"
-echo "  eproducer1MSP  → producer"
-echo "  hproducer1MSP  → producer"
-echo "  buyer1MSP      → consumer"
-echo ""
-echo "Test: peer chaincode query -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{\"function\":\"device:ListDevices\",\"Args\":[]}'"

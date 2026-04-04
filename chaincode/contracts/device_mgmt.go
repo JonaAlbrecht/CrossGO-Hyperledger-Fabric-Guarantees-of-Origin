@@ -3,7 +3,6 @@ package contracts
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 
 	"github.com/JonaAlbrecht/HLF-GOconversionissuance-JA-MA/chaincode/access"
 	"github.com/JonaAlbrecht/HLF-GOconversionissuance-JA-MA/chaincode/assets"
@@ -53,11 +52,10 @@ func (c *DeviceContract) RegisterDevice(ctx contractapi.TransactionContextInterf
 		return nil, err
 	}
 
-	nextID, err := assets.GetNextID(ctx, assets.CounterKeyDevice)
+	deviceID, err := assets.GenerateID(ctx, assets.PrefixDevice, 0)
 	if err != nil {
-		return nil, fmt.Errorf("error getting next device ID: %v", err)
+		return nil, fmt.Errorf("error generating device ID: %v", err)
 	}
-	deviceID := "device" + strconv.Itoa(nextID)
 
 	now, err := util.GetTimestamp(ctx)
 	if err != nil {
@@ -104,8 +102,9 @@ func (c *DeviceContract) GetDevice(ctx contractapi.TransactionContextInterface, 
 }
 
 // ListDevices returns all registered devices.
+// Range covers both legacy IDs (device1, device2, ...) and new IDs (device_<hash>).
 func (c *DeviceContract) ListDevices(ctx contractapi.TransactionContextInterface) ([]*assets.Device, error) {
-	resultsIterator, err := ctx.GetStub().GetStateByRange("device0", "device999999999")
+	resultsIterator, err := ctx.GetStub().GetStateByRange("device", "device~")
 	if err != nil {
 		return nil, fmt.Errorf("error querying devices: %v", err)
 	}
@@ -195,5 +194,13 @@ func (c *DeviceContract) RegisterOrgRole(ctx contractapi.TransactionContextInter
 // InitLedger bootstraps the ledger with the initial issuer organization.
 // This should be called once during chaincode initialization.
 func (c *DeviceContract) InitLedger(ctx contractapi.TransactionContextInterface, issuerMSP string) error {
+	// ADR-004: callers can only register their own org as issuer
+	callerMSP, err := ctx.GetClientIdentity().GetMSPID()
+	if err != nil {
+		return fmt.Errorf("failed to get caller MSPID: %v", err)
+	}
+	if callerMSP != issuerMSP {
+		return fmt.Errorf("access denied: caller MSP %s cannot register a different org %s as issuer", callerMSP, issuerMSP)
+	}
 	return access.RegisterOrgRole(ctx, issuerMSP, access.RoleIssuer)
 }

@@ -1,4 +1,4 @@
-# Architecture Redesign: GO Lifecycle Platform v2
+# Architecture Redesign: GO Lifecycle Platform v3
 
 ## 1. Overview
 
@@ -8,7 +8,8 @@ This document describes the comprehensive architectural overhaul of the Hyperled
 - **Tiered network**: Role-based organizations (Issuer, Producer, Consumer) instead of hardcoded org names
 - **Multi-carrier**: Extensible beyond electricity/hydrogen — support any energy carrier via a common GO interface
 - **Object-oriented chaincode**: Separate asset types (Device, GO, Certificate) into dedicated files with shared base types
-- **Persistent state**: All counters and IDs derived from on-chain state, not in-memory globals
+- **Contention-free writes**: Deterministic hash-based IDs derived from transaction IDs — no shared state during ID generation (v3.0)
+- **Performance-validated**: Architecture verified by Hyperledger Caliper benchmarks; 100% write success rate at 50 TPS (v3.0)
 - **Bug-free**: Fix all 12 identified bugs from the current monolithic chaincode
 - **Full-stack**: TypeScript frontend using the Fabric Gateway client API
 
@@ -325,36 +326,31 @@ func main() {
 
 Clients invoke functions as `issuance:CreateElectricityGO`, `transfer:TransferGO`, etc.
 
-### 4.4 Persistent Counters (Bug Fix #1, #2)
+### 4.4 ID Generation (v3.0 — Hash-Based Deterministic IDs)
 
-Replace in-memory `Count` with on-chain state:
+v2.0 used on-chain sequential counters (`GetNextID`) that created a hot-key serialization bottleneck (MVCC_READ_CONFLICT). v3.0 replaced this with deterministic hash-based IDs:
 
 ```go
-// assets/counter.go
-type Counter struct{}
-
-func GetNextID(ctx contractapi.TransactionContextInterface, counterKey string) (int, error) {
-    data, err := ctx.GetStub().GetState(counterKey)
-    if err != nil {
-        return 0, fmt.Errorf("failed to read counter %s: %v", counterKey, err)
-    }
-    current := 0
-    if data != nil {
-        current, err = strconv.Atoi(string(data))
-        if err != nil {
-            return 0, fmt.Errorf("failed to parse counter: %v", err)
-        }
-    }
-    next := current + 1
-    err = ctx.GetStub().PutState(counterKey, []byte(strconv.Itoa(next)))
-    if err != nil {
-        return 0, fmt.Errorf("failed to write counter: %v", err)
-    }
-    return next, nil
+// assets/counter.go — v3.0
+func GenerateID(ctx contractapi.TransactionContextInterface, prefix string, suffix int) (string, error) {
+    txID := ctx.GetStub().GetTxID()
+    raw := txID + "_" + strconv.Itoa(suffix)
+    hash := sha256.Sum256([]byte(raw))
+    return prefix + hex.EncodeToString(hash[:8]), nil
 }
 ```
 
-Counter keys: `counter_eGO`, `counter_hGO`, `counter_eCancellation`, `counter_hCancellation`, `counter_eConsumption`, `counter_hConsumption`, `counter_device`.
+Each transaction ID is guaranteed unique by Fabric. The `suffix` parameter disambiguates multiple IDs within one transaction (e.g., cancellation creates a certificate + remainder GO). This approach:
+- **Eliminates shared state**: No `GetState`/`PutState` on a shared counter key
+- **Enables parallel writes**: Every transaction's read-write set is independent
+- **Is deterministic**: All endorsing peers compute the same ID from the same txID
+- **Is collision-resistant**: SHA-256 with 8-byte (64-bit) output gives negligible collision probability for practical volumes
+
+Prefix constants (`PrefixDevice = "device_"`, `PrefixEGO = "eGO_"`, etc.) and range-end constants (`RangeEndDevice = "device_~"`) ensure consistent key formatting and efficient range queries.
+
+The legacy `GetNextID()` function is retained but marked DEPRECATED for backward compatibility.
+
+**Impact:** Write throughput improved from 0.8 TPS to 50.5 TPS (63× improvement) with 100% success rate.
 
 ### 4.5 Role-Based Access Control
 
@@ -540,3 +536,51 @@ export async function connectGateway(orgMSP: string, certPath: string, keyPath: 
 - The new `network/` replaces `version1/setup1/` and `version1/artifacts/channel/`
 - The new `collections/` replaces `version1/artifacts/private-data-collections/`
 - All existing DOCS.md files remain in `version1/`
+
+---
+
+## 8. v3.0 Architecture Changes
+
+### 8.1 Performance Optimizations
+
+| Change | Description | File(s) |
+|--------|-------------|--------|
+| **Hash-based IDs (ADR-001)** | Replace `GetNextID()` sequential counter with `GenerateID()` using SHA-256 of transaction ID | `assets/counter.go`, all contract files |
+| **CouchDB Indexes (ADR-002)** | Composite indexes on `[OwnerID, GOType]` and `[GOType, CreationDateTime]` | `chaincode/META-INF/statedb/couchdb/indexes/` |
+| **BatchTimeout (ADR-005)** | Reduced from 2s to 500ms for lower write latency | `network/configtx.yaml` |
+
+### 8.2 Security Hardening
+
+| Change | Description | File(s) |
+|--------|-------------|--------|
+| **Secure InitLedger (ADR-004)** | Caller MSP must match the `issuerMSP` argument — prevents cross-org privilege escalation | `contracts/device_mgmt.go` |
+
+### 8.3 Data Architecture — ID Format Change
+
+```
+v2.0: eGO1, eGO2, eGO3, ...       (sequential, shared counter)
+v3.0: eGO_a1b2c3d4e5f6a7b8, ...   (hash-based, contention-free)
+```
+
+Range queries use lexicographic bounds (e.g., `"eGO"` to `"eGO~"`) that capture both formats, enabling mixed-format operation during migration.
+
+### 8.4 Block Configuration
+
+| Parameter | v2.0 | v3.0 | Rationale |
+|-----------|------|------|----------|
+| BatchTimeout | 2s | **500ms** | Reduces write latency floor by 75% |
+| MaxMessageCount | 10 | 10 | Unchanged |
+| PreferredMaxBytes | 512 KB | 512 KB | Unchanged |
+
+### 8.5 Benchmark Validation
+
+All changes validated by Hyperledger Caliper v0.6.0 on a 16-vCPU Hetzner VM:
+
+| Metric | v2.0 | v3.0 |
+|--------|------|------|
+| Write success rate | 10% | **100%** |
+| Max write throughput | 0.8 TPS | **50.5 TPS** |
+| Point read throughput | >2,000 TPS | >2,000 TPS |
+| Write latency (serial) | 2.09s | **0.10s** |
+
+Detailed results: see `testing/PERFORMANCE_REPORT.md`
