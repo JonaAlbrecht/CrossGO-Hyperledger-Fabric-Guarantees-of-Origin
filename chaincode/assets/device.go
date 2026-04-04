@@ -12,7 +12,7 @@ type Device struct {
 	RegisteredBy   string            `json:"registeredBy"`   // Issuer MSP that approved registration
 	RegisteredAt   int64             `json:"registeredAt"`
 	Attributes     map[string]string `json:"attributes"`     // maxEfficiency, emissionIntensity, technologyType, etc.
-	PublicKeyPEM   string            `json:"publicKeyPEM,omitempty"` // ADR-027 (v7.0): ECDSA P-256 public key for device-signed readings
+	PublicKeyPEM   string            `json:"publicKeyPEM,omitempty" metadata:",optional"` // ADR-027 (v7.0): ECDSA P-256 public key for device-signed readings
 }
 
 // DeviceReading represents a signed meter reading from an IoT device (ADR-027).
