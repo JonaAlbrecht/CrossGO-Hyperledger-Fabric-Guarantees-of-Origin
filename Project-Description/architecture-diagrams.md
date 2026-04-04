@@ -381,3 +381,173 @@ sequenceDiagram
     CC->>Ledger: PutState("device_a1b2c3d4e5f6a7b8", {...})
     Note right of Ledger: ✅ No shared state read —<br/>parallel writes succeed
 ```
+
+---
+
+## 7. v4.0 GO Lifecycle State Machine (ADR-007 Tombstone)
+
+Shows the lifecycle states introduced by the tombstone pattern.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Active: CreateGO / IssuehGO
+    Active --> Cancelled: ClaimRenewableAttributes
+    Active --> Transferred: TransferGO
+    Active --> Split: Split (partial cancel/transfer)
+    Split --> Active: Remainder GO (new ID)
+    Split --> Cancelled: Taken portion (cancel)
+    Split --> Transferred: Taken portion (transfer)
+
+    Cancelled --> [*]: Audit record preserved
+    Transferred --> [*]: Audit record preserved
+
+    note right of Active
+        Status = "active"
+        Visible in list queries
+    end note
+
+    note right of Cancelled
+        Status = "cancelled"
+        Hidden from list queries
+        Public state retained (tombstone)
+    end note
+
+    note right of Transferred
+        Status = "transferred"
+        Hidden from list queries
+        Public state retained (tombstone)
+    end note
+```
+
+---
+
+## 8. v4.0 Selective Disclosure (ADR-009)
+
+Shows the hash commitment scheme enabling quantity verification without collection access.
+
+```mermaid
+sequenceDiagram
+    participant Producer
+    participant Chaincode
+    participant Ledger as World State
+    participant Verifier
+
+    Note over Producer,Verifier: Issuance — Commitment Generation
+    Producer->>Chaincode: CreateElectricityGO(AmountMWh=100)
+    Chaincode->>Chaincode: salt = SHA-256(txID + "_commitment_salt")[:16]
+    Chaincode->>Chaincode: commitment = SHA-256("100" || salt)
+    Chaincode->>Ledger: PutState(eGO_xxx, {QuantityCommitment: commitment})
+    Chaincode->>Ledger: PutPrivateData(coll, eGO_xxx, {AmountMWh: 100, CommitmentSalt: salt})
+
+    Note over Producer,Verifier: Verification — Selective Disclosure
+    Producer->>Verifier: Disclose: AmountMWh=100, salt=abc123
+    Verifier->>Chaincode: VerifyQuantityCommitment(eGO_xxx, 100, "abc123")
+    Chaincode->>Ledger: GetState(eGO_xxx) → {QuantityCommitment: commitment}
+    Chaincode->>Chaincode: SHA-256("100" || "abc123") == commitment?
+    Chaincode->>Verifier: true ✅
+```
+
+---
+
+## 9. v4.0 Paginated Query Flow (ADR-006)
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Chaincode
+    participant CouchDB
+
+    Client->>Chaincode: GetCurrentEGOsListPaginated(pageSize=50, bookmark="")
+    Chaincode->>CouchDB: GetStateByRangeWithPagination("eGO", "eGO~", 50, "")
+    CouchDB-->>Chaincode: 50 records + bookmark="g1AAAABle..."
+    Chaincode->>Chaincode: Filter: Status != "cancelled" && != "transferred"
+    Chaincode-->>Client: {records: [...], bookmark: "g1AAAABle...", count: 50}
+
+    Client->>Chaincode: GetCurrentEGOsListPaginated(50, "g1AAAABle...")
+    Chaincode->>CouchDB: GetStateByRangeWithPagination("eGO", "eGO~", 50, "g1AAAABle...")
+    CouchDB-->>Chaincode: 30 records + bookmark=""
+    Chaincode-->>Client: {records: [...], bookmark: "", count: 30}
+    Note over Client: bookmark="" → no more pages
+```
+
+---
+
+## 10. v5.0 Contract Architecture (8 Namespaces)
+
+```mermaid
+graph TB
+    subgraph Chaincode["golifecycle v5.0"]
+        direction TB
+        subgraph Domain["Domain Contracts"]
+            ISS[issuance<br/>CreateElectricityGO<br/>CreateHydrogenGO]
+            TRN[transfer<br/>TransferEGO<br/>TransferEGO/HGOByAmount]
+            CNV[conversion<br/>AddHydrogenToBacklog<br/>IssuehGO]
+            CAN[cancellation<br/>ClaimRenewableAttributes<br/>VerifyCancellation]
+            BIO[biogas<br/>CreateBiogasGO<br/>CancelBiogasGO]
+        end
+
+        subgraph Infrastructure["Infrastructure Contracts"]
+            QRY[query<br/>18 functions<br/>Point reads + Paginated lists]
+            DEV[device<br/>Register/Revoke/List<br/>+Paginated]
+            ADM[admin<br/>GetVersion<br/>RegisterOrganization]
+        end
+    end
+
+    subgraph Shared["Shared Packages"]
+        ASS[assets/<br/>ElectricityGO, HydrogenGO<br/>BiogasGO, Device, Certificates]
+        ACC[access/<br/>RBAC, ABAC<br/>Collections]
+        UTL[util/<br/>Split, Validate, Events<br/>Iterator]
+    end
+
+    Domain --> ASS
+    Domain --> UTL
+    Domain --> ACC
+    Infrastructure --> ASS
+    Infrastructure --> ACC
+
+    classDef domain fill:#dbeafe,stroke:#2563eb
+    classDef infra fill:#fef3c7,stroke:#d97706
+    classDef shared fill:#f3e8ff,stroke:#7c3aed
+
+    class ISS,TRN,CNV,CAN,BIO domain
+    class QRY,DEV,ADM infra
+    class ASS,ACC,UTL shared
+```
+
+---
+
+## 11. v5.0 CQRS Event Flow (ADR-016)
+
+```mermaid
+graph LR
+    subgraph Fabric["Hyperledger Fabric"]
+        CC[Chaincode<br/>EmitLifecycleEvent]
+        BL[Block Listener<br/>Peer Event Service]
+    end
+
+    subgraph OffChain["Off-Chain Indexer"]
+        EL[Event Listener<br/>SDK EventService]
+        EP[Event Processor]
+        DB[(Read Model<br/>PostgreSQL / ES)]
+    end
+
+    subgraph Clients["Client Applications"]
+        API[REST API]
+        UI[Frontend SPA]
+    end
+
+    CC -->|SetEvent| BL
+    BL -->|gRPC stream| EL
+    EL --> EP
+    EP -->|INSERT/UPDATE| DB
+    API -->|SELECT| DB
+    UI --> API
+
+    classDef fabric fill:#bbf7d0,stroke:#15803d
+    classDef offchain fill:#fed7aa,stroke:#c2410c
+    classDef client fill:#dbeafe,stroke:#2563eb
+
+    class CC,BL fabric
+    class EL,EP,DB offchain
+    class API,UI client
+```

@@ -117,10 +117,18 @@ func (c *IssuanceContract) CreateElectricityGO(ctx contractapi.TransactionContex
 		return err
 	}
 
+	// ADR-009: Generate quantity commitment for selective disclosure
+	commitment, salt, err := assets.GenerateCommitment(ctx, amountMWh)
+	if err != nil {
+		return fmt.Errorf("error generating quantity commitment: %v", err)
+	}
+
 	pub := &assets.ElectricityGO{
-		AssetID:          eGOID,
-		CreationDateTime: creationTime,
-		GOType:           "Electricity",
+		AssetID:            eGOID,
+		CreationDateTime:   creationTime,
+		GOType:             "Electricity",
+		Status:             assets.GOStatusActive, // ADR-007
+		QuantityCommitment: commitment,            // ADR-009
 	}
 
 	priv := &assets.ElectricityGOPrivateDetails{
@@ -131,10 +139,22 @@ func (c *IssuanceContract) CreateElectricityGO(ctx contractapi.TransactionContex
 		Emissions:                   emissions,
 		ElectricityProductionMethod: input.ElectricityProductionMethod,
 		ConsumptionDeclarations:     []string{"none"},
+		CommitmentSalt:              salt, // ADR-009
 	}
 
 	collection := access.GetCollectionForOrg(clientMSP)
-	return util.WriteEGOToLedger(ctx, pub, priv, collection)
+	if err := util.WriteEGOToLedger(ctx, pub, priv, collection); err != nil {
+		return err
+	}
+
+	// ADR-016: Emit lifecycle event for off-chain CQRS indexer
+	return util.EmitLifecycleEvent(ctx, util.LifecycleEvent{
+		EventType: util.EventGOCreated,
+		AssetID:   eGOID,
+		GOType:    "Electricity",
+		Initiator: clientMSP,
+		Timestamp: creationTime,
+	})
 }
 
 // CreateHydrogenGO creates a new hydrogen guarantee of origin (not from conversion).
@@ -219,10 +239,18 @@ func (c *IssuanceContract) CreateHydrogenGO(ctx contractapi.TransactionContextIn
 		return err
 	}
 
+	// ADR-009: Generate quantity commitment for selective disclosure
+	commitment, salt, err := assets.GenerateCommitment(ctx, kilos)
+	if err != nil {
+		return fmt.Errorf("error generating quantity commitment: %v", err)
+	}
+
 	pub := &assets.GreenHydrogenGO{
-		AssetID:          hGOID,
-		CreationDateTime: creationTime,
-		GOType:           "Hydrogen",
+		AssetID:            hGOID,
+		CreationDateTime:   creationTime,
+		GOType:             "Hydrogen",
+		Status:             assets.GOStatusActive, // ADR-007
+		QuantityCommitment: commitment,            // ADR-009
 	}
 
 	priv := &assets.GreenHydrogenGOPrivateDetails{
@@ -236,8 +264,20 @@ func (c *IssuanceContract) CreateHydrogenGO(ctx contractapi.TransactionContextIn
 		UsedMWh:                     usedMWh,
 		ElectricityProductionMethod: []string{},
 		ConsumptionDeclarations:     []string{"none"},
+		CommitmentSalt:              salt, // ADR-009
 	}
 
 	collection := access.GetCollectionForOrg(clientMSP)
-	return util.WriteHGOToLedger(ctx, pub, priv, collection)
+	if err := util.WriteHGOToLedger(ctx, pub, priv, collection); err != nil {
+		return err
+	}
+
+	// ADR-016: Emit lifecycle event for off-chain CQRS indexer
+	return util.EmitLifecycleEvent(ctx, util.LifecycleEvent{
+		EventType: util.EventGOCreated,
+		AssetID:   hGOID,
+		GOType:    "Hydrogen",
+		Initiator: clientMSP,
+		Timestamp: creationTime,
+	})
 }

@@ -86,6 +86,7 @@ func SplitElectricityGO(
 		AssetID:          remainderID,
 		CreationDateTime: original.CreationDateTime, // Bug fix #8: preserve original timestamp
 		GOType:           "Electricity",
+		Status:           assets.GOStatusActive, // ADR-007
 	}
 
 	remainderPrivate = &assets.ElectricityGOPrivateDetails{
@@ -159,6 +160,7 @@ func SplitHydrogenGO(
 		AssetID:          remainderID,
 		CreationDateTime: original.CreationDateTime,
 		GOType:           "Hydrogen",
+		Status:           assets.GOStatusActive, // ADR-007
 	}
 
 	remainderPrivate = &assets.GreenHydrogenGOPrivateDetails{
@@ -220,28 +222,96 @@ func WriteHGOToLedger(ctx contractapi.TransactionContextInterface, pub *assets.G
 	return nil
 }
 
-// DeleteEGOFromLedger removes both public and private parts of an electricity GO.
+// DeleteEGOFromLedger marks an electricity GO as cancelled (tombstone) instead of deleting.
+// ADR-007: Preserves audit trail by updating Status rather than calling DelState.
+// Private data is retained for audit; only the public status changes.
 func DeleteEGOFromLedger(ctx contractapi.TransactionContextInterface, assetID, collection string) error {
-	err := ctx.GetStub().DelState(assetID)
+	egoJSON, err := ctx.GetStub().GetState(assetID)
 	if err != nil {
-		return fmt.Errorf("error deleting eGO %s from public state: %v", assetID, err)
+		return fmt.Errorf("error reading eGO %s for tombstone: %v", assetID, err)
 	}
-	err = ctx.GetStub().DelPrivateData(collection, assetID)
+	if egoJSON == nil {
+		return fmt.Errorf("eGO %s does not exist in public state", assetID)
+	}
+	var ego assets.ElectricityGO
+	if err := json.Unmarshal(egoJSON, &ego); err != nil {
+		return fmt.Errorf("error unmarshalling eGO %s: %v", assetID, err)
+	}
+	ego.Status = assets.GOStatusCancelled
+	updatedBytes, err := json.Marshal(ego)
 	if err != nil {
-		return fmt.Errorf("error deleting eGO %s from private collection: %v", assetID, err)
+		return fmt.Errorf("error marshalling tombstoned eGO %s: %v", assetID, err)
+	}
+	if err := ctx.GetStub().PutState(assetID, updatedBytes); err != nil {
+		return fmt.Errorf("error writing tombstoned eGO %s: %v", assetID, err)
 	}
 	return nil
 }
 
-// DeleteHGOFromLedger removes both public and private parts of a hydrogen GO.
+// DeleteHGOFromLedger marks a hydrogen GO as cancelled (tombstone) instead of deleting.
+// ADR-007: Preserves audit trail by updating Status rather than calling DelState.
 func DeleteHGOFromLedger(ctx contractapi.TransactionContextInterface, assetID, collection string) error {
-	err := ctx.GetStub().DelState(assetID)
+	hgoJSON, err := ctx.GetStub().GetState(assetID)
 	if err != nil {
-		return fmt.Errorf("error deleting hGO %s from public state: %v", assetID, err)
+		return fmt.Errorf("error reading hGO %s for tombstone: %v", assetID, err)
 	}
-	err = ctx.GetStub().DelPrivateData(collection, assetID)
+	if hgoJSON == nil {
+		return fmt.Errorf("hGO %s does not exist in public state", assetID)
+	}
+	var hgo assets.GreenHydrogenGO
+	if err := json.Unmarshal(hgoJSON, &hgo); err != nil {
+		return fmt.Errorf("error unmarshalling hGO %s: %v", assetID, err)
+	}
+	hgo.Status = assets.GOStatusCancelled
+	updatedBytes, err := json.Marshal(hgo)
 	if err != nil {
-		return fmt.Errorf("error deleting hGO %s from private collection: %v", assetID, err)
+		return fmt.Errorf("error marshalling tombstoned hGO %s: %v", assetID, err)
+	}
+	if err := ctx.GetStub().PutState(assetID, updatedBytes); err != nil {
+		return fmt.Errorf("error writing tombstoned hGO %s: %v", assetID, err)
 	}
 	return nil
+}
+
+// MarkEGOTransferred marks an electricity GO as transferred (tombstone for transfers).
+// ADR-007: The original record is retained with Status="transferred" for auditability.
+func MarkEGOTransferred(ctx contractapi.TransactionContextInterface, assetID string) error {
+	egoJSON, err := ctx.GetStub().GetState(assetID)
+	if err != nil {
+		return fmt.Errorf("error reading eGO %s for transfer tombstone: %v", assetID, err)
+	}
+	if egoJSON == nil {
+		return fmt.Errorf("eGO %s does not exist in public state", assetID)
+	}
+	var ego assets.ElectricityGO
+	if err := json.Unmarshal(egoJSON, &ego); err != nil {
+		return fmt.Errorf("error unmarshalling eGO %s: %v", assetID, err)
+	}
+	ego.Status = assets.GOStatusTransferred
+	updatedBytes, err := json.Marshal(ego)
+	if err != nil {
+		return fmt.Errorf("error marshalling transferred eGO %s: %v", assetID, err)
+	}
+	return ctx.GetStub().PutState(assetID, updatedBytes)
+}
+
+// MarkHGOTransferred marks a hydrogen GO as transferred (tombstone for transfers).
+func MarkHGOTransferred(ctx contractapi.TransactionContextInterface, assetID string) error {
+	hgoJSON, err := ctx.GetStub().GetState(assetID)
+	if err != nil {
+		return fmt.Errorf("error reading hGO %s for transfer tombstone: %v", assetID, err)
+	}
+	if hgoJSON == nil {
+		return fmt.Errorf("hGO %s does not exist in public state", assetID)
+	}
+	var hgo assets.GreenHydrogenGO
+	if err := json.Unmarshal(hgoJSON, &hgo); err != nil {
+		return fmt.Errorf("error unmarshalling hGO %s: %v", assetID, err)
+	}
+	hgo.Status = assets.GOStatusTransferred
+	updatedBytes, err := json.Marshal(hgo)
+	if err != nil {
+		return fmt.Errorf("error marshalling transferred hGO %s: %v", assetID, err)
+	}
+	return ctx.GetStub().PutState(assetID, updatedBytes)
 }

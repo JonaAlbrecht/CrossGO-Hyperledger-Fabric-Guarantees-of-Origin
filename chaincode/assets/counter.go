@@ -26,8 +26,10 @@ const (
 const (
 	PrefixEGO           = "eGO_"
 	PrefixHGO           = "hGO_"
+	PrefixBGO           = "bGO_"  // ADR-015: biogas
 	PrefixECancellation = "eCancel_"
 	PrefixHCancellation = "hCancel_"
+	PrefixBCancellation = "bCancel_" // ADR-015: biogas
 	PrefixEConsumption  = "eCon_"
 	PrefixHConsumption  = "hCon_"
 	PrefixDevice        = "device_"
@@ -40,8 +42,21 @@ const (
 const (
 	RangeEndEGO    = "eGO_~"
 	RangeEndHGO    = "hGO_~"
+	RangeEndBGO    = "bGO_~" // ADR-015: biogas
 	RangeEndDevice = "device_~"
 )
+
+// GO lifecycle status constants (ADR-007: tombstone pattern).
+const (
+	GOStatusActive      = "active"
+	GOStatusCancelled   = "cancelled"
+	GOStatusTransferred = "transferred"
+)
+
+// MaxTimestampDrift is the maximum allowed difference (in seconds) between
+// a transaction proposal timestamp and the orderer block time. This prevents
+// backdating attacks (ADR-008).
+const MaxTimestampDrift int64 = 300 // 5 minutes
 
 // GenerateID creates a deterministic, unique asset ID from the transaction ID.
 // The ID format is: <prefix><short_hash> where short_hash is the first 16 hex
@@ -60,6 +75,35 @@ func GenerateID(ctx contractapi.TransactionContextInterface, prefix string, suff
 	hash := sha256.Sum256([]byte(input))
 	shortHash := hex.EncodeToString(hash[:8]) // 16 hex chars = 8 bytes
 	return prefix + shortHash, nil
+}
+
+// GenerateCommitment produces a SHA-256 commitment of a quantity value with a random salt.
+// ADR-009: This enables selective disclosure — the quantity is hidden on the public ledger
+// but can be revealed to a verifier by disclosing the salt.
+// Returns (commitmentHex, saltHex).
+func GenerateCommitment(ctx contractapi.TransactionContextInterface, quantity float64) (string, string, error) {
+	txID := ctx.GetStub().GetTxID()
+	if txID == "" {
+		return "", "", fmt.Errorf("transaction ID is empty")
+	}
+	// Use txID as the salt source — deterministic per transaction, unique per GO
+	salt := sha256.Sum256([]byte(txID + "_commitment_salt"))
+	saltHex := hex.EncodeToString(salt[:16])
+	// Commitment = SHA-256(quantity_string || saltHex)
+	quantityStr := strconv.FormatFloat(quantity, 'f', -1, 64)
+	commitInput := quantityStr + "||" + saltHex
+	commitment := sha256.Sum256([]byte(commitInput))
+	return hex.EncodeToString(commitment[:]), saltHex, nil
+}
+
+// VerifyCommitment checks that a claimed quantity and salt match a published commitment.
+// ADR-009: Used for selective disclosure verification — a verifier calls this to confirm
+// that the producer's disclosed quantity matches the on-chain commitment.
+func VerifyCommitment(quantity float64, salt string, expectedCommitment string) bool {
+	quantityStr := strconv.FormatFloat(quantity, 'f', -1, 64)
+	commitInput := quantityStr + "||" + salt
+	hash := sha256.Sum256([]byte(commitInput))
+	return hex.EncodeToString(hash[:]) == expectedCommitment
 }
 
 // GetNextID atomically reads the current counter from the ledger, increments it,

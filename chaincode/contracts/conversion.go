@@ -302,6 +302,7 @@ func (c *ConversionContract) IssuehGO(ctx contractapi.TransactionContextInterfac
 					AssetID:          remainderEGOID,
 					CreationDateTime: inputGO.CreationDateTime,
 					GOType:           "Electricity",
+					Status:           assets.GOStatusActive, // ADR-007
 				}
 				remainderPriv := &assets.ElectricityGOPrivateDetails{
 					AssetID:                     remainderEGOID,
@@ -369,6 +370,7 @@ func (c *ConversionContract) IssuehGO(ctx contractapi.TransactionContextInterfac
 		AssetID:          hGOID,
 		CreationDateTime: now,
 		GOType:           "Hydrogen",
+		Status:           assets.GOStatusActive, // ADR-007
 	}
 
 	// Delete consumed eGOs

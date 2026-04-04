@@ -487,6 +487,61 @@ export async function connectGateway(orgMSP: string, certPath: string, keyPath: 
     const privateKey = crypto.createPrivateKey(privateKeyPem);
     const signer: Signer = signers.newPrivateKeySigner(privateKey);
 
+---
+
+## 6. v4.0 — Hardening (Scalability, Privacy, Auditability)
+
+v4.0 implements ADRs 006–010, addressing the critique's scalability, privacy, and audit gaps.
+
+### 6.1 Cursor-Based Pagination (ADR-006)
+All list endpoints (`GetCurrentEGOsList`, `GetCurrentHGOsList`, `ListDevices`) now have paginated variants using Fabric's `GetStateByRangeWithPagination`. Default page size: 50, max: 200. Returns `PaginatedResult{Records, Bookmark, Count}` for cursor-based iteration.
+
+### 6.2 Tombstone Pattern (ADR-007)
+GOs are no longer physically deleted. The `Status` field on public GO structs tracks lifecycle state: `active` → `cancelled` | `transferred`. `DeleteEGOFromLedger`/`DeleteHGOFromLedger` now update Status instead of calling `DelState`. Query list functions filter tombstoned records. A new CouchDB composite index on `[Status, GOType]` supports filtered queries.
+
+### 6.3 Timestamp Drift Guard (ADR-008)
+`GetTimestamp()` validates that the proposal timestamp is within 300 seconds of the orderer block time. Prevents backdating attacks where a malicious client submits a GO with a manipulated creation timestamp.
+
+### 6.4 Hash Commitment / Selective Disclosure (ADR-009)
+Each GO stores a `QuantityCommitment = SHA-256(quantity || salt)` on the public ledger. The `CommitmentSalt` is stored in private data. Producers can selectively disclose their quantity to verifiers by revealing the salt, enabling third-party verification without collection access.
+
+### 6.5 CouchDB Hardening (ADR-010)
+Private data collections now have `blockToLive: 1000000` (~70 days at 10 blocks/min). This prevents unbounded CouchDB growth while retaining data for the audit retention period. The `publicGOcollection` retains `blockToLive: 0` (permanent).
+
+---
+
+## 7. v5.0 — Interoperability & Multi-Carrier
+
+v5.0 implements ADRs 012–016, addressing the critique's interoperability and extensibility gaps.
+
+### 7.1 CEN-EN 16325 Data Model (ADR-012)
+Public GO structs now include standard-aligned fields: `CountryOfOrigin` (ISO 3166-1), `GridConnectionPoint` (EIC code), `SupportScheme`, `EnergySource` (EN 16325 code), `ProductionPeriodStart/End`. All fields use `omitempty` for backward compatibility.
+
+### 7.2 API Versioning (ADR-013)
+New `AdminContract` exposes `GetVersion()` returning `VersionInfo{Version, ChaincodeID, SupportedAPIs, BreakingChange}`. Clients call this before invoking domain functions to verify compatibility. Supported APIs follow `<contract>/v1` naming.
+
+### 7.3 Dynamic Org Onboarding (ADR-014)
+`RegisterOrganization` (issuer-only) records organization metadata on-chain: MSP, display name, type, energy carriers, country. This provides the application-layer onboarding record. Fabric channel config updates remain an out-of-band admin operation.
+
+### 7.4 Biogas Carrier (ADR-015)
+New `BiogasContract` with `CreateBiogasGO` and `CancelBiogasGO`. Biogas-specific attributes: `VolumeNm3`, `EnergyContentMWh`, `BiogasProductionMethod`, `FeedstockType`. Demonstrates the platform's carrier-extensibility per RED III. Includes full v4.0 patterns (Status, commitment, tombstone).
+
+### 7.5 Event-Driven CQRS (ADR-016)
+`EmitLifecycleEvent` helper emits Fabric chaincode events (JSON payload) for key operations: `GO_CREATED`, `GO_TRANSFERRED`, `GO_CANCELLED`, `GO_CONVERTED`, `GO_SPLIT`, `DEVICE_REGISTERED`, `DEVICE_REVOKED`. Off-chain listeners consume these to build query-optimised read models.
+
+### 7.6 Contract Registry (v5.0)
+
+| # | Namespace | Key Functions |
+|---|-----------|---------------|
+| 1 | `issuance` | CreateElectricityGO, CreateHydrogenGO |
+| 2 | `transfer` | TransferEGO, TransferEGOByAmount, TransferHGOByAmount |
+| 3 | `conversion` | AddHydrogenToBacklog, IssuehGO |
+| 4 | `cancellation` | ClaimRenewableAttributesElectricity/Hydrogen, VerifyCancellationStatement |
+| 5 | `query` | 18 functions: point reads, paginated lists, commitment verification, biogas queries |
+| 6 | `device` | RegisterDevice, GetDevice, ListDevices(Paginated), Revoke/Suspend/Reactivate |
+| 7 | `admin` | GetVersion, RegisterOrganization, GetOrganization |
+| 8 | `biogas` | CreateBiogasGO, CancelBiogasGO |
+
     return connect({ client, identity, signer, hash: hash.sha256 });
 }
 ```

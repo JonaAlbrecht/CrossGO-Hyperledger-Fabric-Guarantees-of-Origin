@@ -125,6 +125,50 @@ func (c *DeviceContract) ListDevices(ctx contractapi.TransactionContextInterface
 	return devices, nil
 }
 
+// ListDevicesPaginated returns a paginated list of registered devices.
+// ADR-006: Accepts pageSize and bookmark for cursor-based pagination.
+func (c *DeviceContract) ListDevicesPaginated(ctx contractapi.TransactionContextInterface, pageSize int32, bookmark string) (string, error) {
+	if pageSize <= 0 {
+		pageSize = 50
+	}
+	if pageSize > 200 {
+		pageSize = 200
+	}
+	resultsIterator, metadata, err := ctx.GetStub().GetStateByRangeWithPagination("device", "device~", pageSize, bookmark)
+	if err != nil {
+		return "", fmt.Errorf("error querying devices with pagination: %v", err)
+	}
+	defer resultsIterator.Close()
+
+	var devices []*assets.Device
+	for resultsIterator.HasNext() {
+		queryResult, err := resultsIterator.Next()
+		if err != nil {
+			return "", err
+		}
+		var device assets.Device
+		if err := json.Unmarshal(queryResult.Value, &device); err != nil {
+			return "", err
+		}
+		devices = append(devices, &device)
+	}
+
+	result := struct {
+		Devices  []*assets.Device `json:"devices"`
+		Bookmark string           `json:"bookmark"`
+		Count    int32            `json:"count"`
+	}{
+		Devices:  devices,
+		Bookmark: metadata.GetBookmark(),
+		Count:    metadata.GetFetchedRecordsCount(),
+	}
+	resultBytes, err := json.Marshal(result)
+	if err != nil {
+		return "", fmt.Errorf("failed to marshal paginated result: %v", err)
+	}
+	return string(resultBytes), nil
+}
+
 // RevokeDevice changes a device's status to "revoked". Only issuers can revoke.
 func (c *DeviceContract) RevokeDevice(ctx contractapi.TransactionContextInterface, deviceID string) error {
 	if err := access.RequireRole(ctx, access.RoleIssuer); err != nil {

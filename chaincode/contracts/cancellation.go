@@ -156,6 +156,7 @@ func (c *CancellationContract) ClaimRenewableAttributesElectricity(ctx contracta
 				AssetID:          remainderID,
 				CreationDateTime: eGOPrivate.CreationDateTime,
 				GOType:           "Electricity",
+				Status:           assets.GOStatusActive, // ADR-007
 			}
 			remainderPriv := &assets.ElectricityGOPrivateDetails{
 				AssetID:                     remainderID,
@@ -351,6 +352,7 @@ func (c *CancellationContract) ClaimRenewableAttributesHydrogen(ctx contractapi.
 				AssetID:          remainderID,
 				CreationDateTime: hGOPrivate.CreationDateTime,
 				GOType:           "Hydrogen",
+				Status:           assets.GOStatusActive, // ADR-007
 			}
 			remainderPriv := &assets.GreenHydrogenGOPrivateDetails{
 				AssetID:                     remainderID,

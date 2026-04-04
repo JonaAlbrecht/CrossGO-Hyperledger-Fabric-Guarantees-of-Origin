@@ -11,31 +11,154 @@ import (
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
+// DefaultPageSize is the default number of records per page when no PageSize is specified.
+const DefaultPageSize = 50
+
+// MaxPageSize prevents excessively large result sets (ADR-006).
+const MaxPageSize = 200
+
+// PaginatedResult wraps a paginated query response with a bookmark for the next page.
+type PaginatedResult struct {
+	Records  interface{} `json:"records"`
+	Bookmark string      `json:"bookmark"`
+	Count    int32       `json:"count"`
+}
+
 // QueryContract groups all read/query functions.
 type QueryContract struct {
 	contractapi.Contract
 }
 
-// GetCurrentEGOsList returns all electricity GOs from the public world state.
+// GetCurrentEGOsList returns all active electricity GOs from the public world state.
+// ADR-007: Filters out cancelled/transferred GOs (tombstone pattern).
 func (c *QueryContract) GetCurrentEGOsList(ctx contractapi.TransactionContextInterface) ([]*assets.ElectricityGO, error) {
-	// Range covers both legacy (eGO1, eGO2) and new (eGO_<hash>) ID formats
 	resultsIterator, err := ctx.GetStub().GetStateByRange("eGO", "eGO~")
 	if err != nil {
 		return nil, fmt.Errorf("error getting eGO state range: %v", err)
 	}
 	defer resultsIterator.Close()
-	return util.ConstructEGOsFromIterator(resultsIterator)
+	all, err := util.ConstructEGOsFromIterator(resultsIterator)
+	if err != nil {
+		return nil, err
+	}
+	// ADR-007: only return active GOs
+	var active []*assets.ElectricityGO
+	for _, ego := range all {
+		if ego.Status == assets.GOStatusActive || ego.Status == "" {
+			active = append(active, ego)
+		}
+	}
+	return active, nil
 }
 
-// GetCurrentHGOsList returns all hydrogen GOs from the public world state.
+// GetCurrentEGOsListPaginated returns a paginated list of active electricity GOs.
+// ADR-006: Accepts pageSize and bookmark for cursor-based pagination.
+func (c *QueryContract) GetCurrentEGOsListPaginated(ctx contractapi.TransactionContextInterface, pageSize int32, bookmark string) (*PaginatedResult, error) {
+	if pageSize <= 0 {
+		pageSize = DefaultPageSize
+	}
+	if pageSize > MaxPageSize {
+		pageSize = MaxPageSize
+	}
+	resultsIterator, metadata, err := ctx.GetStub().GetStateByRangeWithPagination("eGO", "eGO~", pageSize, bookmark)
+	if err != nil {
+		return nil, fmt.Errorf("error getting paginated eGO range: %v", err)
+	}
+	defer resultsIterator.Close()
+	eGOs, err := util.ConstructEGOsFromIterator(resultsIterator)
+	if err != nil {
+		return nil, err
+	}
+	// ADR-007: filter tombstoned
+	var active []*assets.ElectricityGO
+	for _, ego := range eGOs {
+		if ego.Status == assets.GOStatusActive || ego.Status == "" {
+			active = append(active, ego)
+		}
+	}
+	return &PaginatedResult{
+		Records:  active,
+		Bookmark: metadata.GetBookmark(),
+		Count:    metadata.GetFetchedRecordsCount(),
+	}, nil
+}
+
+// GetCurrentHGOsList returns all active hydrogen GOs from the public world state.
+// ADR-007: Filters out cancelled/transferred GOs.
 func (c *QueryContract) GetCurrentHGOsList(ctx contractapi.TransactionContextInterface) ([]*assets.GreenHydrogenGO, error) {
-	// Range covers both legacy (hGO1, hGO2) and new (hGO_<hash>) ID formats
 	resultsIterator, err := ctx.GetStub().GetStateByRange("hGO", "hGO~")
 	if err != nil {
 		return nil, fmt.Errorf("error getting hGO state range: %v", err)
 	}
 	defer resultsIterator.Close()
-	return util.ConstructHGOsFromIterator(resultsIterator)
+	all, err := util.ConstructHGOsFromIterator(resultsIterator)
+	if err != nil {
+		return nil, err
+	}
+	var active []*assets.GreenHydrogenGO
+	for _, hgo := range all {
+		if hgo.Status == assets.GOStatusActive || hgo.Status == "" {
+			active = append(active, hgo)
+		}
+	}
+	return active, nil
+}
+
+// GetCurrentHGOsListPaginated returns a paginated list of active hydrogen GOs.
+// ADR-006: Accepts pageSize and bookmark for cursor-based pagination.
+func (c *QueryContract) GetCurrentHGOsListPaginated(ctx contractapi.TransactionContextInterface, pageSize int32, bookmark string) (*PaginatedResult, error) {
+	if pageSize <= 0 {
+		pageSize = DefaultPageSize
+	}
+	if pageSize > MaxPageSize {
+		pageSize = MaxPageSize
+	}
+	resultsIterator, metadata, err := ctx.GetStub().GetStateByRangeWithPagination("hGO", "hGO~", pageSize, bookmark)
+	if err != nil {
+		return nil, fmt.Errorf("error getting paginated hGO range: %v", err)
+	}
+	defer resultsIterator.Close()
+	hGOs, err := util.ConstructHGOsFromIterator(resultsIterator)
+	if err != nil {
+		return nil, err
+	}
+	var active []*assets.GreenHydrogenGO
+	for _, hgo := range hGOs {
+		if hgo.Status == assets.GOStatusActive || hgo.Status == "" {
+			active = append(active, hgo)
+		}
+	}
+	return &PaginatedResult{
+		Records:  active,
+		Bookmark: metadata.GetBookmark(),
+		Count:    metadata.GetFetchedRecordsCount(),
+	}, nil
+}
+
+// VerifyQuantityCommitment verifies that a disclosed quantity and salt match the on-chain commitment.
+// ADR-009: Enables selective disclosure — a verifier can confirm a producer's claims
+// without requiring private data collection access.
+func (c *QueryContract) VerifyQuantityCommitment(ctx contractapi.TransactionContextInterface, goID string, quantity float64, salt string) (bool, error) {
+	// Try eGO first
+	goJSON, err := ctx.GetStub().GetState(goID)
+	if err != nil {
+		return false, fmt.Errorf("failed to read GO: %v", err)
+	}
+	if goJSON == nil {
+		return false, fmt.Errorf("GO %s does not exist", goID)
+	}
+
+	// Parse as generic map to extract QuantityCommitment
+	var goData map[string]interface{}
+	if err := json.Unmarshal(goJSON, &goData); err != nil {
+		return false, fmt.Errorf("failed to unmarshal GO: %v", err)
+	}
+	commitment, ok := goData["QuantityCommitment"].(string)
+	if !ok || commitment == "" {
+		return false, fmt.Errorf("GO %s has no quantity commitment", goID)
+	}
+
+	return assets.VerifyCommitment(quantity, salt, commitment), nil
 }
 
 // ReadPublicEGO reads the public (world-state) data for an electricity GO by ID.
@@ -387,4 +510,83 @@ func (c *QueryContract) QueryPrivateHGOsByAmount(ctx contractapi.TransactionCont
 	}
 
 	return selected, nil
+}
+
+// GetCurrentBGOsList returns all active biogas GOs from the public world state.
+// ADR-015: Biogas carrier support. ADR-007: Filters tombstoned GOs.
+func (c *QueryContract) GetCurrentBGOsList(ctx contractapi.TransactionContextInterface) ([]*assets.BiogasGO, error) {
+	resultsIterator, err := ctx.GetStub().GetStateByRange("bGO", "bGO~")
+	if err != nil {
+		return nil, fmt.Errorf("error getting bGO state range: %v", err)
+	}
+	defer resultsIterator.Close()
+
+	var active []*assets.BiogasGO
+	for resultsIterator.HasNext() {
+		queryResult, err := resultsIterator.Next()
+		if err != nil {
+			return nil, err
+		}
+		var bgo assets.BiogasGO
+		if err := json.Unmarshal(queryResult.Value, &bgo); err != nil {
+			return nil, err
+		}
+		if bgo.Status == assets.GOStatusActive || bgo.Status == "" {
+			active = append(active, &bgo)
+		}
+	}
+	return active, nil
+}
+
+// GetCurrentBGOsListPaginated returns a paginated list of active biogas GOs.
+// ADR-006 + ADR-015.
+func (c *QueryContract) GetCurrentBGOsListPaginated(ctx contractapi.TransactionContextInterface, pageSize int32, bookmark string) (*PaginatedResult, error) {
+	if pageSize <= 0 {
+		pageSize = DefaultPageSize
+	}
+	if pageSize > MaxPageSize {
+		pageSize = MaxPageSize
+	}
+	resultsIterator, metadata, err := ctx.GetStub().GetStateByRangeWithPagination("bGO", "bGO~", pageSize, bookmark)
+	if err != nil {
+		return nil, fmt.Errorf("error getting paginated bGO range: %v", err)
+	}
+	defer resultsIterator.Close()
+
+	var active []*assets.BiogasGO
+	for resultsIterator.HasNext() {
+		queryResult, err := resultsIterator.Next()
+		if err != nil {
+			return nil, err
+		}
+		var bgo assets.BiogasGO
+		if err := json.Unmarshal(queryResult.Value, &bgo); err != nil {
+			return nil, err
+		}
+		if bgo.Status == assets.GOStatusActive || bgo.Status == "" {
+			active = append(active, &bgo)
+		}
+	}
+	return &PaginatedResult{
+		Records:  active,
+		Bookmark: metadata.GetBookmark(),
+		Count:    metadata.GetFetchedRecordsCount(),
+	}, nil
+}
+
+// ReadPublicBGO reads a single biogas GO from public world state.
+// ADR-015: Biogas carrier support.
+func (c *QueryContract) ReadPublicBGO(ctx contractapi.TransactionContextInterface, bGOID string) (*assets.BiogasGO, error) {
+	bgoJSON, err := ctx.GetStub().GetState(bGOID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read bGO %s: %v", bGOID, err)
+	}
+	if bgoJSON == nil {
+		return nil, fmt.Errorf("bGO %s does not exist", bGOID)
+	}
+	var bgo assets.BiogasGO
+	if err := json.Unmarshal(bgoJSON, &bgo); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal bGO: %v", err)
+	}
+	return &bgo, nil
 }

@@ -13,7 +13,7 @@
     "policy": "OR('issuer1MSP.member')",
     "requiredPeerCount": 0,
     "maxPeerCount": 1,
-    "blockToLive": 0,
+    "blockToLive": 1000000,
     "memberOnlyRead": true,
     "memberOnlyWrite": false,
     "endorsementPolicy": {
@@ -25,7 +25,7 @@
     "policy": "OR('eproducer1MSP.member', 'issuer1MSP.member')",
     "requiredPeerCount": 0,
     "maxPeerCount": 2,
-    "blockToLive": 0,
+    "blockToLive": 1000000,
     "memberOnlyRead": true,
     "memberOnlyWrite": false,
     "endorsementPolicy": {
@@ -37,7 +37,7 @@
     "policy": "OR('hproducer1MSP.member', 'issuer1MSP.member')",
     "requiredPeerCount": 0,
     "maxPeerCount": 2,
-    "blockToLive": 0,
+    "blockToLive": 1000000,
     "memberOnlyRead": true,
     "memberOnlyWrite": false,
     "endorsementPolicy": {
@@ -49,7 +49,7 @@
     "policy": "OR('buyer1MSP.member', 'issuer1MSP.member')",
     "requiredPeerCount": 0,
     "maxPeerCount": 2,
-    "blockToLive": 0,
+    "blockToLive": 1000000,
     "memberOnlyRead": true,
     "memberOnlyWrite": false,
     "endorsementPolicy": {

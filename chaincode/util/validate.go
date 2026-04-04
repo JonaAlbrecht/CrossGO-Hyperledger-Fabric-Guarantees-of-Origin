@@ -3,7 +3,9 @@ package util
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
+	"github.com/JonaAlbrecht/HLF-GOconversionissuance-JA-MA/chaincode/assets"
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
@@ -57,10 +59,26 @@ func ValidateNonEmpty(name, value string) error {
 }
 
 // GetTimestamp returns the current transaction timestamp in seconds.
+// ADR-008: Validates that the proposal timestamp is within MaxTimestampDrift
+// of the current system time to prevent backdating attacks.
 func GetTimestamp(ctx contractapi.TransactionContextInterface) (int64, error) {
 	ts, err := ctx.GetStub().GetTxTimestamp()
 	if err != nil {
 		return 0, fmt.Errorf("error getting timestamp: %v", err)
 	}
-	return ts.GetSeconds(), nil
+	proposalTime := ts.GetSeconds()
+
+	// ADR-008: Drift guard — reject proposals where the timestamp deviates
+	// more than MaxTimestampDrift seconds from wall-clock time.
+	now := time.Now().Unix()
+	drift := proposalTime - now
+	if drift < 0 {
+		drift = -drift
+	}
+	if drift > assets.MaxTimestampDrift {
+		return 0, fmt.Errorf("timestamp drift too large: proposal=%d, now=%d, drift=%ds exceeds max %ds",
+			proposalTime, now, drift, assets.MaxTimestampDrift)
+	}
+
+	return proposalTime, nil
 }

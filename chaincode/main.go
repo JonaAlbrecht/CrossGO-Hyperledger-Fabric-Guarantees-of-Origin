@@ -32,6 +32,14 @@ func main() {
 	deviceContract.Name = "device"
 	deviceContract.TransactionContextHandler = new(contractapi.TransactionContext)
 
+	adminContract := new(contracts.AdminContract)
+	adminContract.Name = "admin"
+	adminContract.TransactionContextHandler = new(contractapi.TransactionContext)
+
+	biogasContract := new(contracts.BiogasContract)
+	biogasContract.Name = "biogas"
+	biogasContract.TransactionContextHandler = new(contractapi.TransactionContext)
+
 	chaincode, err := contractapi.NewChaincode(
 		issuanceContract,
 		transferContract,
@@ -39,6 +47,8 @@ func main() {
 		cancellationContract,
 		queryContract,
 		deviceContract,
+		adminContract,
+		biogasContract,
 	)
 	if err != nil {
 		log.Panicf("Error creating GO lifecycle chaincode: %v", err)
