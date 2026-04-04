@@ -1,17 +1,21 @@
-# Architecture Redesign: GO Lifecycle Platform v3
+# Architecture Redesign: GO Lifecycle Platform v7.0
 
 ## 1. Overview
 
-This document describes the comprehensive architectural overhaul of the Hyperledger Fabric–based Guarantee of Origin (GO) issuance, transfer and conversion system. The redesign transforms the project from a fixed-org monolithic prototype into a **tiered, multi-carrier, object-oriented platform** with a full-stack frontend.
+This document describes the comprehensive architectural overhaul of the Hyperledger Fabric–based Guarantee of Origin (GO) issuance, transfer and conversion system. The redesign transforms the project from a fixed-org monolithic prototype into a **tiered, multi-carrier, object-oriented platform** with a full-stack frontend. Versions 6.0 and 7.0 add production hardening and market integration features including cross-registry bridging, IoT device attestation, and an external data oracle.
 
 ### Design Principles
 - **Tiered network**: Role-based organizations (Issuer, Producer, Consumer) instead of hardcoded org names
-- **Multi-carrier**: Extensible beyond electricity/hydrogen — support any energy carrier via a common GO interface
+- **Multi-carrier**: Extensible beyond electricity/hydrogen — support any energy carrier via a common GO interface (electricity, hydrogen, biogas as of v5.0)
 - **Object-oriented chaincode**: Separate asset types (Device, GO, Certificate) into dedicated files with shared base types
 - **Contention-free writes**: Deterministic hash-based IDs derived from transaction IDs — no shared state during ID generation (v3.0)
-- **Performance-validated**: Architecture verified by Hyperledger Caliper benchmarks; 100% write success rate at 50 TPS (v3.0)
+- **Performance-validated**: Architecture verified by Hyperledger Caliper benchmarks across v3.0, v5.0, and v7.0; 100% write success rate at 50 TPS, reads at 2,000 TPS
 - **Bug-free**: Fix all 12 identified bugs from the current monolithic chaincode
 - **Full-stack**: TypeScript frontend using the Fabric Gateway client API
+- **Standards-aligned**: CEN-EN 16325 field validation, EECS energy source codes (v6.0)
+- **Cryptographically secure**: 128-bit random commitment salts, ECDSA P-256 device attestation (v6.0/v7.0)
+- **Cross-registry**: Bridge contract for GO import/export with external registries (v7.0)
+- **Oracle-verified**: External grid data cross-referencing for production claim validation (v7.0)
 
 ---
 
@@ -541,6 +545,128 @@ New `BiogasContract` with `CreateBiogasGO` and `CancelBiogasGO`. Biogas-specific
 | 6 | `device` | RegisterDevice, GetDevice, ListDevices(Paginated), Revoke/Suspend/Reactivate |
 | 7 | `admin` | GetVersion, RegisterOrganization, GetOrganization |
 | 8 | `biogas` | CreateBiogasGO, CancelBiogasGO |
+
+---
+
+## 8. v6.0 — Production Hardening
+
+v6.0 implements ADRs 017–022, focusing on cryptographic hardening, standards compliance, and deprecation management.
+
+### 8.1 Cryptographically Secure Commitment Salts (ADR-017)
+
+`GenerateCommitment()` now uses `crypto/rand` to produce 128-bit random salts instead of deriving salts from `SHA-256(txID)`. The previous approach was brute-forceable since `txID` is public. The new scheme stores the random salt exclusively in private data collections, making the quantity commitment `SHA-256(quantity || random_salt)` computationally secure.
+
+### 8.2 CEN-EN 16325 Field Validation (ADR-018)
+
+New validation module `util/validate_cen.go` enforces European GO standard compliance at write time:
+- `ValidateCountryOfOrigin`: ISO 3166-1 alpha-2 against 30 EU/EEA/CH/GB codes
+- `ValidateEnergySource`: EECS fact sheet regex `^F\d{8}$`
+- `ValidateSupportScheme`: Enumerated CEN-EN 16325 categories (FIT, FIP, quota, tax, loan, none, other)
+- `ValidateGridConnectionPoint`: 16-character EIC code regex
+- `ValidateProductionPeriod`: `end > start`, maximum 366 days
+
+### 8.3 State-Based Endorsement (ADR-019)
+
+After GO creation, `SetStateValidationParameter()` binds the asset's endorsement policy to the producing organization and issuer. This replaces the channel-level majority policy for per-asset write operations, preventing unauthorized modification by non-owning organizations.
+
+### 8.4 Deprecation Policy (ADR-021/022)
+
+Formal deprecation lifecycle: deprecation warnings in response metadata → client migration period → eventual removal. Applied to unpaginated query functions (`GetCurrentEGOsList`, `GetCurrentHGOsList`, `ListDevices`) which return warnings directing clients to paginated variants.
+
+---
+
+## 9. v7.0 — Market Integration
+
+v7.0 implements ADRs 024, 027, and 029, extending the platform with cross-registry bridging, IoT device attestation, and external data oracle capabilities.
+
+### 9.1 Cross-Registry Bridge (ADR-024)
+
+New `BridgeContract` manages GO movements between registries:
+
+```go
+type BridgeTransfer struct {
+    TransferID       string  `json:"transferId"`
+    Direction        string  `json:"direction"`        // "export" or "import"
+    GOAssetID        string  `json:"goAssetId"`
+    ExternalRegistry string  `json:"externalRegistry"` // e.g. "AIB-hub", "NECS"
+    ExternalID       string  `json:"externalId"`
+    GOType           string  `json:"goType"`
+    Status           string  `json:"status"`           // "pending", "confirmed", "failed"
+    CountryOfOrigin  string  `json:"countryOfOrigin,omitempty"`
+    EnergySource     string  `json:"energySource,omitempty"`
+}
+```
+
+Functions:
+- `ExportGO`: Locks source GO (status → "transferred"), creates pending bridge record
+- `ConfirmExport`: Transitions pending → confirmed on destination acknowledgment
+- `ImportGO`: Creates local GO asset from external registry data, bridge record auto-confirmed
+- `GetBridgeTransfer`, `ListBridgeTransfersPaginated`: Read operations with pagination
+
+### 9.2 IoT Device Attestation (ADR-027)
+
+ECDSA P-256 signature verification for metering device readings:
+
+- **Device struct extended**: `PublicKeyPEM` field (optional, backward-compatible) stores the device's ECDSA public key
+- `VerifyDeviceReading(deviceID, readingJSON, signatureBase64)`: Verifies an ECDSA signature against the device's registered public key without writing state
+- `SubmitSignedReading(deviceID, readingJSON, signatureBase64)`: Verifies signature, then stores the verified reading on-chain
+
+This creates a cryptographic chain from physical smart meter → on-chain record, assuming the meter holds its private key in a tamper-resistant HSM.
+
+### 9.3 External Data Oracle (ADR-029)
+
+New `OracleContract` for ENTSO-E grid generation data:
+
+```go
+type GridGenerationRecord struct {
+    RecordID       string  `json:"recordId"`
+    BiddingZone    string  `json:"biddingZone"`     // e.g. "DE-LU", "NL"
+    PeriodStart    int64   `json:"periodStart"`
+    PeriodEnd      int64   `json:"periodEnd"`
+    EnergySource   string  `json:"energySource"`    // EECS code
+    GenerationMW   float64 `json:"generationMW"`
+    EmissionFactor float64 `json:"emissionFactor"`  // gCO2eq/kWh
+    DataSource     string  `json:"dataSource"`      // "ENTSO-E-TP", "ENTSOG"
+}
+```
+
+Functions:
+- `PublishGridData`: Issuer-only; writes grid generation records from transient data
+- `GetGridData`, `ListGridDataPaginated`: Read operations
+- `CrossReferenceGO`: Validates a GO's production period and energy source against oracle data
+
+### 9.4 Contract Registry (v7.0)
+
+| # | Namespace | Key Functions |
+|---|-----------|---------------|
+| 1 | `issuance` | CreateElectricityGO, CreateHydrogenGO |
+| 2 | `transfer` | TransferEGO, TransferEGOByAmount, TransferHGOByAmount |
+| 3 | `conversion` | AddHydrogenToBacklog, IssuehGO |
+| 4 | `cancellation` | ClaimRenewableAttributesElectricity/Hydrogen, VerifyCancellationStatement |
+| 5 | `query` | 18+ functions: point reads, paginated lists, commitment verification, deprecation warnings |
+| 6 | `device` | RegisterDevice, GetDevice, ListDevices(Paginated), Revoke/Suspend/Reactivate, VerifyDeviceReading, SubmitSignedReading |
+| 7 | `admin` | GetVersion (7.0.0), RegisterOrganization, GetOrganization |
+| 8 | `biogas` | CreateBiogasGO, CancelBiogasGO |
+| 9 | `bridge` | ExportGO, ConfirmExport, ImportGO, GetBridgeTransfer, ListBridgeTransfersPaginated |
+| 10 | `oracle` | PublishGridData, GetGridData, ListGridDataPaginated, CrossReferenceGO |
+
+**Supported APIs (v7.0.0):** issuance/v1, transfer/v1, conversion/v1, cancellation/v1, query/v1, device/v1, admin/v1, bridge/v1, oracle/v1
+
+### 9.5 Benchmark Validation (v7.0)
+
+Caliper v0.6.0 (28 rounds, 10 workers, Hetzner 16 vCPU / 32 GB) with 901 registered devices:
+
+| Metric | v3.0 | v5.0 | v7.0 |
+|--------|------|------|------|
+| Write success rate | 100% | 100% | **100%** |
+| Max write throughput | 50.5 TPS | 50.0 TPS | **50.4 TPS** |
+| Point read throughput | >2,000 TPS | >2,000 TPS | **2,000 TPS** |
+| Write latency (serial) | 0.10s | 0.10s | **0.10s** |
+| GetDevice at 2,000 TPS | — | — | **0% failure** |
+| Pagination (500 TPS) | — | 0% failure | **0% failure** |
+| ListDevices unpaginated (901 devices) | — | — | **80% failure at 500 TPS** |
+
+Detailed results: see `testing/PERFORMANCE_REPORT_v7.md`
 
     return connect({ client, identity, signer, hash: hash.sha256 });
 }

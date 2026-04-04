@@ -1,7 +1,7 @@
-# GO Platform v3 — Architecture Diagrams
+# GO Platform v7.0 — Architecture Diagrams
 
 > Architecture diagrams for the Hyperledger Fabric Guarantee of Origin platform.
-> Updated for v3.0 (hash-based IDs, CouchDB indexes, reduced BatchTimeout).
+> Updated for v7.0 (cross-registry bridge, IoT device attestation, external data oracle).
 > Diagrams use [Mermaid](https://mermaid.js.org/) syntax and render natively on GitHub.
 
 ---
@@ -63,13 +63,17 @@ graph TB
                 CDB[(CouchDB)]
             end
         end
-        subgraph Chaincode["📜 Go Chaincode · 6 Named Contracts"]
+        subgraph Chaincode["📜 Go Chaincode · 10 Named Contracts"]
             CC1[issuance<br/>CreateElectricityGO<br/>CreateHydrogenGO]
             CC2[transfer<br/>TransferEGO<br/>TransferByAmount]
             CC3[conversion<br/>AddHydrogenToBacklog<br/>IssuehGO]
             CC4[cancellation<br/>ClaimRenewableAttributes<br/>VerifyCancellation]
             CC5[query<br/>GetGOsList<br/>ReadPublic / ReadPrivate]
-            CC6[device<br/>RegisterDevice<br/>RevokeDevice]
+            CC6[device<br/>RegisterDevice<br/>VerifyDeviceReading]
+            CC7[admin<br/>GetVersion<br/>RegisterOrganization]
+            CC8[biogas<br/>CreateBiogasGO<br/>CancelBiogasGO]
+            CC9[bridge<br/>ExportGO / ImportGO<br/>ConfirmExport]
+            CC10[oracle<br/>PublishGridData<br/>CrossReferenceGO]
         end
         subgraph PDC["🔒 Private Data Collections"]
             PUB[publicGOcollection<br/>All orgs]
@@ -105,7 +109,7 @@ graph TB
     class LP,DP,DEV,GP,TP,CP,CTP frontend
     class AUTH,R1,R2,R3,R4,R5,R6,R7,GW backend
     class IP,PP,COP,ICA,PCA,CCA,IDB,PDB,CDB,O1,O2,O3,O4 fabric
-    class CC1,CC2,CC3,CC4,CC5,CC6 chaincode
+    class CC1,CC2,CC3,CC4,CC5,CC6,CC7,CC8,CC9,CC10 chaincode
     class PUB,PRV1,PRV2,PRV3 pdc
 ```
 
@@ -472,11 +476,11 @@ sequenceDiagram
 
 ---
 
-## 10. v5.0 Contract Architecture (8 Namespaces)
+## 10. v7.0 Contract Architecture (10 Namespaces)
 
 ```mermaid
 graph TB
-    subgraph Chaincode["golifecycle v5.0"]
+    subgraph Chaincode["golifecycle v7.0"]
         direction TB
         subgraph Domain["Domain Contracts"]
             ISS[issuance<br/>CreateElectricityGO<br/>CreateHydrogenGO]
@@ -486,30 +490,40 @@ graph TB
             BIO[biogas<br/>CreateBiogasGO<br/>CancelBiogasGO]
         end
 
+        subgraph MarketIntegration["Market Integration Contracts (v7.0)"]
+            BRG[bridge<br/>ExportGO / ImportGO<br/>ConfirmExport<br/>ListBridgeTransfersPaginated]
+            ORC[oracle<br/>PublishGridData<br/>CrossReferenceGO<br/>ListGridDataPaginated]
+        end
+
         subgraph Infrastructure["Infrastructure Contracts"]
-            QRY[query<br/>18 functions<br/>Point reads + Paginated lists]
-            DEV[device<br/>Register/Revoke/List<br/>+Paginated]
-            ADM[admin<br/>GetVersion<br/>RegisterOrganization]
+            QRY[query<br/>18+ functions<br/>Point reads + Paginated lists<br/>Deprecation warnings (v6.0)]
+            DEV[device<br/>Register/Revoke/List<br/>+Paginated<br/>VerifyDeviceReading (v7.0)<br/>SubmitSignedReading (v7.0)]
+            ADM[admin<br/>GetVersion (7.0.0)<br/>RegisterOrganization<br/>9 supported APIs]
         end
     end
 
     subgraph Shared["Shared Packages"]
-        ASS[assets/<br/>ElectricityGO, HydrogenGO<br/>BiogasGO, Device, Certificates]
+        ASS[assets/<br/>ElectricityGO, HydrogenGO<br/>BiogasGO, Device, Certificates<br/>BridgeTransfer, GridGenerationRecord]
         ACC[access/<br/>RBAC, ABAC<br/>Collections]
-        UTL[util/<br/>Split, Validate, Events<br/>Iterator]
+        UTL[util/<br/>Split, Validate, Events<br/>Iterator, ValidateCEN (v6.0)]
     end
 
     Domain --> ASS
     Domain --> UTL
     Domain --> ACC
+    MarketIntegration --> ASS
+    MarketIntegration --> UTL
+    MarketIntegration --> ACC
     Infrastructure --> ASS
     Infrastructure --> ACC
 
     classDef domain fill:#dbeafe,stroke:#2563eb
+    classDef market fill:#dcfce7,stroke:#16a34a
     classDef infra fill:#fef3c7,stroke:#d97706
     classDef shared fill:#f3e8ff,stroke:#7c3aed
 
     class ISS,TRN,CNV,CAN,BIO domain
+    class BRG,ORC market
     class QRY,DEV,ADM infra
     class ASS,ACC,UTL shared
 ```
@@ -550,4 +564,201 @@ graph LR
     class CC,BL fabric
     class EL,EP,DB offchain
     class API,UI client
+```
+
+---
+
+## 12. v6.0 Selective Disclosure with Secure Salts (ADR-009 + ADR-017)
+
+Shows the improved hash commitment scheme using `crypto/rand` instead of `txID`-derived salts.
+
+```mermaid
+sequenceDiagram
+    participant Producer
+    participant Chaincode
+    participant CryptoRand as crypto/rand
+    participant Ledger as World State
+    participant PDC as Private Data
+    participant Verifier
+
+    Note over Producer,Verifier: Issuance — Secure Commitment (v6.0)
+    Producer->>Chaincode: CreateElectricityGO(AmountMWh=100)
+    Chaincode->>CryptoRand: Read 16 random bytes
+    CryptoRand-->>Chaincode: salt = 0xA7F3...9B21 (128 bits)
+    Chaincode->>Chaincode: commitment = SHA-256("100" || salt)
+    Chaincode->>Ledger: PutState(eGO_xxx, {QuantityCommitment: commitment})
+    Chaincode->>PDC: PutPrivateData(coll, eGO_xxx, {AmountMWh: 100, CommitmentSalt: salt})
+    Note right of PDC: Salt is NOT derivable from txID<br/>Search space: 2^128 per guess
+
+    Note over Producer,Verifier: Verification — Selective Disclosure
+    Producer->>Verifier: Disclose: AmountMWh=100, salt=A7F3...9B21
+    Verifier->>Chaincode: VerifyQuantityCommitment(eGO_xxx, 100, "A7F3...9B21")
+    Chaincode->>Ledger: GetState(eGO_xxx) → {QuantityCommitment: commitment}
+    Chaincode->>Chaincode: SHA-256("100" || "A7F3...9B21") == commitment?
+    Chaincode->>Verifier: true ✅
+```
+
+---
+
+## 13. v7.0 Cross-Registry Bridge Flow (ADR-024)
+
+Shows the three-phase bridge protocol for GO export and import between registries.
+
+```mermaid
+sequenceDiagram
+    participant Producer as Producer Org
+    participant CC as BridgeContract
+    participant Ledger as World State
+    participant ExtReg as External Registry<br/>(e.g. AIB Hub)
+    participant Importer as Importing Org
+
+    Note over Producer,Importer: ① EXPORT — Producer initiates cross-registry transfer
+    Producer->>CC: bridge:ExportGO(transient: BridgeExport)
+    CC->>Ledger: GetState(eGO_xxx) → status="active"
+    CC->>Ledger: PutState(eGO_xxx, {status: "transferred"})
+    CC->>Ledger: PutState(bridge_abc123, {direction: "export", status: "pending"})
+    CC-->>Producer: BridgeTransfer{transferId: "abc123", status: "pending"}
+
+    Note over Producer,Importer: ② CONFIRM — External registry acknowledges receipt
+    Producer->>ExtReg: Off-chain: send GO data + bridge transfer ID
+    ExtReg-->>Producer: Acknowledgment received
+    Producer->>CC: bridge:ConfirmExport("abc123")
+    CC->>Ledger: PutState(bridge_abc123, {status: "confirmed", confirmedAt: now})
+
+    Note over Producer,Importer: ③ IMPORT — Receiving org creates local GO from external source
+    Importer->>CC: bridge:ImportGO(transient: BridgeImport)
+    CC->>Ledger: PutState(eGO_newId, {new GO asset from import data})
+    CC->>Ledger: PutState(bridge_def456, {direction: "import", status: "confirmed"})
+    CC-->>Importer: BridgeTransfer{transferId: "def456", status: "confirmed"}
+```
+
+---
+
+## 14. v7.0 IoT Device Attestation Flow (ADR-027)
+
+Shows how physical smart meters cryptographically attest their readings on-chain.
+
+```mermaid
+sequenceDiagram
+    participant HSM as Meter HSM<br/>(tamper-resistant)
+    participant Meter as Smart Meter
+    participant Prod as Producer Peer
+    participant CC as DeviceContract
+    participant Ledger as World State
+
+    Note over HSM,Ledger: Setup — Register device with public key
+    Prod->>CC: device:RegisterDevice(transient: {PublicKeyPEM: "-----BEGIN PUBLIC KEY-----..."})
+    CC->>Ledger: PutState(device_xxx, {PublicKeyPEM: "...", status: "active"})
+
+    Note over HSM,Ledger: Runtime — Meter signs and submits reading
+    Meter->>HSM: Sign(readingJSON)
+    HSM-->>Meter: ECDSA P-256 signature (ASN.1 DER)
+    Meter->>Prod: Submit reading + signature
+    Prod->>CC: device:SubmitSignedReading(deviceID, readingJSON, signatureBase64)
+    CC->>Ledger: GetState(device_xxx) → {PublicKeyPEM: "..."}
+    CC->>CC: Parse PEM → ECDSA public key
+    CC->>CC: ecdsa.VerifyASN1(pubKey, SHA-256(readingJSON), signature)
+    CC->>Ledger: PutState(reading_xxx, {verified reading data})
+    CC-->>Prod: Success ✅
+    Note right of CC: Signature verification ensures<br/>reading originated from registered meter,<br/>not fabricated by producer
+```
+
+---
+
+## 15. v7.0 Oracle Cross-Reference Flow (ADR-029)
+
+Shows how GO production claims are validated against external grid generation data.
+
+```mermaid
+sequenceDiagram
+    participant ENTSO as ENTSO-E<br/>Transparency Platform
+    participant Issuer as Issuer Org
+    participant CC as OracleContract
+    participant Ledger as World State
+    participant Auditor
+
+    Note over ENTSO,Auditor: ① Issuer publishes grid generation data
+    ENTSO-->>Issuer: API response: generation data for DE-LU zone
+    Issuer->>CC: oracle:PublishGridData(transient: GridData)
+    CC->>CC: Validate EECS energy source code (regex: ^F\d{8}$)
+    CC->>Ledger: PutState(oracle_rec123, {BiddingZone: "DE-LU", EnergySource: "F01010100", GenerationMW: 2000, ...})
+
+    Note over ENTSO,Auditor: ② Cross-reference a GO against oracle data
+    Auditor->>CC: oracle:CrossReferenceGO(eGO_xxx, oracle_rec123)
+    CC->>Ledger: GetState(eGO_xxx) → {ProductionPeriodStart, ProductionPeriodEnd, EnergySource}
+    CC->>Ledger: GetState(oracle_rec123) → {PeriodStart, PeriodEnd, EnergySource}
+    CC->>CC: Check: GO period overlaps oracle period?
+    CC->>CC: Check: Energy source codes match?
+    CC-->>Auditor: true ✅ (GO production claim consistent with grid data)
+```
+
+---
+
+## 16. v7.0 Verifiability Stack — End-to-End Provenance
+
+Shows how v7.0 completes the full provenance chain from physical meter to cross-border transfer.
+
+```mermaid
+graph TB
+    subgraph Physical["Physical Layer"]
+        M[Smart Meter<br/>with HSM]
+        SIG[ECDSA P-256<br/>Signature]
+    end
+
+    subgraph Attestation["Attestation Layer (v7.0)"]
+        VDR[VerifyDeviceReading<br/>Signature verification]
+        SSR[SubmitSignedReading<br/>Store verified reading]
+    end
+
+    subgraph Issuance["Issuance Layer (v3.0–v6.0)"]
+        CEN[CEN-EN 16325<br/>Field Validation]
+        COMMIT[Quantity Commitment<br/>SHA-256 + crypto/rand salt]
+        SBE[State-Based<br/>Endorsement]
+        TS[Timestamp<br/>Drift Guard]
+    end
+
+    subgraph Lifecycle["Lifecycle Layer (v4.0–v5.0)"]
+        TOMB[Tombstone<br/>Status Tracking]
+        CQRS[CQRS Events<br/>GO_CREATED, etc.]
+    end
+
+    subgraph CrossRef["Cross-Reference Layer (v7.0)"]
+        ORC[Oracle Grid Data<br/>ENTSO-E records]
+        XREF[CrossReferenceGO<br/>Period + source match]
+    end
+
+    subgraph Bridge["Cross-Registry Layer (v7.0)"]
+        EXP[ExportGO<br/>Lock + bridge record]
+        CONF[ConfirmExport<br/>Destination ack]
+        IMP[ImportGO<br/>Create from external]
+    end
+
+    M --> SIG
+    SIG --> VDR
+    VDR --> SSR
+    SSR --> CEN
+    CEN --> COMMIT
+    COMMIT --> SBE
+    SBE --> TS
+    TS --> TOMB
+    TOMB --> CQRS
+    CEN --> XREF
+    ORC --> XREF
+    TOMB --> EXP
+    EXP --> CONF
+    CONF --> IMP
+
+    classDef physical fill:#fce7f3,stroke:#db2777
+    classDef attest fill:#fed7aa,stroke:#c2410c
+    classDef issue fill:#dbeafe,stroke:#2563eb
+    classDef lifecycle fill:#dcfce7,stroke:#16a34a
+    classDef crossref fill:#fef3c7,stroke:#d97706
+    classDef bridge fill:#f3e8ff,stroke:#7c3aed
+
+    class M,SIG physical
+    class VDR,SSR attest
+    class CEN,COMMIT,SBE,TS issue
+    class TOMB,CQRS lifecycle
+    class ORC,XREF crossref
+    class EXP,CONF,IMP bridge
 ```
