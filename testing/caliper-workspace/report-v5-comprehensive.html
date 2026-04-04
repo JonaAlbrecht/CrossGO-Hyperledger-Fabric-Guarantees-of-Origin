@@ -1,0 +1,1119 @@
+<!doctype html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script>
+    function plotChart(divId, chartData) {
+        // Convert from stringified html, to valid JSON
+        const chartDetails = JSON.parse(chartData.replace(/&quot;/g,'"'));
+        new Chart(document.getElementById(divId), {
+            type: chartDetails.type,
+            data: {
+                labels: chartDetails.labels,
+                datasets: chartDetails.datasets
+            },
+            options: {
+                legend: { display: chartDetails.legend },
+                title: {
+                    display: true,
+                    text: chartDetails.title
+                }
+            }
+        });
+    }
+</script>
+<html>
+<head>
+    <title>Hyperledger Caliper Report</title>
+    <meta charset="UTF-8"/>
+    <style type="text/css">
+        .left-column {
+            position: fixed;
+            width:20%;
+        }
+        .left-column ul {
+            display: block;
+            padding: 0;
+            list-style: none;
+            border-bottom: 1px solid #d9d9d9;
+            font-size: 14px;
+        }
+        .left-column h2{
+            font-size: 24px;
+            font-weight: 400;
+            margin-block-end: 0.5em;
+        }
+        .left-column h3{
+            font-size: 18px;
+            font-weight: 400;
+            margin-block-end: 0.5em;
+        }
+        .left-column li{
+            margin-left: 10px;
+            margin-bottom: 5px;
+            color: #5e6b73;
+        }
+        .right-column {
+            margin-left: 22%;
+            width:60%;
+        }
+        .right-column table {
+            font-size:11px;
+            color:#333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        .right-column h2{
+            font-weight: 400;
+        }
+        .right-column h3{
+            font-weight: 400;
+        }
+        .right-column h4 {
+            font-weight: 400;
+            margin-block-end: 0;
+        }
+        .right-column th {
+            border-width: 1px;
+            font-size: small;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #f2f2f2;
+        }
+        .right-column td {
+            border-width: 1px;
+            font-size: small;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+            font-weight: 400;
+        }
+        .tag {
+            margin-bottom: 10px;
+            padding: 5px 10px;
+        }
+        pre {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -khtml-border-radius: 5px;
+            overflow:auto;
+            max-height:300px;
+            font-size:12px;
+        }
+        .charting {
+            display:flex;
+            flex-direction:row;
+            flex-wrap: wrap;
+            page-break-inside: auto;
+        }
+        .chart {
+            display:flex;
+            flex:1;
+            max-width: 50%;
+        }
+    </style>
+</head>
+<body style="font-family: IBM Plex Sans; font-weight: 200;">
+    <main>
+        <div class="left-column">
+            <img src="https://hyperledger.github.io/caliper/assets/img/hyperledger_caliper_logo_color.png" style="width:95%;" alt="">
+            <ul>
+                <h3>&nbspBasic information</h3>
+                <li>DLT: &nbsp<span style="font-weight: 500;">fabric</span></li>
+                <li>Name: &nbsp<span style="font-weight: 500;"></span></li>
+                <li>Description: &nbsp<span style="font-weight: 500;"></span></li>
+                <li>Benchmark Rounds: &nbsp<span style="font-weight: 500;">28</span></li>
+                <li><a href="#benchmarkInfo">Details</a></li>
+            </ul>
+            <ul>
+                <h3>&nbspBenchmark results</h3>
+                <li><a href="#benchmarksummary">Summary</a></li>
+                    <li><a href="#GetVersion-500tps">GetVersion-500tps</a></li>
+                    <li><a href="#GetVersion-1000tps">GetVersion-1000tps</a></li>
+                    <li><a href="#GetVersion-2000tps">GetVersion-2000tps</a></li>
+                    <li><a href="#GetDevice-500tps">GetDevice-500tps</a></li>
+                    <li><a href="#GetDevice-1000tps">GetDevice-1000tps</a></li>
+                    <li><a href="#GetDevice-2000tps">GetDevice-2000tps</a></li>
+                    <li><a href="#ListDevices-100tps">ListDevices-100tps</a></li>
+                    <li><a href="#ListDevices-500tps">ListDevices-500tps</a></li>
+                    <li><a href="#ListDevices-1000tps">ListDevices-1000tps</a></li>
+                    <li><a href="#ListDevicesPaginated-500tps">ListDevicesPaginated-500tps</a></li>
+                    <li><a href="#ListDevicesPaginated-1000tps">ListDevicesPaginated-1000tps</a></li>
+                    <li><a href="#GetCurrentEGOsList-500tps">GetCurrentEGOsList-500tps</a></li>
+                    <li><a href="#GetCurrentEGOsList-1000tps">GetCurrentEGOsList-1000tps</a></li>
+                    <li><a href="#GetCurrentEGOsListPaginated-500tps">GetCurrentEGOsListPaginated-500tps</a></li>
+                    <li><a href="#GetCurrentEGOsListPaginated-1000tps">GetCurrentEGOsListPaginated-1000tps</a></li>
+                    <li><a href="#GetCurrentBGOsList-500tps">GetCurrentBGOsList-500tps</a></li>
+                    <li><a href="#GetCurrentBGOsList-1000tps">GetCurrentBGOsList-1000tps</a></li>
+                    <li><a href="#RegisterDevice-serial">RegisterDevice-serial</a></li>
+                    <li><a href="#RegisterDevice-10tps">RegisterDevice-10tps</a></li>
+                    <li><a href="#RegisterDevice-25tps">RegisterDevice-25tps</a></li>
+                    <li><a href="#RegisterDevice-50tps">RegisterDevice-50tps</a></li>
+                    <li><a href="#CreateElectricityGO-serial">CreateElectricityGO-serial</a></li>
+                    <li><a href="#CreateElectricityGO-10tps">CreateElectricityGO-10tps</a></li>
+                    <li><a href="#CreateElectricityGO-25tps">CreateElectricityGO-25tps</a></li>
+                    <li><a href="#CreateBiogasGO-serial">CreateBiogasGO-serial</a></li>
+                    <li><a href="#CreateBiogasGO-10tps">CreateBiogasGO-10tps</a></li>
+                    <li><a href="#RegisterOrganization-serial">RegisterOrganization-serial</a></li>
+                    <li><a href="#RegisterOrganization-10tps">RegisterOrganization-10tps</a></li>
+            </ul>
+            <ul>
+                <h3>&nbspSystem under test</h3>
+                <li>Version: &nbsp<span style="font-weight: 500;">2.5.12</span></li>
+                <li>Size: &nbsp<span style="font-weight: 500;">4 Orgs, 4 Peers, 4 Orderers (Raft)</span></li>
+                <li>Distribution: &nbsp<span style="font-weight: 500;">Single Host (Hetzner VM)</span></li>
+                <li>StateDB: &nbsp<span style="font-weight: 500;">CouchDB</span></li>
+                <li><a href="#sutdetails">Details</a></li>
+            </ul>
+        </div>
+
+        <div class="right-column">
+            <h1 style="padding-top: 3em; font-weight: 500;">Caliper report</h1>
+            <div style="border-bottom: 1px solid #d9d9d9; margin-bottom: 10px;" id="benchmarksummary">
+                <table style="min-width: 100%;">
+                    <h3>Summary of performance metrics</h3>
+                    <tr>
+                         <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                    </tr>
+
+                    <tr>
+                         <td>GetVersion-500tps</td> <td>2500</td> <td>0</td> <td>501.7</td> <td>0.06</td> <td>0.00</td> <td>0.01</td> <td>500.9</td>
+                    </tr>
+                    <tr>
+                         <td>GetVersion-1000tps</td> <td>5000</td> <td>0</td> <td>1000.0</td> <td>0.03</td> <td>0.00</td> <td>0.00</td> <td>999.0</td>
+                    </tr>
+                    <tr>
+                         <td>GetVersion-2000tps</td> <td>10000</td> <td>0</td> <td>2000.0</td> <td>0.04</td> <td>0.00</td> <td>0.00</td> <td>1998.8</td>
+                    </tr>
+                    <tr>
+                         <td>GetDevice-500tps</td> <td>0</td> <td>2500</td> <td>501.3</td> <td>-</td> <td>-</td> <td>-</td> <td>500.3</td>
+                    </tr>
+                    <tr>
+                         <td>GetDevice-1000tps</td> <td>0</td> <td>5000</td> <td>1000.2</td> <td>-</td> <td>-</td> <td>-</td> <td>999.4</td>
+                    </tr>
+                    <tr>
+                         <td>GetDevice-2000tps</td> <td>0</td> <td>10000</td> <td>2000.0</td> <td>-</td> <td>-</td> <td>-</td> <td>1998.0</td>
+                    </tr>
+                    <tr>
+                         <td>ListDevices-100tps</td> <td>500</td> <td>0</td> <td>101.9</td> <td>0.06</td> <td>0.01</td> <td>0.05</td> <td>100.8</td>
+                    </tr>
+                    <tr>
+                         <td>ListDevices-500tps</td> <td>2410</td> <td>90</td> <td>501.5</td> <td>1.18</td> <td>0.04</td> <td>0.75</td> <td>436.4</td>
+                    </tr>
+                    <tr>
+                         <td>ListDevices-1000tps</td> <td>2116</td> <td>2884</td> <td>1001.6</td> <td>1.44</td> <td>0.11</td> <td>1.25</td> <td>861.9</td>
+                    </tr>
+                    <tr>
+                         <td>ListDevicesPaginated-500tps</td> <td>2500</td> <td>0</td> <td>501.7</td> <td>0.07</td> <td>0.01</td> <td>0.01</td> <td>500.4</td>
+                    </tr>
+                    <tr>
+                         <td>ListDevicesPaginated-1000tps</td> <td>3375</td> <td>1625</td> <td>1000.2</td> <td>0.87</td> <td>0.05</td> <td>0.73</td> <td>909.9</td>
+                    </tr>
+                    <tr>
+                         <td>GetCurrentEGOsList-500tps</td> <td>2500</td> <td>0</td> <td>501.5</td> <td>0.03</td> <td>0.01</td> <td>0.01</td> <td>500.6</td>
+                    </tr>
+                    <tr>
+                         <td>GetCurrentEGOsList-1000tps</td> <td>5000</td> <td>0</td> <td>1001.2</td> <td>0.06</td> <td>0.00</td> <td>0.01</td> <td>1000.2</td>
+                    </tr>
+                    <tr>
+                         <td>GetCurrentEGOsListPaginated-500tps</td> <td>2500</td> <td>0</td> <td>501.4</td> <td>0.03</td> <td>0.01</td> <td>0.01</td> <td>500.7</td>
+                    </tr>
+                    <tr>
+                         <td>GetCurrentEGOsListPaginated-1000tps</td> <td>5000</td> <td>0</td> <td>1000.8</td> <td>0.05</td> <td>0.00</td> <td>0.01</td> <td>1000.0</td>
+                    </tr>
+                    <tr>
+                         <td>GetCurrentBGOsList-500tps</td> <td>2500</td> <td>0</td> <td>501.4</td> <td>0.03</td> <td>0.01</td> <td>0.01</td> <td>500.1</td>
+                    </tr>
+                    <tr>
+                         <td>GetCurrentBGOsList-1000tps</td> <td>5000</td> <td>0</td> <td>1001.4</td> <td>0.04</td> <td>0.00</td> <td>0.01</td> <td>1000.4</td>
+                    </tr>
+                    <tr>
+                         <td>RegisterDevice-serial</td> <td>20</td> <td>0</td> <td>4.0</td> <td>0.12</td> <td>0.10</td> <td>0.11</td> <td>3.9</td>
+                    </tr>
+                    <tr>
+                         <td>RegisterDevice-10tps</td> <td>100</td> <td>0</td> <td>11.1</td> <td>0.11</td> <td>0.08</td> <td>0.09</td> <td>11.0</td>
+                    </tr>
+                    <tr>
+                         <td>RegisterDevice-25tps</td> <td>250</td> <td>0</td> <td>26.0</td> <td>0.11</td> <td>0.07</td> <td>0.10</td> <td>25.8</td>
+                    </tr>
+                    <tr>
+                         <td>RegisterDevice-50tps</td> <td>500</td> <td>0</td> <td>51.0</td> <td>0.13</td> <td>0.07</td> <td>0.09</td> <td>50.5</td>
+                    </tr>
+                    <tr>
+                         <td>CreateElectricityGO-serial</td> <td>0</td> <td>10</td> <td>1428.6</td> <td>-</td> <td>-</td> <td>-</td> <td>434.8</td>
+                    </tr>
+                    <tr>
+                         <td>CreateElectricityGO-10tps</td> <td>0</td> <td>100</td> <td>11.1</td> <td>-</td> <td>-</td> <td>-</td> <td>11.1</td>
+                    </tr>
+                    <tr>
+                         <td>CreateElectricityGO-25tps</td> <td>0</td> <td>250</td> <td>26.0</td> <td>-</td> <td>-</td> <td>-</td> <td>26.0</td>
+                    </tr>
+                    <tr>
+                         <td>CreateBiogasGO-serial</td> <td>0</td> <td>10</td> <td>1111.1</td> <td>-</td> <td>-</td> <td>-</td> <td>400.0</td>
+                    </tr>
+                    <tr>
+                         <td>CreateBiogasGO-10tps</td> <td>0</td> <td>100</td> <td>11.1</td> <td>-</td> <td>-</td> <td>-</td> <td>11.1</td>
+                    </tr>
+                    <tr>
+                         <td>RegisterOrganization-serial</td> <td>1</td> <td>9</td> <td>833.3</td> <td>0.09</td> <td>0.09</td> <td>0.09</td> <td>101.0</td>
+                    </tr>
+                    <tr>
+                         <td>RegisterOrganization-10tps</td> <td>4</td> <td>46</td> <td>12.5</td> <td>0.11</td> <td>0.10</td> <td>0.10</td> <td>12.2</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="GetVersion-500tps">
+                <h2>Benchmark round: GetVersion-500tps</h2>
+                <p>admin:GetVersion point query at 500 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 500
+</pre>
+                        <h3>Performance metrics for GetVersion-500tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>GetVersion-500tps</td> <td>2500</td> <td>0</td> <td>501.7</td> <td>0.06</td> <td>0.00</td> <td>0.01</td> <td>500.9</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for GetVersion-500tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="GetVersion-1000tps">
+                <h2>Benchmark round: GetVersion-1000tps</h2>
+                <p>admin:GetVersion point query at 1000 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 1000
+</pre>
+                        <h3>Performance metrics for GetVersion-1000tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>GetVersion-1000tps</td> <td>5000</td> <td>0</td> <td>1000.0</td> <td>0.03</td> <td>0.00</td> <td>0.00</td> <td>999.0</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for GetVersion-1000tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="GetVersion-2000tps">
+                <h2>Benchmark round: GetVersion-2000tps</h2>
+                <p>admin:GetVersion at 2000 TPS — ceiling test</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 2000
+</pre>
+                        <h3>Performance metrics for GetVersion-2000tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>GetVersion-2000tps</td> <td>10000</td> <td>0</td> <td>2000.0</td> <td>0.04</td> <td>0.00</td> <td>0.00</td> <td>1998.8</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for GetVersion-2000tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="GetDevice-500tps">
+                <h2>Benchmark round: GetDevice-500tps</h2>
+                <p>device:GetDevice point query at 500 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 500
+</pre>
+                        <h3>Performance metrics for GetDevice-500tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>GetDevice-500tps</td> <td>0</td> <td>2500</td> <td>501.3</td> <td>-</td> <td>-</td> <td>-</td> <td>500.3</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for GetDevice-500tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="GetDevice-1000tps">
+                <h2>Benchmark round: GetDevice-1000tps</h2>
+                <p>device:GetDevice at 1000 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 1000
+</pre>
+                        <h3>Performance metrics for GetDevice-1000tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>GetDevice-1000tps</td> <td>0</td> <td>5000</td> <td>1000.2</td> <td>-</td> <td>-</td> <td>-</td> <td>999.4</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for GetDevice-1000tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="GetDevice-2000tps">
+                <h2>Benchmark round: GetDevice-2000tps</h2>
+                <p>device:GetDevice at 2000 TPS — stress test</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 2000
+</pre>
+                        <h3>Performance metrics for GetDevice-2000tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>GetDevice-2000tps</td> <td>0</td> <td>10000</td> <td>2000.0</td> <td>-</td> <td>-</td> <td>-</td> <td>1998.0</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for GetDevice-2000tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="ListDevices-100tps">
+                <h2>Benchmark round: ListDevices-100tps</h2>
+                <p>device:ListDevices range query at 100 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 100
+</pre>
+                        <h3>Performance metrics for ListDevices-100tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>ListDevices-100tps</td> <td>500</td> <td>0</td> <td>101.9</td> <td>0.06</td> <td>0.01</td> <td>0.05</td> <td>100.8</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for ListDevices-100tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="ListDevices-500tps">
+                <h2>Benchmark round: ListDevices-500tps</h2>
+                <p>device:ListDevices at 500 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 500
+</pre>
+                        <h3>Performance metrics for ListDevices-500tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>ListDevices-500tps</td> <td>2410</td> <td>90</td> <td>501.5</td> <td>1.18</td> <td>0.04</td> <td>0.75</td> <td>436.4</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for ListDevices-500tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="ListDevices-1000tps">
+                <h2>Benchmark round: ListDevices-1000tps</h2>
+                <p>device:ListDevices at 1000 TPS — stress test</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 1000
+</pre>
+                        <h3>Performance metrics for ListDevices-1000tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>ListDevices-1000tps</td> <td>2116</td> <td>2884</td> <td>1001.6</td> <td>1.44</td> <td>0.11</td> <td>1.25</td> <td>861.9</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for ListDevices-1000tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="ListDevicesPaginated-500tps">
+                <h2>Benchmark round: ListDevicesPaginated-500tps</h2>
+                <p>device:ListDevicesPaginated (page&#x3D;10) at 500 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 500
+</pre>
+                        <h3>Performance metrics for ListDevicesPaginated-500tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>ListDevicesPaginated-500tps</td> <td>2500</td> <td>0</td> <td>501.7</td> <td>0.07</td> <td>0.01</td> <td>0.01</td> <td>500.4</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for ListDevicesPaginated-500tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="ListDevicesPaginated-1000tps">
+                <h2>Benchmark round: ListDevicesPaginated-1000tps</h2>
+                <p>device:ListDevicesPaginated (page&#x3D;10) at 1000 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 1000
+</pre>
+                        <h3>Performance metrics for ListDevicesPaginated-1000tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>ListDevicesPaginated-1000tps</td> <td>3375</td> <td>1625</td> <td>1000.2</td> <td>0.87</td> <td>0.05</td> <td>0.73</td> <td>909.9</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for ListDevicesPaginated-1000tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="GetCurrentEGOsList-500tps">
+                <h2>Benchmark round: GetCurrentEGOsList-500tps</h2>
+                <p>query:GetCurrentEGOsList at 500 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 500
+</pre>
+                        <h3>Performance metrics for GetCurrentEGOsList-500tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>GetCurrentEGOsList-500tps</td> <td>2500</td> <td>0</td> <td>501.5</td> <td>0.03</td> <td>0.01</td> <td>0.01</td> <td>500.6</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for GetCurrentEGOsList-500tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="GetCurrentEGOsList-1000tps">
+                <h2>Benchmark round: GetCurrentEGOsList-1000tps</h2>
+                <p>query:GetCurrentEGOsList at 1000 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 1000
+</pre>
+                        <h3>Performance metrics for GetCurrentEGOsList-1000tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>GetCurrentEGOsList-1000tps</td> <td>5000</td> <td>0</td> <td>1001.2</td> <td>0.06</td> <td>0.00</td> <td>0.01</td> <td>1000.2</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for GetCurrentEGOsList-1000tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="GetCurrentEGOsListPaginated-500tps">
+                <h2>Benchmark round: GetCurrentEGOsListPaginated-500tps</h2>
+                <p>query:GetCurrentEGOsListPaginated (page&#x3D;50) at 500 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 500
+</pre>
+                        <h3>Performance metrics for GetCurrentEGOsListPaginated-500tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>GetCurrentEGOsListPaginated-500tps</td> <td>2500</td> <td>0</td> <td>501.4</td> <td>0.03</td> <td>0.01</td> <td>0.01</td> <td>500.7</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for GetCurrentEGOsListPaginated-500tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="GetCurrentEGOsListPaginated-1000tps">
+                <h2>Benchmark round: GetCurrentEGOsListPaginated-1000tps</h2>
+                <p>query:GetCurrentEGOsListPaginated (page&#x3D;50) at 1000 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 1000
+</pre>
+                        <h3>Performance metrics for GetCurrentEGOsListPaginated-1000tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>GetCurrentEGOsListPaginated-1000tps</td> <td>5000</td> <td>0</td> <td>1000.8</td> <td>0.05</td> <td>0.00</td> <td>0.01</td> <td>1000.0</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for GetCurrentEGOsListPaginated-1000tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="GetCurrentBGOsList-500tps">
+                <h2>Benchmark round: GetCurrentBGOsList-500tps</h2>
+                <p>query:GetCurrentBGOsList biogas range query at 500 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 500
+</pre>
+                        <h3>Performance metrics for GetCurrentBGOsList-500tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>GetCurrentBGOsList-500tps</td> <td>2500</td> <td>0</td> <td>501.4</td> <td>0.03</td> <td>0.01</td> <td>0.01</td> <td>500.1</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for GetCurrentBGOsList-500tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="GetCurrentBGOsList-1000tps">
+                <h2>Benchmark round: GetCurrentBGOsList-1000tps</h2>
+                <p>query:GetCurrentBGOsList at 1000 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 1000
+</pre>
+                        <h3>Performance metrics for GetCurrentBGOsList-1000tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>GetCurrentBGOsList-1000tps</td> <td>5000</td> <td>0</td> <td>1001.4</td> <td>0.04</td> <td>0.00</td> <td>0.01</td> <td>1000.4</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for GetCurrentBGOsList-1000tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="RegisterDevice-serial">
+                <h2>Benchmark round: RegisterDevice-serial</h2>
+                <p>device:RegisterDevice serial (1 worker)</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-load
+  opts:
+    startTps: 2
+    transactionLoad: 1
+</pre>
+                        <h3>Performance metrics for RegisterDevice-serial</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>RegisterDevice-serial</td> <td>20</td> <td>0</td> <td>4.0</td> <td>0.12</td> <td>0.10</td> <td>0.11</td> <td>3.9</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for RegisterDevice-serial</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="RegisterDevice-10tps">
+                <h2>Benchmark round: RegisterDevice-10tps</h2>
+                <p>device:RegisterDevice at 10 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 10
+</pre>
+                        <h3>Performance metrics for RegisterDevice-10tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>RegisterDevice-10tps</td> <td>100</td> <td>0</td> <td>11.1</td> <td>0.11</td> <td>0.08</td> <td>0.09</td> <td>11.0</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for RegisterDevice-10tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="RegisterDevice-25tps">
+                <h2>Benchmark round: RegisterDevice-25tps</h2>
+                <p>device:RegisterDevice at 25 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 25
+</pre>
+                        <h3>Performance metrics for RegisterDevice-25tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>RegisterDevice-25tps</td> <td>250</td> <td>0</td> <td>26.0</td> <td>0.11</td> <td>0.07</td> <td>0.10</td> <td>25.8</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for RegisterDevice-25tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="RegisterDevice-50tps">
+                <h2>Benchmark round: RegisterDevice-50tps</h2>
+                <p>device:RegisterDevice at 50 TPS — stress</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 50
+</pre>
+                        <h3>Performance metrics for RegisterDevice-50tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>RegisterDevice-50tps</td> <td>500</td> <td>0</td> <td>51.0</td> <td>0.13</td> <td>0.07</td> <td>0.09</td> <td>50.5</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for RegisterDevice-50tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="CreateElectricityGO-serial">
+                <h2>Benchmark round: CreateElectricityGO-serial</h2>
+                <p>issuance:CreateElectricityGO serial</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-load
+  opts:
+    startTps: 2
+    transactionLoad: 1
+</pre>
+                        <h3>Performance metrics for CreateElectricityGO-serial</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>CreateElectricityGO-serial</td> <td>0</td> <td>10</td> <td>1428.6</td> <td>-</td> <td>-</td> <td>-</td> <td>434.8</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for CreateElectricityGO-serial</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="CreateElectricityGO-10tps">
+                <h2>Benchmark round: CreateElectricityGO-10tps</h2>
+                <p>issuance:CreateElectricityGO at 10 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 10
+</pre>
+                        <h3>Performance metrics for CreateElectricityGO-10tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>CreateElectricityGO-10tps</td> <td>0</td> <td>100</td> <td>11.1</td> <td>-</td> <td>-</td> <td>-</td> <td>11.1</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for CreateElectricityGO-10tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="CreateElectricityGO-25tps">
+                <h2>Benchmark round: CreateElectricityGO-25tps</h2>
+                <p>issuance:CreateElectricityGO at 25 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 25
+</pre>
+                        <h3>Performance metrics for CreateElectricityGO-25tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>CreateElectricityGO-25tps</td> <td>0</td> <td>250</td> <td>26.0</td> <td>-</td> <td>-</td> <td>-</td> <td>26.0</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for CreateElectricityGO-25tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="CreateBiogasGO-serial">
+                <h2>Benchmark round: CreateBiogasGO-serial</h2>
+                <p>biogas:CreateBiogasGO serial</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-load
+  opts:
+    startTps: 2
+    transactionLoad: 1
+</pre>
+                        <h3>Performance metrics for CreateBiogasGO-serial</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>CreateBiogasGO-serial</td> <td>0</td> <td>10</td> <td>1111.1</td> <td>-</td> <td>-</td> <td>-</td> <td>400.0</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for CreateBiogasGO-serial</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="CreateBiogasGO-10tps">
+                <h2>Benchmark round: CreateBiogasGO-10tps</h2>
+                <p>biogas:CreateBiogasGO at 10 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 10
+</pre>
+                        <h3>Performance metrics for CreateBiogasGO-10tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>CreateBiogasGO-10tps</td> <td>0</td> <td>100</td> <td>11.1</td> <td>-</td> <td>-</td> <td>-</td> <td>11.1</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for CreateBiogasGO-10tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="RegisterOrganization-serial">
+                <h2>Benchmark round: RegisterOrganization-serial</h2>
+                <p>admin:RegisterOrganization serial</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-load
+  opts:
+    startTps: 2
+    transactionLoad: 1
+</pre>
+                        <h3>Performance metrics for RegisterOrganization-serial</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>RegisterOrganization-serial</td> <td>1</td> <td>9</td> <td>833.3</td> <td>0.09</td> <td>0.09</td> <td>0.09</td> <td>101.0</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for RegisterOrganization-serial</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="RegisterOrganization-10tps">
+                <h2>Benchmark round: RegisterOrganization-10tps</h2>
+                <p>admin:RegisterOrganization at 10 TPS</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 10
+</pre>
+                        <h3>Performance metrics for RegisterOrganization-10tps</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>RegisterOrganization-10tps</td> <td>4</td> <td>46</td> <td>12.5</td> <td>0.11</td> <td>0.10</td> <td>0.10</td> <td>12.2</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for RegisterOrganization-10tps</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;">
+                <h2>Test Environment</h2>
+                <h3>benchmark config</h3>
+                <pre id="benchmarkInfo" style="overflow: visible;white-space: pre-wrap;max-height:100%;">workers:
+  type: local
+  number: 10
+rounds:
+  - label: GetVersion-500tps
+    description: &#39;admin:GetVersion point query at 500 TPS&#39;
+    txNumber: 2500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 500
+    workload:
+      module: workload&#x2F;getVersion.js
+  - label: GetVersion-1000tps
+    description: &#39;admin:GetVersion point query at 1000 TPS&#39;
+    txNumber: 5000
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 1000
+    workload:
+      module: workload&#x2F;getVersion.js
+  - label: GetVersion-2000tps
+    description: &#39;admin:GetVersion at 2000 TPS — ceiling test&#39;
+    txNumber: 10000
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 2000
+    workload:
+      module: workload&#x2F;getVersion.js
+  - label: GetDevice-500tps
+    description: &#39;device:GetDevice point query at 500 TPS&#39;
+    txNumber: 2500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 500
+    workload:
+      module: workload&#x2F;getDevice.js
+      arguments:
+        maxDeviceId: 30
+  - label: GetDevice-1000tps
+    description: &#39;device:GetDevice at 1000 TPS&#39;
+    txNumber: 5000
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 1000
+    workload:
+      module: workload&#x2F;getDevice.js
+      arguments:
+        maxDeviceId: 30
+  - label: GetDevice-2000tps
+    description: &#39;device:GetDevice at 2000 TPS — stress test&#39;
+    txNumber: 10000
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 2000
+    workload:
+      module: workload&#x2F;getDevice.js
+      arguments:
+        maxDeviceId: 30
+  - label: ListDevices-100tps
+    description: &#39;device:ListDevices range query at 100 TPS&#39;
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 100
+    workload:
+      module: workload&#x2F;listDevices.js
+  - label: ListDevices-500tps
+    description: &#39;device:ListDevices at 500 TPS&#39;
+    txNumber: 2500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 500
+    workload:
+      module: workload&#x2F;listDevices.js
+  - label: ListDevices-1000tps
+    description: &#39;device:ListDevices at 1000 TPS — stress test&#39;
+    txNumber: 5000
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 1000
+    workload:
+      module: workload&#x2F;listDevices.js
+  - label: ListDevicesPaginated-500tps
+    description: &#39;device:ListDevicesPaginated (page&#x3D;10) at 500 TPS&#39;
+    txNumber: 2500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 500
+    workload:
+      module: workload&#x2F;listDevicesPaginated.js
+      arguments:
+        pageSize: 10
+  - label: ListDevicesPaginated-1000tps
+    description: &#39;device:ListDevicesPaginated (page&#x3D;10) at 1000 TPS&#39;
+    txNumber: 5000
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 1000
+    workload:
+      module: workload&#x2F;listDevicesPaginated.js
+      arguments:
+        pageSize: 10
+  - label: GetCurrentEGOsList-500tps
+    description: &#39;query:GetCurrentEGOsList at 500 TPS&#39;
+    txNumber: 2500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 500
+    workload:
+      module: workload&#x2F;getCurrentEGOsList.js
+  - label: GetCurrentEGOsList-1000tps
+    description: &#39;query:GetCurrentEGOsList at 1000 TPS&#39;
+    txNumber: 5000
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 1000
+    workload:
+      module: workload&#x2F;getCurrentEGOsList.js
+  - label: GetCurrentEGOsListPaginated-500tps
+    description: &#39;query:GetCurrentEGOsListPaginated (page&#x3D;50) at 500 TPS&#39;
+    txNumber: 2500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 500
+    workload:
+      module: workload&#x2F;getCurrentEGOsListPaginated.js
+      arguments:
+        pageSize: 50
+  - label: GetCurrentEGOsListPaginated-1000tps
+    description: &#39;query:GetCurrentEGOsListPaginated (page&#x3D;50) at 1000 TPS&#39;
+    txNumber: 5000
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 1000
+    workload:
+      module: workload&#x2F;getCurrentEGOsListPaginated.js
+      arguments:
+        pageSize: 50
+  - label: GetCurrentBGOsList-500tps
+    description: &#39;query:GetCurrentBGOsList biogas range query at 500 TPS&#39;
+    txNumber: 2500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 500
+    workload:
+      module: workload&#x2F;getCurrentBGOsList.js
+  - label: GetCurrentBGOsList-1000tps
+    description: &#39;query:GetCurrentBGOsList at 1000 TPS&#39;
+    txNumber: 5000
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 1000
+    workload:
+      module: workload&#x2F;getCurrentBGOsList.js
+  - label: RegisterDevice-serial
+    description: &#39;device:RegisterDevice serial (1 worker)&#39;
+    txNumber: 20
+    rateControl:
+      type: fixed-load
+      opts:
+        startTps: 2
+        transactionLoad: 1
+    workload:
+      module: workload&#x2F;registerDevice.js
+  - label: RegisterDevice-10tps
+    description: &#39;device:RegisterDevice at 10 TPS&#39;
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 10
+    workload:
+      module: workload&#x2F;registerDevice.js
+  - label: RegisterDevice-25tps
+    description: &#39;device:RegisterDevice at 25 TPS&#39;
+    txNumber: 250
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 25
+    workload:
+      module: workload&#x2F;registerDevice.js
+  - label: RegisterDevice-50tps
+    description: &#39;device:RegisterDevice at 50 TPS — stress&#39;
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 50
+    workload:
+      module: workload&#x2F;registerDevice.js
+  - label: CreateElectricityGO-serial
+    description: &#39;issuance:CreateElectricityGO serial&#39;
+    txNumber: 10
+    rateControl:
+      type: fixed-load
+      opts:
+        startTps: 2
+        transactionLoad: 1
+    workload:
+      module: workload&#x2F;createElectricityGO.js
+  - label: CreateElectricityGO-10tps
+    description: &#39;issuance:CreateElectricityGO at 10 TPS&#39;
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 10
+    workload:
+      module: workload&#x2F;createElectricityGO.js
+  - label: CreateElectricityGO-25tps
+    description: &#39;issuance:CreateElectricityGO at 25 TPS&#39;
+    txNumber: 250
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 25
+    workload:
+      module: workload&#x2F;createElectricityGO.js
+  - label: CreateBiogasGO-serial
+    description: &#39;biogas:CreateBiogasGO serial&#39;
+    txNumber: 10
+    rateControl:
+      type: fixed-load
+      opts:
+        startTps: 2
+        transactionLoad: 1
+    workload:
+      module: workload&#x2F;createBiogasGO.js
+  - label: CreateBiogasGO-10tps
+    description: &#39;biogas:CreateBiogasGO at 10 TPS&#39;
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 10
+    workload:
+      module: workload&#x2F;createBiogasGO.js
+  - label: RegisterOrganization-serial
+    description: &#39;admin:RegisterOrganization serial&#39;
+    txNumber: 10
+    rateControl:
+      type: fixed-load
+      opts:
+        startTps: 2
+        transactionLoad: 1
+    workload:
+      module: workload&#x2F;registerOrganization.js
+  - label: RegisterOrganization-10tps
+    description: &#39;admin:RegisterOrganization at 10 TPS&#39;
+    txNumber: 50
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 10
+    workload:
+      module: workload&#x2F;registerOrganization.js
+</pre>
+                <h3>SUT</h3>
+                <pre id="sutdetails">not provided</pre>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

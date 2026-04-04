@@ -1,0 +1,28 @@
+test:
+  workers:
+    type: local
+    number: 1
+  rounds:
+    # Seed electricity devices
+    - label: Seed-Electricity-Devices
+      description: Register 20 electricity metering devices
+      txNumber: 20
+      rateControl:
+        type: fixed-load
+        opts:
+          startTps: 2
+          transactionLoad: 1
+      workload:
+        module: workload/registerDevice.js
+
+    # Seed biogas devices
+    - label: Seed-Biogas-Devices
+      description: Register 10 biogas metering devices
+      txNumber: 10
+      rateControl:
+        type: fixed-load
+        opts:
+          startTps: 2
+          transactionLoad: 1
+      workload:
+        module: workload/registerBiogasDevice.js
