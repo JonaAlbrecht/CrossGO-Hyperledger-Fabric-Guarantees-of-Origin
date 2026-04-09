@@ -762,3 +762,152 @@ graph TB
     class ORC,XREF crossref
     class EXP,CONF,IMP bridge
 ```
+
+---
+
+## 17. v7.0 Multi-Channel Architecture with Bridge Burn-and-Mint
+
+Combines the network topology, the GO lifecycle state machine, and the multi-channel bridge architecture into one unified diagram. Shows how GOs flow through lifecycle states within national registry channels, while the bridge channel coordinates cross-registry transfers via a burn-and-mint pattern.
+
+```mermaid
+graph TB
+    %% ─── Orderer Cluster (shared across all channels) ───
+    subgraph Orderers["🔗 Raft Orderer Cluster (shared)"]
+        O1["orderer1 :7050"]
+        O2["orderer2 :8050"]
+        O3["orderer3 :9050"]
+        O4["orderer4 :10050"]
+        O1 <--> O2
+        O2 <--> O3
+        O3 <--> O4
+    end
+
+    %% ─── Registry A Channel (e.g. Germany — electricity) ───
+    subgraph ChannelA["📘 Channel A — Registry A (e.g. DE Electricity)"]
+        direction TB
+        subgraph PeersA["Org Peers"]
+            PA_ISS["peer0.issuerA<br/>🏛️ Tier 1"]
+            PA_PROD["peer0.producerA<br/>🏭 Tier 2"]
+            PA_BUY["peer0.buyerA<br/>🏠 Tier 3"]
+        end
+
+        subgraph ChaincodeA["Chaincode (golifecycle)"]
+            CC_A_ISS[issuance]
+            CC_A_TRN[transfer]
+            CC_A_CNV[conversion]
+            CC_A_CAN[cancellation]
+            CC_A_QRY[query]
+            CC_A_DEV[device]
+        end
+
+        subgraph LifecycleA["GO Lifecycle — Channel A"]
+            direction LR
+            A_ACT((Active))
+            A_CAN_ST((Cancelled))
+            A_TRN_ST((Transferred))
+            A_BURN((🔥 Burned<br/>for Export))
+        end
+
+        PA_ISS --> ChaincodeA
+        PA_PROD --> ChaincodeA
+        PA_BUY --> ChaincodeA
+    end
+
+    %% ─── Bridge Channel (shared between registries) ───
+    subgraph BridgeCh["🌉 Bridge Channel — Cross-Registry Transfers"]
+        direction TB
+        subgraph BridgePeers["Bridge Anchor Peers"]
+            BP_A["anchorPeer.registryA"]
+            BP_B["anchorPeer.registryB"]
+            BP_HUB["anchorPeer.bridgeHub<br/>(neutral operator)"]
+        end
+
+        subgraph BridgeCC["BridgeContract"]
+            B_EXP["ExportGO<br/>① Lock source GO<br/>② Create bridge record<br/>③ Status → pending"]
+            B_CONF["ConfirmExport<br/>④ Destination ack<br/>⑤ Status → confirmed"]
+            B_IMP["ImportGO<br/>⑥ Mint new GO<br/>⑦ CEN-EN 16325 metadata<br/>⑧ Status → completed"]
+        end
+
+        subgraph BridgeState["Bridge Transfer Records"]
+            BT1["bridge_abc123<br/>direction: export<br/>sourceRegistry: A<br/>destRegistry: B<br/>status: confirmed"]
+            BT2["bridge_def456<br/>direction: import<br/>sourceRegistry: A<br/>destRegistry: B<br/>status: completed"]
+        end
+
+        BP_A --> BridgeCC
+        BP_B --> BridgeCC
+        BP_HUB --> BridgeCC
+        BridgeCC --> BridgeState
+    end
+
+    %% ─── Registry B Channel (e.g. Netherlands — hydrogen) ───
+    subgraph ChannelB["📗 Channel B — Registry B (e.g. NL Hydrogen)"]
+        direction TB
+        subgraph PeersB["Org Peers"]
+            PB_ISS["peer0.issuerB<br/>🏛️ Tier 1"]
+            PB_PROD["peer0.producerB<br/>🏭 Tier 2"]
+            PB_BUY["peer0.buyerB<br/>🏠 Tier 3"]
+        end
+
+        subgraph ChaincodeB["Chaincode (golifecycle)"]
+            CC_B_ISS[issuance]
+            CC_B_TRN[transfer]
+            CC_B_CNV[conversion]
+            CC_B_CAN[cancellation]
+            CC_B_QRY[query]
+            CC_B_DEV[device]
+        end
+
+        subgraph LifecycleB["GO Lifecycle — Channel B"]
+            direction LR
+            B_MINT((🪙 Minted<br/>from Import))
+            B_ACT((Active))
+            B_CAN_ST((Cancelled))
+            B_TRN_ST((Transferred))
+        end
+
+        PB_ISS --> ChaincodeB
+        PB_PROD --> ChaincodeB
+        PB_BUY --> ChaincodeB
+    end
+
+    %% ─── Lifecycle flows within channels ───
+    A_ACT -->|"TransferGO"| A_TRN_ST
+    A_ACT -->|"ClaimRenewable<br/>Attributes"| A_CAN_ST
+    A_ACT -->|"bridge:ExportGO<br/>(🔥 burn)"| A_BURN
+
+    B_MINT -->|"activated"| B_ACT
+    B_ACT -->|"TransferGO"| B_TRN_ST
+    B_ACT -->|"ClaimRenewable<br/>Attributes"| B_CAN_ST
+
+    %% ─── Cross-channel bridge flow (burn → bridge → mint) ───
+    A_BURN ==>|"① Lock & record<br/>on Channel A"| B_EXP
+    B_EXP ==>|"② Bridge record<br/>pending"| B_CONF
+    B_CONF ==>|"③ Mint new GO<br/>on Channel B"| B_IMP
+    B_IMP ==>|"④ New GO appears<br/>in Registry B"| B_MINT
+
+    %% ─── Orderer connections ───
+    PeersA -.->|blocks| Orderers
+    BridgePeers -.->|blocks| Orderers
+    PeersB -.->|blocks| Orderers
+
+    %% ─── Styles ───
+    classDef channelA fill:#dbeafe,stroke:#2563eb,color:#1e3a5f
+    classDef channelB fill:#dcfce7,stroke:#16a34a,color:#14532d
+    classDef bridge fill:#fef3c7,stroke:#d97706,color:#78350f
+    classDef orderer fill:#fed7aa,stroke:#c2410c
+    classDef active fill:#bbf7d0,stroke:#15803d,color:#14532d
+    classDef cancelled fill:#fecaca,stroke:#dc2626,color:#7f1d1d
+    classDef transferred fill:#e0e7ff,stroke:#4338ca,color:#312e81
+    classDef burned fill:#fecdd3,stroke:#e11d48,color:#881337
+    classDef minted fill:#a7f3d0,stroke:#059669,color:#064e3b
+
+    class PA_ISS,PA_PROD,PA_BUY,CC_A_ISS,CC_A_TRN,CC_A_CNV,CC_A_CAN,CC_A_QRY,CC_A_DEV channelA
+    class PB_ISS,PB_PROD,PB_BUY,CC_B_ISS,CC_B_TRN,CC_B_CNV,CC_B_CAN,CC_B_QRY,CC_B_DEV channelB
+    class BP_A,BP_B,BP_HUB,B_EXP,B_CONF,B_IMP,BT1,BT2 bridge
+    class O1,O2,O3,O4 orderer
+    class A_ACT,B_ACT active
+    class A_CAN_ST,B_CAN_ST cancelled
+    class A_TRN_ST,B_TRN_ST transferred
+    class A_BURN burned
+    class B_MINT minted
+```

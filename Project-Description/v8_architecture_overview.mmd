@@ -1,0 +1,67 @@
+%%{init: {'theme': 'base', 'themeVariables': {'fontSize': '36px', 'fontFamily': 'arial', 'primaryColor': '#4a90d9', 'primaryTextColor': '#1a1a1a', 'lineColor': '#555555'}, 'flowchart': {'nodeSpacing': 40, 'rankSpacing': 60, 'padding': 35, 'subGraphTitleMargin': {'top': 20, 'bottom': 20}, 'htmlLabels': true}}}%%
+graph TB
+    subgraph NETWORK["&nbsp;&nbsp;&nbsp;&nbsp; Blockchain Network &nbsp;&nbsp;&nbsp;&nbsp;"]
+        direction LR
+        NET_SP[ ]:::spacer
+        ORD["&nbsp;&nbsp;&nbsp; Consensus<br/>Service &nbsp;&nbsp;&nbsp;"]
+        NET_SP ~~~ ORD
+    end
+
+    subgraph CH_ELEC["&nbsp;&nbsp;&nbsp;&nbsp; Electricity Ledger &nbsp;&nbsp;&nbsp;&nbsp;"]
+        direction TB
+        EL_SP[ ]:::spacer
+        E_ACTIVE["&nbsp;&nbsp; Electricity GO &nbsp;&nbsp;<br/><b>Active</b>"]
+        E_LOCKED["&nbsp;&nbsp; Electricity GO &nbsp;&nbsp;<br/><b>Locked for Conversion</b>"]
+        E_BRIDGED["&nbsp;&nbsp; Electricity GO &nbsp;&nbsp;<br/><b>Converted</b>"]
+
+        EL_SP ~~~ E_ACTIVE
+        E_ACTIVE -->|"&nbsp; <b>1. Lock</b> &nbsp;"| E_LOCKED
+        E_LOCKED -->|"&nbsp; <b>3. Finalize</b> &nbsp;"| E_BRIDGED
+    end
+
+    subgraph CH_H2["&nbsp;&nbsp;&nbsp;&nbsp; Hydrogen Ledger &nbsp;&nbsp;&nbsp;&nbsp;"]
+        direction TB
+        H2_SP[ ]:::spacer
+        H_NEW["&nbsp;&nbsp; Hydrogen GO &nbsp;&nbsp;<br/><b>Newly Issued</b><br/>Inherits origin data"]
+        H2_SP ~~~ H_NEW
+    end
+
+    subgraph ROLES["&nbsp;&nbsp;&nbsp;&nbsp; Participants &nbsp;&nbsp;&nbsp;&nbsp;"]
+        direction TB
+        RO_SP[ ]:::spacer
+        ISS["&nbsp;&nbsp; <b>Issuer</b> &nbsp;&nbsp;<br/>Trusted authority<br/>Bridges both ledgers"]
+        EP["&nbsp;&nbsp; <b>Electricity Producer</b> &nbsp;&nbsp;"]
+        HP["&nbsp;&nbsp; <b>Hydrogen Producer</b> &nbsp;&nbsp;"]
+        BUY["&nbsp;&nbsp; <b>Buyer</b> &nbsp;&nbsp;<br/>Trades on both ledgers"]
+        RO_SP ~~~ ISS
+    end
+
+    classDef spacer fill:none,stroke:none,color:transparent,font-size:1px
+
+    ISS ---|"member"| CH_ELEC
+    ISS ---|"member"| CH_H2
+    EP ---|"member"| CH_ELEC
+    HP ---|"member"| CH_H2
+    BUY ---|"member"| CH_ELEC
+    BUY ---|"member"| CH_H2
+
+    E_LOCKED ==>|"&nbsp; <b>2. Convert</b> &nbsp;<br/>Issuer verifies origin<br/>& creates hydrogen GO"| H_NEW
+
+    NETWORK -.->|"secures"| CH_ELEC
+    NETWORK -.->|"secures"| CH_H2
+
+    style CH_ELEC fill:#d0e4f7,stroke:#1565C0,stroke-width:3px,color:#0d47a1
+    style CH_H2 fill:#c8e6c9,stroke:#2E7D32,stroke-width:3px,color:#1b5e20
+    style NETWORK fill:#ffe0b2,stroke:#E65100,stroke-width:2px,color:#bf360c
+    style ROLES fill:#e1bee7,stroke:#6A1B9A,stroke-width:2px,color:#4a148c
+
+    style E_ACTIVE fill:#bbdefb,stroke:#1565C0,stroke-width:2px,color:#0d47a1
+    style E_LOCKED fill:#fff176,stroke:#F57F17,stroke-width:3px,color:#33291a
+    style E_BRIDGED fill:#a5d6a7,stroke:#2E7D32,stroke-width:2px,color:#1b5e20
+    style H_NEW fill:#a5d6a7,stroke:#2E7D32,stroke-width:2px,color:#1b5e20
+    style ORD fill:#ffcc80,stroke:#E65100,stroke-width:2px,color:#3e2723
+
+    style ISS fill:#ce93d8,stroke:#6A1B9A,stroke-width:3px,color:#1a0a2e
+    style EP fill:#90caf9,stroke:#1565C0,stroke-width:2px,color:#0d47a1
+    style HP fill:#a5d6a7,stroke:#2E7D32,stroke-width:2px,color:#1b5e20
+    style BUY fill:#b39ddb,stroke:#4527A0,stroke-width:2px,color:#1a0a2e

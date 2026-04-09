@@ -199,6 +199,7 @@ Channel: &ChannelDefaults
 
 # ---------------------------------------------------------------------------
 Profiles:
+  # v7.0 (legacy): All orgs on a single channel
   GOPlatformChannel:
     <<: *ChannelDefaults
     Orderer:
@@ -210,5 +211,37 @@ Profiles:
       Organizations:
         - *Issuer1
         - *EProducer1
+        - *HProducer1
+        - *Buyer1
+
+  # v8.0 (ADR-030): Electricity carrier channel — DE jurisdiction
+  # Members: Issuer (trust anchor + relay), EProducer (electricity producer), Buyer (consumer)
+  # HProducer is NOT a member — cannot see electricity GO data or transactions
+  ElectricityDEChannel:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *Issuer1
+        - *EProducer1
+        - *Buyer1
+
+  # v8.0 (ADR-030): Hydrogen carrier channel — DE jurisdiction
+  # Members: Issuer (trust anchor + relay), HProducer (hydrogen producer), Buyer (consumer)
+  # EProducer is NOT a member — cannot see hydrogen GO data or transactions
+  HydrogenDEChannel:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *Issuer1
         - *HProducer1
         - *Buyer1

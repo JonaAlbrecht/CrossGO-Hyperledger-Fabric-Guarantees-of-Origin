@@ -10,8 +10,9 @@ const router = Router();
 // Maps org names to MSP IDs and roles
 const ORG_MAP: Record<string, { mspId: string; role: string }> = {
     issuer1: { mspId: 'issuer1MSP', role: 'issuer' },
-    producer1: { mspId: 'producer1MSP', role: 'producer' },
-    consumer1: { mspId: 'consumer1MSP', role: 'consumer' },
+    eproducer1: { mspId: 'eproducer1MSP', role: 'producer' },
+    hproducer1: { mspId: 'hproducer1MSP', role: 'producer' },
+    buyer1: { mspId: 'buyer1MSP', role: 'consumer' },
 };
 
 // POST /api/auth/login — authenticate with org name + user name

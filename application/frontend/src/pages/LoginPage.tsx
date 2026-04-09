@@ -4,8 +4,9 @@ import { useAuth } from '../context/AuthContext';
 
 const ORGS = [
     { value: 'issuer1', label: 'Issuer 1 (Certification Body)' },
-    { value: 'producer1', label: 'Producer 1 (Energy Producer)' },
-    { value: 'consumer1', label: 'Consumer 1 (Energy Consumer)' },
+    { value: 'eproducer1', label: 'E-Producer 1 (Electricity Producer)' },
+    { value: 'hproducer1', label: 'H-Producer 1 (Hydrogen Producer)' },
+    { value: 'buyer1', label: 'Buyer 1 (Energy Consumer)' },
 ];
 
 export default function LoginPage() {

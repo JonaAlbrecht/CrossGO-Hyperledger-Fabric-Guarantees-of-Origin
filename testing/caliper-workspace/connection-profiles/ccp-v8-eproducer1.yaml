@@ -1,0 +1,41 @@
+name: "GO Platform v8 - EProducer1 (electricity-de)"
+version: "1.0.0"
+client:
+  organization: eproducer1
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+
+channels:
+  electricity-de:
+    orderers:
+      - orderer1.go-platform.com
+    peers:
+      peer0.eproducer1.go-platform.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+organizations:
+  eproducer1:
+    mspid: eproducer1MSP
+    peers:
+      - peer0.eproducer1.go-platform.com
+
+orderers:
+  orderer1.go-platform.com:
+    url: grpcs://localhost:7050
+    grpcOptions:
+      ssl-target-name-override: localhost
+    tlsCACerts:
+      path: '../../network/organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/tls/ca.crt'
+
+peers:
+  peer0.eproducer1.go-platform.com:
+    url: grpcs://localhost:9051
+    grpcOptions:
+      ssl-target-name-override: peer0.eproducer1.go-platform.com
+    tlsCACerts:
+      path: '../../network/organizations/peerOrganizations/eproducer1.go-platform.com/peers/peer0.eproducer1.go-platform.com/tls/ca.crt'

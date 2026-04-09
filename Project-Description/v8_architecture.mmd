@@ -1,0 +1,68 @@
+%%{init: {'theme': 'base', 'themeVariables': {'fontSize': '28px', 'fontFamily': 'arial', 'primaryColor': '#4a90d9', 'primaryTextColor': '#1a1a1a', 'lineColor': '#555555', 'secondaryColor': '#66bb6a', 'tertiaryColor': '#fff3e0'}, 'flowchart': {'nodeSpacing': 30, 'rankSpacing': 50, 'padding': 25, 'htmlLabels': true}}}%%
+graph TB
+    subgraph ORDERER["&nbsp;&nbsp;&nbsp; Shared Raft Orderer Cluster &nbsp;&nbsp;&nbsp;"]
+        direction LR
+        O1["&nbsp;&nbsp; orderer1 &nbsp;&nbsp;"]
+        O2["&nbsp;&nbsp; orderer2 &nbsp;&nbsp;"]
+        O3["&nbsp;&nbsp; orderer3 &nbsp;&nbsp;"]
+        O4["&nbsp;&nbsp; orderer4 &nbsp;&nbsp;"]
+    end
+
+    subgraph CH_ELEC["&nbsp;&nbsp;&nbsp; Channel: electricity-de &nbsp;&nbsp;&nbsp;"]
+        direction TB
+        E_CC["&nbsp; <b>golifecycle</b> chaincode &nbsp;<br/>carrier = electricity | region = DE"]
+        E_EGO["&nbsp; eGO_abc &nbsp;<br/>Status: active"]
+        E_LOCK["&nbsp; eGO_abc &nbsp;<br/>Status: <b>LOCKED</b>"]
+        E_DONE["&nbsp; eGO_abc &nbsp;<br/>Status: <b>BRIDGED</b>"]
+
+        E_EGO -->|"<b>Step 1</b><br/>bridge:LockGO"| E_LOCK
+        E_LOCK -->|"<b>Step 3</b><br/>bridge:FinalizeLock"| E_DONE
+    end
+
+    subgraph CH_H2["&nbsp;&nbsp;&nbsp; Channel: hydrogen-de &nbsp;&nbsp;&nbsp;"]
+        direction TB
+        H_CC["&nbsp; <b>golifecycle</b> chaincode &nbsp;<br/>carrier = hydrogen | region = DE"]
+        H_MINT["&nbsp; hGO_xyz &nbsp;<br/>Status: <b>ACTIVE</b><br/>inherits: emissions,<br/>production method"]
+    end
+
+    subgraph ORGS["&nbsp;&nbsp;&nbsp; Organizations &nbsp;&nbsp;&nbsp;"]
+        direction TB
+        ISS["&nbsp; <b>issuer1</b> &nbsp;<br/>Joins BOTH channels<br/>Trust anchor + relay"]
+        EP["&nbsp; <b>eproducer1</b> &nbsp;<br/>electricity-de only"]
+        HP["&nbsp; <b>hproducer1</b> &nbsp;<br/>hydrogen-de only"]
+        BUY["&nbsp; <b>buyer1</b> &nbsp;<br/>Joins BOTH channels"]
+    end
+
+    ISS ---|"peer"| CH_ELEC
+    ISS ---|"peer"| CH_H2
+    EP ---|"peer"| CH_ELEC
+    HP ---|"peer"| CH_H2
+    BUY ---|"peer"| CH_ELEC
+    BUY ---|"peer"| CH_H2
+
+    E_LOCK ==>|"<b>Step 2</b>  bridge:MintFromBridge<br/>issuer relays lock receipt<br/>+ backlog matching<br/>+ efficiency validation"| H_MINT
+
+    ORDERER -.->|"serves"| CH_ELEC
+    ORDERER -.->|"serves"| CH_H2
+
+    style CH_ELEC fill:#d0e4f7,stroke:#1565C0,stroke-width:3px,color:#0d47a1
+    style CH_H2 fill:#c8e6c9,stroke:#2E7D32,stroke-width:3px,color:#1b5e20
+    style ORDERER fill:#ffe0b2,stroke:#E65100,stroke-width:2px,color:#bf360c
+    style ORGS fill:#e1bee7,stroke:#6A1B9A,stroke-width:2px,color:#4a148c
+
+    style E_EGO fill:#bbdefb,stroke:#1565C0,stroke-width:2px,color:#0d47a1
+    style E_LOCK fill:#fff176,stroke:#F57F17,stroke-width:3px,color:#33291a
+    style E_DONE fill:#a5d6a7,stroke:#2E7D32,stroke-width:2px,color:#1b5e20
+    style H_MINT fill:#a5d6a7,stroke:#2E7D32,stroke-width:2px,color:#1b5e20
+    style H_CC fill:#e8f5e9,stroke:#2E7D32,color:#1b5e20
+    style E_CC fill:#e3f2fd,stroke:#1565C0,color:#0d47a1
+
+    style ISS fill:#ce93d8,stroke:#6A1B9A,stroke-width:3px,color:#1a0a2e
+    style EP fill:#90caf9,stroke:#1565C0,stroke-width:2px,color:#0d47a1
+    style HP fill:#a5d6a7,stroke:#2E7D32,stroke-width:2px,color:#1b5e20
+    style BUY fill:#b39ddb,stroke:#4527A0,stroke-width:2px,color:#1a0a2e
+
+    style O1 fill:#ffcc80,stroke:#E65100,color:#3e2723
+    style O2 fill:#ffcc80,stroke:#E65100,color:#3e2723
+    style O3 fill:#ffcc80,stroke:#E65100,color:#3e2723
+    style O4 fill:#ffcc80,stroke:#E65100,color:#3e2723

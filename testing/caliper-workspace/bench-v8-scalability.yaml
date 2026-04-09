@@ -1,0 +1,161 @@
+test:
+  workers:
+    type: local
+    number: 10
+  rounds:
+    # ============================================================
+    # ADMIN QUERIES (lightweight read benchmarks)
+    # ============================================================
+    - label: GetVersion-500tps
+      description: admin:GetVersion point query at 500 TPS
+      txNumber: 2500
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 500
+      workload:
+        module: workload/getVersion.js
+
+    - label: GetVersion-1000tps
+      description: admin:GetVersion at 1000 TPS
+      txNumber: 5000
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1000
+      workload:
+        module: workload/getVersion.js
+
+    - label: GetVersion-2000tps
+      description: admin:GetVersion at 2000 TPS — ceiling test
+      txNumber: 10000
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2000
+      workload:
+        module: workload/getVersion.js
+
+    # ============================================================
+    # WRITE BENCHMARKS — device registration (admin identity)
+    # ============================================================
+    - label: RegisterDevice-serial
+      description: device:RegisterDevice serial (1 worker)
+      txNumber: 20
+      rateControl:
+        type: fixed-load
+        opts:
+          startTps: 2
+          transactionLoad: 1
+      workload:
+        module: workload/registerDevice.js
+
+    - label: RegisterDevice-10tps
+      description: device:RegisterDevice at 10 TPS
+      txNumber: 100
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 10
+      workload:
+        module: workload/registerDevice.js
+
+    - label: RegisterDevice-25tps
+      description: device:RegisterDevice at 25 TPS
+      txNumber: 250
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 25
+      workload:
+        module: workload/registerDevice.js
+
+    - label: RegisterDevice-50tps
+      description: device:RegisterDevice at 50 TPS — stress
+      txNumber: 500
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 50
+      workload:
+        module: workload/registerDevice.js
+
+    # ============================================================
+    # POINT READS — GetDevice (after registration)
+    # ============================================================
+    - label: GetDevice-500tps
+      description: device:GetDevice point query at 500 TPS
+      txNumber: 2500
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 500
+      workload:
+        module: workload/getDevice.js
+        arguments:
+          maxDeviceId: 30
+
+    - label: GetDevice-1000tps
+      description: device:GetDevice at 1000 TPS
+      txNumber: 5000
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1000
+      workload:
+        module: workload/getDevice.js
+        arguments:
+          maxDeviceId: 30
+
+    - label: GetDevice-2000tps
+      description: device:GetDevice at 2000 TPS — stress test
+      txNumber: 10000
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2000
+      workload:
+        module: workload/getDevice.js
+        arguments:
+          maxDeviceId: 30
+
+    # ============================================================
+    # ADMIN WRITE — organization registration
+    # ============================================================
+    - label: RegisterOrganization-serial
+      description: admin:RegisterOrganization serial
+      txNumber: 10
+      rateControl:
+        type: fixed-load
+        opts:
+          startTps: 2
+          transactionLoad: 1
+      workload:
+        module: workload/registerOrganization.js
+
+    # ============================================================
+    # PAGINATED QUERIES
+    # ============================================================
+    - label: ListDevicesPaginated-500tps
+      description: device:ListDevicesPaginated (page=10) at 500 TPS
+      txNumber: 2500
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 500
+      workload:
+        module: workload/listDevicesPaginated.js
+        arguments:
+          pageSize: 10
+
+    - label: ListDevicesPaginated-1000tps
+      description: device:ListDevicesPaginated (page=10) at 1000 TPS
+      txNumber: 5000
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1000
+      workload:
+        module: workload/listDevicesPaginated.js
+        arguments:
+          pageSize: 10

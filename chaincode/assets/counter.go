@@ -47,11 +47,13 @@ const (
 	RangeEndDevice = "device_~"
 )
 
-// GO lifecycle status constants (ADR-007: tombstone pattern).
+// GO lifecycle status constants (ADR-007: tombstone pattern, ADR-031: bridge states).
 const (
 	GOStatusActive      = "active"
 	GOStatusCancelled   = "cancelled"
 	GOStatusTransferred = "transferred"
+	GOStatusLocked      = "locked"  // ADR-031: locked for cross-channel bridge transfer
+	GOStatusBridged     = "bridged" // ADR-031: successfully bridged to another channel
 )
 
 // MaxTimestampDrift is the maximum allowed difference (in seconds) between
