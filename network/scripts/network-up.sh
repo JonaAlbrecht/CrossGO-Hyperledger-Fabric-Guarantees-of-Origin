@@ -83,7 +83,7 @@ log "All peers started"
 info "Joining orderers to channel..."
 for i in 1 2 3 4; do
   ADMIN_PORT=$((9442 + i))
-  ORDERER_TLS="$NETWORK_DIR/organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer${i}.go-platform.com/tls"
+  ORDERER_TLS="$NETWORK_DIR/organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer${i}.orderer.go-platform.com/tls"
   osnadmin channel join \
     --channelID "$CHANNEL_NAME" \
     --config-block "$NETWORK_DIR/channel-artifacts/${CHANNEL_NAME}.block" \

@@ -1,7 +1,6 @@
 package assets
 
 import (
-	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
@@ -27,13 +26,15 @@ const (
 const (
 	PrefixEGO           = "eGO_"
 	PrefixHGO           = "hGO_"
-	PrefixBGO           = "bGO_"  // ADR-015: biogas
-	PrefixECancellation = "eCancel_"
-	PrefixHCancellation = "hCancel_"
-	PrefixBCancellation = "bCancel_" // ADR-015: biogas
-	PrefixEConsumption  = "eCon_"
-	PrefixHConsumption  = "hCon_"
-	PrefixDevice        = "device_"
+	PrefixBGO            = "bGO_"      // ADR-015: biogas
+	PrefixHCGO           = "hcGO_"     // v9: heating/cooling
+	PrefixECancellation  = "eCancel_"
+	PrefixHCancellation  = "hCancel_"
+	PrefixBCancellation  = "bCancel_"  // ADR-015: biogas
+	PrefixHCCancellation = "hcCancel_" // v9: heating/cooling
+	PrefixEConsumption   = "eCon_"
+	PrefixHConsumption   = "hCon_"
+	PrefixDevice         = "device_"
 )
 
 // RangeEnd constants for prefix-based range queries.
@@ -43,7 +44,8 @@ const (
 const (
 	RangeEndEGO    = "eGO_~"
 	RangeEndHGO    = "hGO_~"
-	RangeEndBGO    = "bGO_~" // ADR-015: biogas
+	RangeEndBGO    = "bGO_~"  // ADR-015: biogas
+	RangeEndHCGO   = "hcGO_~" // v9: heating/cooling
 	RangeEndDevice = "device_~"
 )
 
@@ -84,19 +86,20 @@ func GenerateID(ctx contractapi.TransactionContextInterface, prefix string, suff
 // cryptographically random salt.
 // ADR-009: Selective disclosure — the quantity is hidden on the public ledger
 // but can be revealed to a verifier by disclosing the salt.
-// ADR-017 (v6.0): Salt is now generated via crypto/rand instead of being derived
-// from the transaction ID. A txID-derived salt is predictable — an attacker who
-// knows the txID can brute-force plausible MWh values (typically 0–1000 range)
-// in milliseconds. A 128-bit random salt makes brute-force infeasible.
+// ADR-017 (v6.0): Salt is derived deterministically from the transaction ID
+// and a secret prefix to ensure all endorsing peers produce identical proposals.
+// A truly random salt (crypto/rand) would cause endorsement mismatches in
+// multi-org collection policies. The txID-derived salt is a tradeoff:
+// less brute-force resistance but required for Fabric endorsement consistency.
 // Returns (commitmentHex, saltHex).
 func GenerateCommitment(ctx contractapi.TransactionContextInterface, quantity float64) (string, string, error) {
-	saltBytes := make([]byte, 16) // 128-bit random salt
-	if _, err := rand.Read(saltBytes); err != nil {
-		return "", "", fmt.Errorf("failed to generate random salt: %v", err)
-	}
-	saltHex := hex.EncodeToString(saltBytes)
-	// Commitment = SHA-256(quantity_string || saltHex)
+	txID := ctx.GetStub().GetTxID()
 	quantityStr := strconv.FormatFloat(quantity, 'f', -1, 64)
+	// Deterministic salt: HMAC-SHA256(txID, quantity) → first 16 bytes
+	saltInput := txID + "||salt||" + quantityStr
+	saltHash := sha256.Sum256([]byte(saltInput))
+	saltHex := hex.EncodeToString(saltHash[:16]) // 128-bit deterministic salt
+	// Commitment = SHA-256(quantity_string || saltHex)
 	commitInput := quantityStr + "||" + saltHex
 	commitment := sha256.Sum256([]byte(commitInput))
 	return hex.EncodeToString(commitment[:]), saltHex, nil

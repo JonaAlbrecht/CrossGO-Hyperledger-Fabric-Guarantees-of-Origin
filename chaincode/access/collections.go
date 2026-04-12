@@ -28,7 +28,7 @@ func GetCollectionForOrg(orgMSP string) string {
 }
 
 // ValidateCollectionAccess checks that the caller has permission to read from the given collection.
-// Issuers can read any collection; producers and consumers can only read their own.
+// Issuers can read any collection; producers and buyers can only read their own.
 func ValidateCollectionAccess(ctx contractapi.TransactionContextInterface, collection string) error {
 	mspID, err := GetClientMSPID(ctx)
 	if err != nil {

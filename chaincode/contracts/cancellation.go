@@ -25,8 +25,8 @@ type CancellationContract struct {
 //
 // Bug fix #8: Remainder GO preserves original CreationDateTime.
 func (c *CancellationContract) ClaimRenewableAttributesElectricity(ctx contractapi.TransactionContextInterface) error {
-	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleConsumer); err != nil {
-		return fmt.Errorf("only producers and consumers can cancel eGOs: %v", err)
+	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleBuyer); err != nil {
+		return fmt.Errorf("only producers and buyers can cancel eGOs: %v", err)
 	}
 
 	type claimInput struct {
@@ -190,8 +190,8 @@ func (c *CancellationContract) ClaimRenewableAttributesElectricity(ctx contracta
 // Bug fix #9: ConsumptionDeclarations deep-copied on split.
 // Bug fix #10: ConsumptionDeclarationHydrogen uses int64 for DateTime.
 func (c *CancellationContract) ClaimRenewableAttributesHydrogen(ctx contractapi.TransactionContextInterface) error {
-	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleConsumer); err != nil {
-		return fmt.Errorf("only producers and consumers can cancel hGOs: %v", err)
+	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleBuyer); err != nil {
+		return fmt.Errorf("only producers and buyers can cancel hGOs: %v", err)
 	}
 
 	type claimInput struct {

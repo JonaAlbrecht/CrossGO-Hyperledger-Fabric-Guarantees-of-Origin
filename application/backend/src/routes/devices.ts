@@ -5,6 +5,23 @@ import { connectToFabric, getCryptoPath } from '../fabric/gateway';
 import { getDeviceContract } from '../fabric/contracts';
 import { logger } from '../middleware/logger';
 
+function safeParse(data: Uint8Array, fallback: any = []) {
+    const str = new TextDecoder().decode(data).trim();
+    return str ? JSON.parse(str) : fallback;
+}
+
+/** Extract the most useful error message from a Fabric gateway error. */
+function fabricError(err: unknown): string {
+    if (!(err instanceof Error)) return String(err);
+    // @hyperledger/fabric-gateway errors may carry .details[] with per-peer chaincode errors
+    const details = (err as any).details;
+    if (Array.isArray(details) && details.length > 0) {
+        const msgs = details.map((d: any) => d.message ?? String(d)).join('; ');
+        return `${err.message} — ${msgs}`;
+    }
+    return err.message;
+}
+
 const router = Router();
 router.use(authenticate);
 
@@ -28,12 +45,12 @@ router.post('/', requireRole('issuer'), async (req: Request, res: Response) => {
         }));
 
         await getDeviceContract(conn).submit('RegisterDevice', {
-            transientData: { device: transientData },
+            transientData: { Device: transientData },
         });
 
         res.status(201).json({ message: 'Device registered' });
     } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
+        const message = fabricError(err);
         logger.error(`RegisterDevice failed: ${message}`);
         res.status(500).json({ error: message });
     } finally {
@@ -46,9 +63,9 @@ router.get('/', async (req: Request, res: Response) => {
     const conn = await getFabricConn(req);
     try {
         const result = await getDeviceContract(conn).evaluate('ListDevices');
-        res.json(JSON.parse(new TextDecoder().decode(result)));
+        res.json(safeParse(result, []));
     } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
+        const message = fabricError(err);
         logger.error(`ListDevices failed: ${message}`);
         res.status(500).json({ error: message });
     } finally {
@@ -61,9 +78,9 @@ router.get('/:id', async (req: Request, res: Response) => {
     const conn = await getFabricConn(req);
     try {
         const result = await getDeviceContract(conn).evaluate('GetDevice', req.params.id);
-        res.json(JSON.parse(new TextDecoder().decode(result)));
+        res.json(safeParse(result, null));
     } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
+        const message = fabricError(err);
         logger.error(`GetDevice failed: ${message}`);
         res.status(500).json({ error: message });
     } finally {
@@ -78,7 +95,7 @@ router.put('/:id/revoke', requireRole('issuer'), async (req: Request, res: Respo
         await getDeviceContract(conn).submit('RevokeDevice', req.params.id);
         res.json({ message: 'Device revoked' });
     } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
+        const message = fabricError(err);
         logger.error(`RevokeDevice failed: ${message}`);
         res.status(500).json({ error: message });
     } finally {
@@ -93,7 +110,7 @@ router.put('/:id/suspend', requireRole('issuer'), async (req: Request, res: Resp
         await getDeviceContract(conn).submit('SuspendDevice', req.params.id);
         res.json({ message: 'Device suspended' });
     } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
+        const message = fabricError(err);
         logger.error(`SuspendDevice failed: ${message}`);
         res.status(500).json({ error: message });
     } finally {
@@ -108,7 +125,7 @@ router.put('/:id/reactivate', requireRole('issuer'), async (req: Request, res: R
         await getDeviceContract(conn).submit('ReactivateDevice', req.params.id);
         res.json({ message: 'Device reactivated' });
     } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
+        const message = fabricError(err);
         logger.error(`ReactivateDevice failed: ${message}`);
         res.status(500).json({ error: message });
     } finally {

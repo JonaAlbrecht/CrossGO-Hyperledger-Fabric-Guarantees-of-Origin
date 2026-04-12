@@ -1,18 +1,19 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { extractApiError } from '../api';
 
 const ORGS = [
-    { value: 'issuer1', label: 'Issuer 1 (Certification Body)' },
-    { value: 'eproducer1', label: 'E-Producer 1 (Electricity Producer)' },
-    { value: 'hproducer1', label: 'H-Producer 1 (Hydrogen Producer)' },
-    { value: 'buyer1', label: 'Buyer 1 (Energy Consumer)' },
+    { value: 'issuer1', label: 'German Issuing Authority (UBA)', description: 'Issuer — certifies and audits Guarantees of Origin' },
+    { value: 'eproducer1', label: 'Alpha WindFarm GmbH', description: 'Producer — electricity generation (wind)' },
+    { value: 'hproducer1', label: 'Beta Electrolyser B.V.', description: 'Producer — hydrogen production (electrolysis)' },
+    { value: 'buyer1', label: 'Gamma-Town EnergySupplier Ltd', description: 'Buyer — purchases and cancels Guarantees of Origin' },
 ];
 
 export default function LoginPage() {
     const { login } = useAuth();
     const navigate = useNavigate();
-    const [orgName, setOrgName] = useState('producer1');
+    const [orgName, setOrgName] = useState('issuer1');
     const [userName, setUserName] = useState('Admin');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -25,19 +26,21 @@ export default function LoginPage() {
             await login(orgName, userName);
             navigate('/');
         } catch (err: unknown) {
-            const msg = err instanceof Error ? err.message : 'Login failed';
+            const msg = extractApiError(err, 'Login failed');
             setError(msg);
         } finally {
             setLoading(false);
         }
     };
 
+    const selectedOrg = ORGS.find((o) => o.value === orgName);
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-800 to-primary-900">
             <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-primary-800">GO Platform</h1>
-                    <p className="text-gray-500 mt-2">Guarantee of Origin Management System</p>
+                    <p className="text-gray-500 mt-2">Guarantees of Origin Management System</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -57,6 +60,9 @@ export default function LoginPage() {
                                 </option>
                             ))}
                         </select>
+                        {selectedOrg && (
+                            <p className="text-xs text-gray-400 mt-1">{selectedOrg.description}</p>
+                        )}
                     </div>
 
                     <div>
@@ -88,7 +94,7 @@ export default function LoginPage() {
                 </form>
 
                 <p className="text-center text-xs text-gray-400 mt-6">
-                    Hyperledger Fabric 2.x · Tiered GO Network
+                    Hyperledger Fabric 2.x · Multi-Channel GO Network v9.0
                 </p>
             </div>
         </div>

@@ -11,7 +11,7 @@ import (
 const (
 	RoleIssuer   = "issuer"
 	RoleProducer = "producer"
-	RoleConsumer = "consumer"
+	RoleBuyer    = "buyer"
 )
 
 // OrgRole state key prefix for the on-chain org→role registry.
@@ -35,8 +35,8 @@ func GetOrgRole(ctx contractapi.TransactionContextInterface) (string, error) {
 
 // RegisterOrgRole writes an org→role mapping to the ledger. Only issuers may call this.
 func RegisterOrgRole(ctx contractapi.TransactionContextInterface, mspID, role string) error {
-	if role != RoleIssuer && role != RoleProducer && role != RoleConsumer {
-		return fmt.Errorf("invalid role %q: must be issuer, producer, or consumer", role)
+	if role != RoleIssuer && role != RoleProducer && role != RoleBuyer {
+		return fmt.Errorf("invalid role %q: must be issuer, producer, or buyer", role)
 	}
 	return ctx.GetStub().PutState(orgRolePrefix+mspID, []byte(role))
 }

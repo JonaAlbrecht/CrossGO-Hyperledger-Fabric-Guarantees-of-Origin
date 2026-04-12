@@ -7,7 +7,9 @@ import DevicesPage from './pages/DevicesPage';
 import GuaranteesPage from './pages/GuaranteesPage';
 import TransfersPage from './pages/TransfersPage';
 import ConversionsPage from './pages/ConversionsPage';
-import CertificatesPage from './pages/CertificatesPage';
+import CancellationsPage from './pages/CertificatesPage';
+import VerificationPage from './pages/VerificationPage';
+import OrganizationsPage from './pages/OrganizationsPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const { isAuthenticated } = useAuth();
@@ -31,7 +33,11 @@ export default function App() {
                 <Route path="guarantees" element={<GuaranteesPage />} />
                 <Route path="transfers" element={<TransfersPage />} />
                 <Route path="conversions" element={<ConversionsPage />} />
-                <Route path="certificates" element={<CertificatesPage />} />
+                <Route path="cancellations" element={<CancellationsPage />} />
+                <Route path="organizations" element={<OrganizationsPage />} />
+                <Route path="verification" element={<VerificationPage />} />
+                {/* Legacy route redirect */}
+                <Route path="certificates" element={<Navigate to="/cancellations" replace />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

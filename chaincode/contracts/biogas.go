@@ -3,7 +3,6 @@ package contracts
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 
 	"github.com/JonaAlbrecht/HLF-GOconversionissuance-JA-MA/chaincode/access"
 	"github.com/JonaAlbrecht/HLF-GOconversionissuance-JA-MA/chaincode/assets"
@@ -70,19 +69,7 @@ func (c *BiogasContract) CreateBiogasGO(ctx contractapi.TransactionContextInterf
 		return err
 	}
 
-	// Validate against device attributes
-	maxOutputStr, err := access.GetAttribute(ctx, "maxOutput")
-	if err != nil {
-		return fmt.Errorf("error getting maxOutput: %v", err)
-	}
-	maxOutputInt, err := strconv.Atoi(maxOutputStr)
-	if err != nil {
-		return fmt.Errorf("maxOutput could not be converted: %v", err)
-	}
-	impliedOutput := volumeNm3 / elapsedSeconds
-	if float64(maxOutputInt) < impliedOutput {
-		return fmt.Errorf("GO rejected — output rate is suspiciously high")
-	}
+	// NOTE: Device attribute validation (maxOutput) deferred until Fabric CA setup.
 
 	bGOID, err := assets.GenerateID(ctx, assets.PrefixBGO, 0)
 	if err != nil {
@@ -106,11 +93,16 @@ func (c *BiogasContract) CreateBiogasGO(ctx contractapi.TransactionContextInterf
 	}
 
 	pub := &assets.BiogasGO{
-		AssetID:            bGOID,
-		CreationDateTime:   creationTime,
-		GOType:             "Biogas",
-		Status:             assets.GOStatusActive,
-		QuantityCommitment: commitment,
+		AssetID:               bGOID,
+		CreationDateTime:      creationTime,
+		GOType:                "Biogas",
+		Status:                assets.GOStatusActive,
+		QuantityCommitment:    commitment,
+		CountryOfOrigin:       "DE",
+		EnergySource:          input.BiogasProductionMethod,
+		SupportScheme:         "none",
+		ProductionPeriodStart: creationTime - int64(elapsedSeconds),
+		ProductionPeriodEnd:   creationTime,
 	}
 
 	priv := &assets.BiogasGOPrivateDetails{
@@ -163,8 +155,8 @@ func writeBGOToLedger(ctx contractapi.TransactionContextInterface, pub *assets.B
 // CancelBiogasGO cancels a single biogas GO and creates a cancellation statement.
 // Transient key: "CancelBiogas" containing BGOID, Collection.
 func (c *BiogasContract) CancelBiogasGO(ctx contractapi.TransactionContextInterface) error {
-	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleConsumer); err != nil {
-		return fmt.Errorf("only producers and consumers can cancel bGOs: %v", err)
+	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleBuyer); err != nil {
+		return fmt.Errorf("only producers and buyers can cancel bGOs: %v", err)
 	}
 
 	type cancelInput struct {

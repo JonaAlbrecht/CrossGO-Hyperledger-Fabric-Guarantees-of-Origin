@@ -1,4 +1,4 @@
-// Express REST API entry point for GO Platform
+// Express REST API entry point for GO Platform (v9)
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -11,6 +11,8 @@ import transferRoutes from './routes/transfers';
 import conversionRoutes from './routes/conversions';
 import cancellationRoutes from './routes/cancellations';
 import queryRoutes from './routes/queries';
+import bridgeRoutes from './routes/bridge';
+import organizationRoutes from './routes/organizations';
 
 dotenv.config();
 
@@ -28,7 +30,7 @@ app.use((req, _res, next) => {
 
 // Health check
 app.get('/api/health', (_req, res) => {
-    res.json({ status: 'ok', service: 'go-platform-backend' });
+    res.json({ status: 'ok', service: 'go-platform-backend', version: '9.0.0' });
 });
 
 // Routes
@@ -39,6 +41,8 @@ app.use('/api/transfers', transferRoutes);
 app.use('/api/conversions', conversionRoutes);
 app.use('/api/cancellations', cancellationRoutes);
 app.use('/api/queries', queryRoutes);
+app.use('/api/bridge', bridgeRoutes);
+app.use('/api/organizations', organizationRoutes);
 
 // Global error handler
 app.use(errorHandler);

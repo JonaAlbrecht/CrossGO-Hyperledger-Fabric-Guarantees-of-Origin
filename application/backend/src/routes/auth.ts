@@ -8,11 +8,12 @@ import { logger } from '../middleware/logger';
 const router = Router();
 
 // Maps org names to MSP IDs and roles
-const ORG_MAP: Record<string, { mspId: string; role: string }> = {
-    issuer1: { mspId: 'issuer1MSP', role: 'issuer' },
-    eproducer1: { mspId: 'eproducer1MSP', role: 'producer' },
-    hproducer1: { mspId: 'hproducer1MSP', role: 'producer' },
-    buyer1: { mspId: 'buyer1MSP', role: 'consumer' },
+// v9 — generalized role names: issuer, producer, buyer
+const ORG_MAP: Record<string, { mspId: string; role: string; displayName: string }> = {
+    issuer1: { mspId: 'issuer1MSP', role: 'issuer', displayName: 'German Issuing Authority (UBA)' },
+    eproducer1: { mspId: 'eproducer1MSP', role: 'producer', displayName: 'Alpha WindFarm GmbH' },
+    hproducer1: { mspId: 'hproducer1MSP', role: 'producer', displayName: 'Beta Electrolyser B.V.' },
+    buyer1: { mspId: 'buyer1MSP', role: 'buyer', displayName: 'Gamma-Town EnergySupplier Ltd' },
 };
 
 // POST /api/auth/login — authenticate with org name + user name
@@ -47,7 +48,7 @@ router.post('/login', async (req: Request, res: Response) => {
         });
 
         logger.info(`User ${userName}@${orgName} authenticated`);
-        res.json({ token, role: org.role, mspId: org.mspId });
+        res.json({ token, role: org.role, mspId: org.mspId, displayName: org.displayName });
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
         logger.error(`Login failed: ${message}`);

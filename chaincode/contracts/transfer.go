@@ -25,8 +25,8 @@ const SafetyMargin int64 = 300
 // TransferEGO transfers a single electricity GO to another organization.
 // Transient key: "TransferInput" containing EGOID, Recipient.
 func (c *TransferContract) TransferEGO(ctx contractapi.TransactionContextInterface) error {
-	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleConsumer); err != nil {
-		return fmt.Errorf("only producers and consumers can transfer eGOs: %v", err)
+	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleBuyer); err != nil {
+		return fmt.Errorf("only producers and buyers can transfer eGOs: %v", err)
 	}
 
 	type transferInput struct {
@@ -102,8 +102,8 @@ func (c *TransferContract) TransferEGO(ctx contractapi.TransactionContextInterfa
 // GOs are consumed fully until the amount is met; the last GO may be split.
 // Transient key: "TransferInput" containing EGOList ("+"-separated), Recipient, Neededamount.
 func (c *TransferContract) TransferEGOByAmount(ctx contractapi.TransactionContextInterface) ([]string, error) {
-	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleConsumer); err != nil {
-		return nil, fmt.Errorf("only producers and consumers can transfer eGOs: %v", err)
+	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleBuyer); err != nil {
+		return nil, fmt.Errorf("only producers and buyers can transfer eGOs: %v", err)
 	}
 
 	type transferInput struct {
@@ -228,8 +228,8 @@ func (c *TransferContract) TransferEGOByAmount(ctx contractapi.TransactionContex
 // TransferHGOByAmount transfers a specified kilogram amount across one or more hydrogen GOs.
 // Transient key: "TransferInput" containing HGOList ("+"-separated), Recipient, NeededKilos.
 func (c *TransferContract) TransferHGOByAmount(ctx contractapi.TransactionContextInterface) error {
-	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleConsumer); err != nil {
-		return fmt.Errorf("only producers and consumers can transfer hGOs: %v", err)
+	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleBuyer); err != nil {
+		return fmt.Errorf("only producers and buyers can transfer hGOs: %v", err)
 	}
 
 	type transferInput struct {

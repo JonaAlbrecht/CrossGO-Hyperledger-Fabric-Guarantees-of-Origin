@@ -33,18 +33,23 @@ type BridgeContract struct {
 type CrossChannelLock struct {
 	LockID             string `json:"lockId"`
 	GOAssetID          string `json:"goAssetId"`          // locked asset on this channel
-	GOType             string `json:"goType"`              // "Electricity", "Hydrogen", "Biogas"
+	GOType             string `json:"goType"`              // "Electricity", "Hydrogen", "Biogas", "HeatingCooling"
 	SourceChannel      string `json:"sourceChannel"`       // e.g. "electricity-de"
 	DestinationChannel string `json:"destinationChannel"`  // e.g. "hydrogen-de"
-	Status             string `json:"status"`              // "locked", "bridged", "expired"
+	Status             string `json:"status"`              // "locked", "approved", "bridged", "expired"
 	LockReceiptHash    string `json:"lockReceiptHash"`     // SHA-256 of lock receipt for cross-channel verification
-	InitiatedBy        string `json:"initiatedBy"`         // MSP ID of the issuer relay
+	InitiatedBy        string `json:"initiatedBy"`         // MSP ID of the source issuer relay
 	LockedAt           int64  `json:"lockedAt"`
 	FinalizedAt        int64  `json:"finalizedAt,omitempty"`
 	MintedAssetID      string `json:"mintedAssetId,omitempty"` // asset ID minted on destination channel
 	AmountMWh          float64 `json:"amountMWh,omitempty"`
 	CountryOfOrigin    string `json:"countryOfOrigin,omitempty"`
 	EnergySource       string `json:"energySource,omitempty"`
+	// v9.0 Dual-issuer consensus fields (ADR-031 extension)
+	SourceIssuerMSP       string `json:"sourceIssuerMSP,omitempty"`       // MSP of the issuer on the source channel
+	TargetIssuerMSP       string `json:"targetIssuerMSP,omitempty"`       // MSP of the issuer on the destination channel
+	TargetIssuerApproval  bool   `json:"targetIssuerApproval"`            // true once target issuer approves
+	TargetIssuerApprovedAt int64 `json:"targetIssuerApprovedAt,omitempty"` // timestamp of target issuer approval
 }
 
 // BridgeMint represents a GO minted on the destination channel from a cross-channel bridge transfer.
@@ -90,9 +95,10 @@ const (
 
 // Cross-channel lock status constants (v8.0).
 const (
-	LockStatusLocked  = "locked"
-	LockStatusBridged = "bridged"
-	LockStatusExpired = "expired"
+	LockStatusLocked   = "locked"
+	LockStatusApproved = "approved" // v9.0: target issuer has approved
+	LockStatusBridged  = "bridged"
+	LockStatusExpired  = "expired"
 )
 
 // Bridge transfer direction constants (v7.0 legacy).
@@ -212,6 +218,7 @@ func (c *BridgeContract) LockGO(ctx contractapi.TransactionContextInterface) (*C
 		LockedAt:           now,
 		CountryOfOrigin:    country,
 		EnergySource:       energy,
+		SourceIssuerMSP:    issuerMSP, // v9.0: dual-issuer consensus
 	}
 
 	lockBytes, err := json.Marshal(lock)
@@ -358,6 +365,66 @@ func (c *BridgeContract) MintFromBridge(ctx contractapi.TransactionContextInterf
 		}
 		collection := access.GetCollectionForOrg(issuerMSP)
 		if err := util.WriteHGOToLedger(ctx, pub, priv, collection); err != nil {
+			return nil, err
+		}
+	case "Biogas":
+		localAssetID, err = assets.GenerateID(ctx, assets.PrefixBGO, 1)
+		if err != nil {
+			return nil, err
+		}
+		commitment, salt, err := assets.GenerateCommitment(ctx, input.AmountMWh)
+		if err != nil {
+			return nil, err
+		}
+		pub := &assets.BiogasGO{
+			AssetID:            localAssetID,
+			CreationDateTime:   now,
+			GOType:             "Biogas",
+			Status:             assets.GOStatusActive,
+			QuantityCommitment: commitment,
+			CountryOfOrigin:    input.CountryOfOrigin,
+			EnergySource:       input.EnergySource,
+		}
+		priv := &assets.BiogasGOPrivateDetails{
+			AssetID:                 localAssetID,
+			OwnerID:                 issuerMSP,
+			CreationDateTime:        now,
+			EnergyContentMWh:        input.AmountMWh,
+			ConsumptionDeclarations: []string{"none"},
+			CommitmentSalt:          salt,
+		}
+		collection := access.GetCollectionForOrg(issuerMSP)
+		if err := writeBGOToLedgerBridge(ctx, pub, priv, collection); err != nil {
+			return nil, err
+		}
+	case "HeatingCooling":
+		localAssetID, err = assets.GenerateID(ctx, assets.PrefixHCGO, 1)
+		if err != nil {
+			return nil, err
+		}
+		commitment, salt, err := assets.GenerateCommitment(ctx, input.AmountMWh)
+		if err != nil {
+			return nil, err
+		}
+		pub := &assets.HeatingCoolingGO{
+			AssetID:            localAssetID,
+			CreationDateTime:   now,
+			GOType:             "HeatingCooling",
+			Status:             assets.GOStatusActive,
+			QuantityCommitment: commitment,
+			CountryOfOrigin:    input.CountryOfOrigin,
+			EnergySource:       input.EnergySource,
+		}
+		priv := &assets.HeatingCoolingGOPrivateDetails{
+			AssetID:                 localAssetID,
+			OwnerID:                 issuerMSP,
+			CreationDateTime:        now,
+			AmountMWh:               input.AmountMWh,
+			ConsumptionDeclarations: []string{"none"},
+			CommitmentSalt:          salt,
+		}
+		collection := access.GetCollectionForOrg(issuerMSP)
+		if err := writeHCGOToLedgerBridge(ctx, pub, priv, collection); err != nil {
 			return nil, err
 		}
 	default:
@@ -822,6 +889,66 @@ func (c *BridgeContract) ImportGO(ctx contractapi.TransactionContextInterface) (
 		if err := util.WriteHGOToLedger(ctx, pub, priv, collection); err != nil {
 			return nil, err
 		}
+	case "Biogas":
+		localAssetID, err = assets.GenerateID(ctx, assets.PrefixBGO, 1)
+		if err != nil {
+			return nil, err
+		}
+		commitment, salt, err := assets.GenerateCommitment(ctx, input.AmountMWh)
+		if err != nil {
+			return nil, err
+		}
+		pub := &assets.BiogasGO{
+			AssetID:            localAssetID,
+			CreationDateTime:   now,
+			GOType:             "Biogas",
+			Status:             assets.GOStatusActive,
+			QuantityCommitment: commitment,
+			CountryOfOrigin:    input.CountryOfOrigin,
+			EnergySource:       input.EnergySource,
+		}
+		priv := &assets.BiogasGOPrivateDetails{
+			AssetID:                 localAssetID,
+			OwnerID:                 issuerMSP,
+			CreationDateTime:        now,
+			EnergyContentMWh:        input.AmountMWh,
+			ConsumptionDeclarations: []string{"none"},
+			CommitmentSalt:          salt,
+		}
+		collection := access.GetCollectionForOrg(issuerMSP)
+		if err := writeBGOToLedgerBridge(ctx, pub, priv, collection); err != nil {
+			return nil, err
+		}
+	case "HeatingCooling":
+		localAssetID, err = assets.GenerateID(ctx, assets.PrefixHCGO, 1)
+		if err != nil {
+			return nil, err
+		}
+		commitment, salt, err := assets.GenerateCommitment(ctx, input.AmountMWh)
+		if err != nil {
+			return nil, err
+		}
+		pub := &assets.HeatingCoolingGO{
+			AssetID:            localAssetID,
+			CreationDateTime:   now,
+			GOType:             "HeatingCooling",
+			Status:             assets.GOStatusActive,
+			QuantityCommitment: commitment,
+			CountryOfOrigin:    input.CountryOfOrigin,
+			EnergySource:       input.EnergySource,
+		}
+		priv := &assets.HeatingCoolingGOPrivateDetails{
+			AssetID:                 localAssetID,
+			OwnerID:                 issuerMSP,
+			CreationDateTime:        now,
+			AmountMWh:               input.AmountMWh,
+			ConsumptionDeclarations: []string{"none"},
+			CommitmentSalt:          salt,
+		}
+		collection := access.GetCollectionForOrg(issuerMSP)
+		if err := writeHCGOToLedgerBridge(ctx, pub, priv, collection); err != nil {
+			return nil, err
+		}
 	default:
 		return nil, fmt.Errorf("unsupported GO type for import: %s", input.GOType)
 	}
@@ -962,4 +1089,141 @@ func (c *BridgeContract) ListBridgeTransfersPaginated(ctx contractapi.Transactio
 		return "", fmt.Errorf("failed to marshal result: %v", err)
 	}
 	return string(resultBytes), nil
+}
+
+// ============================================================================
+// v9.0 Dual-Issuer Consensus (ADR-031 extension)
+// ============================================================================
+
+// ApproveBridgeTransfer allows the target channel's issuer to approve a cross-channel lock.
+// This implements dual-issuer consensus: the source issuer locks the GO, and the target
+// issuer must approve before the mint can proceed. Only issuers can approve.
+func (c *BridgeContract) ApproveBridgeTransfer(ctx contractapi.TransactionContextInterface, lockID string) error {
+	if err := access.RequireRole(ctx, access.RoleIssuer); err != nil {
+		return fmt.Errorf("only issuers can approve bridge transfers: %v", err)
+	}
+	if err := util.ValidateNonEmpty("lockID", lockID); err != nil {
+		return err
+	}
+
+	lockBytes, err := ctx.GetStub().GetState(lockID)
+	if err != nil {
+		return fmt.Errorf("failed to read lock: %v", err)
+	}
+	if lockBytes == nil {
+		return fmt.Errorf("lock %s does not exist", lockID)
+	}
+
+	var lock CrossChannelLock
+	if err := json.Unmarshal(lockBytes, &lock); err != nil {
+		return fmt.Errorf("failed to unmarshal lock: %v", err)
+	}
+	if lock.Status != LockStatusLocked {
+		return fmt.Errorf("lock %s is not in locked state (status: %s)", lockID, lock.Status)
+	}
+
+	approverMSP, err := access.GetClientMSPID(ctx)
+	if err != nil {
+		return err
+	}
+
+	// The approver must be a different issuer than the one who initiated the lock
+	if approverMSP == lock.SourceIssuerMSP {
+		return fmt.Errorf("target issuer must differ from source issuer (%s)", lock.SourceIssuerMSP)
+	}
+
+	now, err := util.GetTimestamp(ctx)
+	if err != nil {
+		return err
+	}
+
+	lock.TargetIssuerMSP = approverMSP
+	lock.TargetIssuerApproval = true
+	lock.TargetIssuerApprovedAt = now
+	lock.Status = LockStatusApproved
+
+	updatedBytes, err := json.Marshal(lock)
+	if err != nil {
+		return fmt.Errorf("failed to marshal updated lock: %v", err)
+	}
+	if err := ctx.GetStub().PutState(lockID, updatedBytes); err != nil {
+		return fmt.Errorf("failed to update lock: %v", err)
+	}
+
+	_ = util.EmitLifecycleEvent(ctx, util.LifecycleEvent{
+		EventType: "BRIDGE_TRANSFER_APPROVED",
+		AssetID:   lockID,
+		GOType:    lock.GOType,
+		Initiator: approverMSP,
+		Timestamp: now,
+		Details: map[string]string{
+			"sourceIssuer":       lock.SourceIssuerMSP,
+			"targetIssuer":       approverMSP,
+			"destinationChannel": lock.DestinationChannel,
+		},
+	})
+
+	return nil
+}
+
+// VerifyBridgeTransfer verifies a cross-channel bridge lock, returning the lock
+// details including dual-issuer consensus status. Any role can call this for auditing.
+func (c *BridgeContract) VerifyBridgeTransfer(ctx contractapi.TransactionContextInterface, lockID string) (*CrossChannelLock, error) {
+	if err := util.ValidateNonEmpty("lockID", lockID); err != nil {
+		return nil, err
+	}
+
+	lockBytes, err := ctx.GetStub().GetState(lockID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read lock: %v", err)
+	}
+	if lockBytes == nil {
+		return nil, fmt.Errorf("lock %s does not exist", lockID)
+	}
+
+	var lock CrossChannelLock
+	if err := json.Unmarshal(lockBytes, &lock); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal lock: %v", err)
+	}
+	return &lock, nil
+}
+
+// ============================================================================
+// Bridge-local write helpers for Biogas and HeatingCooling
+// ============================================================================
+
+func writeBGOToLedgerBridge(ctx contractapi.TransactionContextInterface, pub *assets.BiogasGO, priv *assets.BiogasGOPrivateDetails, collection string) error {
+	pubBytes, err := json.Marshal(pub)
+	if err != nil {
+		return fmt.Errorf("failed to marshal bGO public data: %v", err)
+	}
+	if err := ctx.GetStub().PutState(pub.AssetID, pubBytes); err != nil {
+		return fmt.Errorf("failed to put bGO in public state: %v", err)
+	}
+	privBytes, err := json.Marshal(priv)
+	if err != nil {
+		return fmt.Errorf("failed to marshal bGO private data: %v", err)
+	}
+	if err := ctx.GetStub().PutPrivateData(collection, priv.AssetID, privBytes); err != nil {
+		return fmt.Errorf("failed to put bGO private data: %v", err)
+	}
+	return nil
+}
+
+func writeHCGOToLedgerBridge(ctx contractapi.TransactionContextInterface, pub *assets.HeatingCoolingGO, priv *assets.HeatingCoolingGOPrivateDetails, collection string) error {
+	pubBytes, err := json.Marshal(pub)
+	if err != nil {
+		return fmt.Errorf("failed to marshal hcGO public data: %v", err)
+	}
+	if err := ctx.GetStub().PutState(pub.AssetID, pubBytes); err != nil {
+		return fmt.Errorf("failed to put hcGO in public state: %v", err)
+	}
+	privBytes, err := json.Marshal(priv)
+	if err != nil {
+		return fmt.Errorf("failed to marshal hcGO private data: %v", err)
+	}
+	if err := ctx.GetStub().PutPrivateData(collection, priv.AssetID, privBytes); err != nil {
+		return fmt.Errorf("failed to put hcGO private data: %v", err)
+	}
+	return nil
 }

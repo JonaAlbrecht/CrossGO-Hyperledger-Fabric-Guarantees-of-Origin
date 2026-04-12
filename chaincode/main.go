@@ -48,6 +48,10 @@ func main() {
 	oracleContract.Name = "oracle"
 	oracleContract.TransactionContextHandler = new(contractapi.TransactionContext)
 
+	heatingCoolingContract := new(contracts.HeatingCoolingContract)
+	heatingCoolingContract.Name = "heating_cooling"
+	heatingCoolingContract.TransactionContextHandler = new(contractapi.TransactionContext)
+
 	chaincode, err := contractapi.NewChaincode(
 		issuanceContract,
 		transferContract,
@@ -59,6 +63,7 @@ func main() {
 		biogasContract,
 		bridgeContract,
 		oracleContract,
+		heatingCoolingContract,
 	)
 	if err != nil {
 		log.Panicf("Error creating GO lifecycle chaincode: %v", err)

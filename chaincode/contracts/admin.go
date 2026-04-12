@@ -28,18 +28,20 @@ type AdminContract struct {
 // ADR-013: Clients call this before invoking other functions to verify compatibility.
 func (c *AdminContract) GetVersion(ctx contractapi.TransactionContextInterface) (*VersionInfo, error) {
 	return &VersionInfo{
-		Version:     "7.0.0",
+		Version:     "9.0.0",
 		ChaincodeID: "golifecycle",
 		SupportedAPIs: []string{
 			"issuance/v1",
 			"transfer/v1",
-			"conversion/v1",
+			"conversion/v2",
 			"cancellation/v1",
 			"query/v1",
 			"device/v1",
-			"admin/v1",
-			"bridge/v1",
+			"admin/v2",
+			"bridge/v2",
 			"oracle/v1",
+			"biogas/v1",
+			"heating_cooling/v1",
 		},
 		BreakingChange: false,
 	}, nil
@@ -50,7 +52,7 @@ func (c *AdminContract) GetVersion(ctx contractapi.TransactionContextInterface) 
 type RegisteredOrganization struct {
 	OrgMSP         string   `json:"orgMsp"`
 	DisplayName    string   `json:"displayName"`
-	OrgType        string   `json:"orgType"` // "issuer", "producer", "consumer"
+	OrgType        string   `json:"orgType"` // "issuer", "producer", "buyer"
 	EnergyCarriers []string `json:"energyCarriers,omitempty"`
 	Country        string   `json:"country,omitempty"`    // ISO 3166-1 alpha-2
 	RegisteredAt   int64    `json:"registeredAt"`
@@ -155,4 +157,27 @@ func (c *AdminContract) GetOrganization(ctx contractapi.TransactionContextInterf
 		return nil, fmt.Errorf("error unmarshalling org: %v", err)
 	}
 	return &org, nil
+}
+
+// ListOrganizations returns all registered organizations (v9).
+func (c *AdminContract) ListOrganizations(ctx contractapi.TransactionContextInterface) ([]*RegisteredOrganization, error) {
+	iterator, err := ctx.GetStub().GetStateByRange("org_", "org_~")
+	if err != nil {
+		return nil, fmt.Errorf("failed to get org iterator: %v", err)
+	}
+	defer iterator.Close()
+
+	var orgs []*RegisteredOrganization
+	for iterator.HasNext() {
+		kv, err := iterator.Next()
+		if err != nil {
+			return nil, fmt.Errorf("iterator error: %v", err)
+		}
+		var org RegisteredOrganization
+		if err := json.Unmarshal(kv.Value, &org); err != nil {
+			continue
+		}
+		orgs = append(orgs, &org)
+	}
+	return orgs, nil
 }

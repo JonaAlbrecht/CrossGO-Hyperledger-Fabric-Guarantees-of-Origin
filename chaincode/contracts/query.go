@@ -598,3 +598,149 @@ func (c *QueryContract) ReadPublicBGO(ctx contractapi.TransactionContextInterfac
 	}
 	return &bgo, nil
 }
+
+// ============================================================================
+// v9.0 Heating/Cooling GO query functions
+// ============================================================================
+
+// GetCurrentHCGOsList returns all active heating/cooling GOs from the public world state.
+// DEPRECATED: Use GetCurrentHCGOsListPaginated instead.
+func (c *QueryContract) GetCurrentHCGOsList(ctx contractapi.TransactionContextInterface) ([]*assets.HeatingCoolingGO, error) {
+	log.Println("WARNING: GetCurrentHCGOsList is deprecated. Use GetCurrentHCGOsListPaginated.")
+	resultsIterator, err := ctx.GetStub().GetStateByRange(assets.PrefixHCGO, assets.RangeEndHCGO)
+	if err != nil {
+		return nil, fmt.Errorf("error getting hcGO state range: %v", err)
+	}
+	defer resultsIterator.Close()
+
+	var active []*assets.HeatingCoolingGO
+	for resultsIterator.HasNext() {
+		queryResult, err := resultsIterator.Next()
+		if err != nil {
+			return nil, err
+		}
+		var hcgo assets.HeatingCoolingGO
+		if err := json.Unmarshal(queryResult.Value, &hcgo); err != nil {
+			return nil, err
+		}
+		if hcgo.Status == assets.GOStatusActive || hcgo.Status == "" {
+			active = append(active, &hcgo)
+		}
+	}
+	return active, nil
+}
+
+// GetCurrentHCGOsListPaginated returns a paginated list of active heating/cooling GOs.
+func (c *QueryContract) GetCurrentHCGOsListPaginated(ctx contractapi.TransactionContextInterface, pageSize int32, bookmark string) (*PaginatedResult, error) {
+	if pageSize <= 0 {
+		pageSize = DefaultPageSize
+	}
+	if pageSize > MaxPageSize {
+		pageSize = MaxPageSize
+	}
+	resultsIterator, metadata, err := ctx.GetStub().GetStateByRangeWithPagination(assets.PrefixHCGO, assets.RangeEndHCGO, pageSize, bookmark)
+	if err != nil {
+		return nil, fmt.Errorf("error getting paginated hcGO range: %v", err)
+	}
+	defer resultsIterator.Close()
+
+	var active []*assets.HeatingCoolingGO
+	for resultsIterator.HasNext() {
+		queryResult, err := resultsIterator.Next()
+		if err != nil {
+			return nil, err
+		}
+		var hcgo assets.HeatingCoolingGO
+		if err := json.Unmarshal(queryResult.Value, &hcgo); err != nil {
+			return nil, err
+		}
+		if hcgo.Status == assets.GOStatusActive || hcgo.Status == "" {
+			active = append(active, &hcgo)
+		}
+	}
+	return &PaginatedResult{
+		Records:  active,
+		Bookmark: metadata.GetBookmark(),
+		Count:    metadata.GetFetchedRecordsCount(),
+	}, nil
+}
+
+// ReadPublicHCGO reads a single heating/cooling GO from public world state.
+func (c *QueryContract) ReadPublicHCGO(ctx contractapi.TransactionContextInterface, hcGOID string) (*assets.HeatingCoolingGO, error) {
+	hcgoJSON, err := ctx.GetStub().GetState(hcGOID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read hcGO %s: %v", hcGOID, err)
+	}
+	if hcgoJSON == nil {
+		return nil, fmt.Errorf("hcGO %s does not exist", hcGOID)
+	}
+	var hcgo assets.HeatingCoolingGO
+	if err := json.Unmarshal(hcgoJSON, &hcgo); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal hcGO: %v", err)
+	}
+	return &hcgo, nil
+}
+
+// ReadPrivateBGO reads the private details of a biogas GO from a specified collection.
+// Transient key: "QueryInput" containing Collection, BGOID.
+func (c *QueryContract) ReadPrivateBGO(ctx contractapi.TransactionContextInterface) (*assets.BiogasGOPrivateDetails, error) {
+	type queryInput struct {
+		Collection string `json:"Collection"`
+		BGOID      string `json:"BGOID"`
+	}
+
+	var input queryInput
+	if err := util.UnmarshalTransient(ctx, "QueryInput", &input); err != nil {
+		return nil, err
+	}
+	if err := access.ValidateCollectionAccess(ctx, input.Collection); err != nil {
+		return nil, err
+	}
+
+	bgoJSON, err := ctx.GetStub().GetPrivateData(input.Collection, input.BGOID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read bGO private data: %v", err)
+	}
+	if bgoJSON == nil {
+		log.Printf("Private details for bGO %s do not exist in collection %s", input.BGOID, input.Collection)
+		return nil, nil
+	}
+
+	var bgoPrivate assets.BiogasGOPrivateDetails
+	if err := json.Unmarshal(bgoJSON, &bgoPrivate); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal bGO private data: %v", err)
+	}
+	return &bgoPrivate, nil
+}
+
+// ReadPrivateHCGO reads the private details of a heating/cooling GO from a specified collection.
+// Transient key: "QueryInput" containing Collection, HCGOID.
+func (c *QueryContract) ReadPrivateHCGO(ctx contractapi.TransactionContextInterface) (*assets.HeatingCoolingGOPrivateDetails, error) {
+	type queryInput struct {
+		Collection string `json:"Collection"`
+		HCGOID     string `json:"HCGOID"`
+	}
+
+	var input queryInput
+	if err := util.UnmarshalTransient(ctx, "QueryInput", &input); err != nil {
+		return nil, err
+	}
+	if err := access.ValidateCollectionAccess(ctx, input.Collection); err != nil {
+		return nil, err
+	}
+
+	hcgoJSON, err := ctx.GetStub().GetPrivateData(input.Collection, input.HCGOID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read hcGO private data: %v", err)
+	}
+	if hcgoJSON == nil {
+		log.Printf("Private details for hcGO %s do not exist in collection %s", input.HCGOID, input.Collection)
+		return nil, nil
+	}
+
+	var hcgoPrivate assets.HeatingCoolingGOPrivateDetails
+	if err := json.Unmarshal(hcgoJSON, &hcgoPrivate); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal hcGO private data: %v", err)
+	}
+	return &hcgoPrivate, nil
+}

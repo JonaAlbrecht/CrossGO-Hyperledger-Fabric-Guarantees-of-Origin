@@ -5,6 +5,11 @@ import { connectToFabric, getCryptoPath } from '../fabric/gateway';
 import { getQueryContract } from '../fabric/contracts';
 import { logger } from '../middleware/logger';
 
+function safeParse(data: Uint8Array, fallback: any = []) {
+    const str = new TextDecoder().decode(data).trim();
+    return str ? JSON.parse(str) : fallback;
+}
+
 const router = Router();
 router.use(authenticate);
 
@@ -19,7 +24,7 @@ router.get('/ego-list', async (req: Request, res: Response) => {
     const conn = await getFabricConn(req);
     try {
         const result = await getQueryContract(conn).evaluate('GetCurrentEGOsList');
-        res.json(JSON.parse(new TextDecoder().decode(result)));
+        res.json(safeParse(result, []));
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
         logger.error(`GetCurrentEGOsList failed: ${message}`);
@@ -34,7 +39,7 @@ router.get('/hgo-list', async (req: Request, res: Response) => {
     const conn = await getFabricConn(req);
     try {
         const result = await getQueryContract(conn).evaluate('GetCurrentHGOsList');
-        res.json(JSON.parse(new TextDecoder().decode(result)));
+        res.json(safeParse(result, []));
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
         logger.error(`GetCurrentHGOsList failed: ${message}`);
@@ -49,7 +54,7 @@ router.get('/ego/:id', async (req: Request, res: Response) => {
     const conn = await getFabricConn(req);
     try {
         const result = await getQueryContract(conn).evaluate('ReadPublicEGO', req.params.id);
-        res.json(JSON.parse(new TextDecoder().decode(result)));
+        res.json(safeParse(result, null));
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
         res.status(404).json({ error: message });
@@ -63,7 +68,7 @@ router.get('/hgo/:id', async (req: Request, res: Response) => {
     const conn = await getFabricConn(req);
     try {
         const result = await getQueryContract(conn).evaluate('ReadPublicHGO', req.params.id);
-        res.json(JSON.parse(new TextDecoder().decode(result)));
+        res.json(safeParse(result, null));
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
         res.status(404).json({ error: message });
@@ -77,7 +82,7 @@ router.get('/ego/:id/private', async (req: Request, res: Response) => {
     const conn = await getFabricConn(req);
     try {
         const result = await getQueryContract(conn).evaluate('ReadPrivateEGO', req.params.id);
-        res.json(JSON.parse(new TextDecoder().decode(result)));
+        res.json(safeParse(result, null));
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
         res.status(404).json({ error: message });
@@ -91,7 +96,7 @@ router.get('/hgo/:id/private', async (req: Request, res: Response) => {
     const conn = await getFabricConn(req);
     try {
         const result = await getQueryContract(conn).evaluate('ReadPrivateHGO', req.params.id);
-        res.json(JSON.parse(new TextDecoder().decode(result)));
+        res.json(safeParse(result, null));
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
         res.status(404).json({ error: message });
@@ -110,7 +115,7 @@ router.get('/ego-by-amount', async (req: Request, res: Response) => {
             return;
         }
         const result = await getQueryContract(conn).evaluate('QueryPrivateEGOsByAmountMWh', mwh);
-        res.json(JSON.parse(new TextDecoder().decode(result)));
+        res.json(safeParse(result, []));
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
         logger.error(`QueryPrivateEGOsByAmountMWh failed: ${message}`);
@@ -130,7 +135,7 @@ router.get('/hgo-by-amount', async (req: Request, res: Response) => {
             return;
         }
         const result = await getQueryContract(conn).evaluate('QueryPrivateHGOsByAmount', kilos);
-        res.json(JSON.parse(new TextDecoder().decode(result)));
+        res.json(safeParse(result, []));
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
         logger.error(`QueryPrivateHGOsByAmount failed: ${message}`);

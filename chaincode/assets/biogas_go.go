@@ -9,12 +9,12 @@ type BiogasGO struct {
 	GOType                string `json:"GOType"`                         // always "Biogas"
 	Status                string `json:"Status"`                         // ADR-007: "active", "cancelled", "transferred"
 	QuantityCommitment    string `json:"QuantityCommitment"`             // ADR-009: SHA-256(VolumeNm3 || salt)
-	CountryOfOrigin       string `json:"CountryOfOrigin,omitempty"`      // ADR-012: ISO 3166-1 alpha-2
-	GridConnectionPoint   string `json:"GridConnectionPoint,omitempty"`  // ADR-012: EIC code
-	SupportScheme         string `json:"SupportScheme,omitempty"`        // ADR-012: "none", "FIT", "FIP", "quota"
-	EnergySource          string `json:"EnergySource,omitempty"`         // ADR-012: EN 16325 source code (e.g. "F04010100" = biogas)
-	ProductionPeriodStart int64  `json:"ProductionPeriodStart,omitempty"` // ADR-012: UNIX timestamp
-	ProductionPeriodEnd   int64  `json:"ProductionPeriodEnd,omitempty"`   // ADR-012: UNIX timestamp
+	CountryOfOrigin       string `json:"CountryOfOrigin,omitempty" metadata:",optional"`      // ADR-012: ISO 3166-1 alpha-2
+	GridConnectionPoint   string `json:"GridConnectionPoint,omitempty" metadata:",optional"`  // ADR-012: EIC code
+	SupportScheme         string `json:"SupportScheme,omitempty" metadata:",optional"`        // ADR-012: "none", "FIT", "FIP", "quota"
+	EnergySource          string `json:"EnergySource,omitempty" metadata:",optional"`         // ADR-012: EN 16325 source code (e.g. "F04010100" = biogas)
+	ProductionPeriodStart int64  `json:"ProductionPeriodStart,omitempty" metadata:",optional"` // ADR-012: UNIX timestamp
+	ProductionPeriodEnd   int64  `json:"ProductionPeriodEnd,omitempty" metadata:",optional"`   // ADR-012: UNIX timestamp
 }
 
 // BiogasGOPrivateDetails holds the confidential fields for a biogas GO.
