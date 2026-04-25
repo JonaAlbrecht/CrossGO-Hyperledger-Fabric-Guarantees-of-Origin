@@ -25,46 +25,37 @@ export CORE_PEER_TLS_ROOTCERT_FILE=$EISSUER_TLS
 export CORE_PEER_MSPCONFIGPATH=$ND/organizations/peerOrganizations/eissuer.go-platform.com/users/Admin@eissuer.go-platform.com/msp
 export CORE_PEER_ADDRESS=localhost:7051
 
-echo '=== admin:InitializeRoles (electricity-de) ==='
+echo '=== device:InitLedger (electricity-de) ==='
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
   -C electricity-de -n golifecycle --tls --cafile "$ORDERER_CA" \
   --peerAddresses localhost:7051 --tlsRootCertFiles "$EISSUER_TLS" \
   --peerAddresses localhost:9051 --tlsRootCertFiles "$EPROD_TLS" \
   --peerAddresses localhost:13051 --tlsRootCertFiles "$EBUYER_TLS" \
-  -c '{"function":"admin:InitializeRoles","Args":[]}' --waitForEvent
-echo "InitializeRoles (elec) exit: $?"
+  -c '{"function":"device:InitLedger","Args":["eissuerMSP"]}' --waitForEvent
+echo "InitLedger (elec) exit: $?"
 sleep 2
 
-echo '=== admin:RegisterOrganization eissuerMSP (electricity-de) ==='
+echo '=== device:RegisterOrgRole eproducer1MSP => producer (electricity-de) ==='
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
   -C electricity-de -n golifecycle --tls --cafile "$ORDERER_CA" \
   --peerAddresses localhost:7051 --tlsRootCertFiles "$EISSUER_TLS" \
   --peerAddresses localhost:9051 --tlsRootCertFiles "$EPROD_TLS" \
   --peerAddresses localhost:13051 --tlsRootCertFiles "$EBUYER_TLS" \
-  -c '{"function":"admin:RegisterOrganization","Args":["eissuerMSP","issuer","eissuer.go-platform.com"]}' --waitForEvent
+  -c '{"function":"device:RegisterOrgRole","Args":["eproducer1MSP","producer"]}' --waitForEvent
 sleep 1
 
-echo '=== admin:RegisterOrganization eproducer1MSP (electricity-de) ==='
+echo '=== device:RegisterOrgRole ebuyer1MSP => consumer (electricity-de) ==='
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
   -C electricity-de -n golifecycle --tls --cafile "$ORDERER_CA" \
   --peerAddresses localhost:7051 --tlsRootCertFiles "$EISSUER_TLS" \
   --peerAddresses localhost:9051 --tlsRootCertFiles "$EPROD_TLS" \
   --peerAddresses localhost:13051 --tlsRootCertFiles "$EBUYER_TLS" \
-  -c '{"function":"admin:RegisterOrganization","Args":["eproducer1MSP","producer","eproducer1.go-platform.com"]}' --waitForEvent
+  -c '{"function":"device:RegisterOrgRole","Args":["ebuyer1MSP","consumer"]}' --waitForEvent
 sleep 1
 
-echo '=== admin:RegisterOrganization ebuyer1MSP (electricity-de) ==='
-peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
-  -C electricity-de -n golifecycle --tls --cafile "$ORDERER_CA" \
-  --peerAddresses localhost:7051 --tlsRootCertFiles "$EISSUER_TLS" \
-  --peerAddresses localhost:9051 --tlsRootCertFiles "$EPROD_TLS" \
-  --peerAddresses localhost:13051 --tlsRootCertFiles "$EBUYER_TLS" \
-  -c '{"function":"admin:RegisterOrganization","Args":["ebuyer1MSP","consumer","ebuyer1.go-platform.com"]}' --waitForEvent
-sleep 1
-
-echo '=== admin:ListOrganizations (electricity-de) ==='
+echo '=== device:ListDevices (electricity-de) ==='
 peer chaincode query -C electricity-de -n golifecycle \
-  -c '{"function":"admin:ListOrganizations","Args":[]}'
+  -c '{"function":"device:ListDevices","Args":[]}'
 
 echo ""
 echo "============================================"
@@ -77,60 +68,51 @@ export CORE_PEER_TLS_ROOTCERT_FILE=$HISSUER_TLS
 export CORE_PEER_MSPCONFIGPATH=$ND/organizations/peerOrganizations/hissuer.go-platform.com/users/Admin@hissuer.go-platform.com/msp
 export CORE_PEER_ADDRESS=localhost:8051
 
-echo '=== admin:InitializeRoles (hydrogen-de) ==='
+echo '=== device:InitLedger (hydrogen-de) ==='
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
   -C hydrogen-de -n golifecycle --tls --cafile "$ORDERER_CA" \
   --peerAddresses localhost:8051 --tlsRootCertFiles "$HISSUER_TLS" \
   --peerAddresses localhost:11051 --tlsRootCertFiles "$HPROD_TLS" \
   --peerAddresses localhost:14051 --tlsRootCertFiles "$HBUYER_TLS" \
-  -c '{"function":"admin:InitializeRoles","Args":[]}' --waitForEvent
-echo "InitializeRoles (h2) exit: $?"
+  -c '{"function":"device:InitLedger","Args":["hissuerMSP"]}' --waitForEvent
+echo "InitLedger (h2) exit: $?"
 sleep 2
 
-echo '=== admin:RegisterOrganization hissuerMSP (hydrogen-de) ==='
+echo '=== device:RegisterOrgRole hproducer1MSP => producer (hydrogen-de) ==='
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
   -C hydrogen-de -n golifecycle --tls --cafile "$ORDERER_CA" \
   --peerAddresses localhost:8051 --tlsRootCertFiles "$HISSUER_TLS" \
   --peerAddresses localhost:11051 --tlsRootCertFiles "$HPROD_TLS" \
   --peerAddresses localhost:14051 --tlsRootCertFiles "$HBUYER_TLS" \
-  -c '{"function":"admin:RegisterOrganization","Args":["hissuerMSP","issuer","hissuer.go-platform.com"]}' --waitForEvent
+  -c '{"function":"device:RegisterOrgRole","Args":["hproducer1MSP","producer"]}' --waitForEvent
 sleep 1
 
-echo '=== admin:RegisterOrganization hproducer1MSP (hydrogen-de) ==='
+echo '=== device:RegisterOrgRole hbuyer1MSP => consumer (hydrogen-de) ==='
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
   -C hydrogen-de -n golifecycle --tls --cafile "$ORDERER_CA" \
   --peerAddresses localhost:8051 --tlsRootCertFiles "$HISSUER_TLS" \
   --peerAddresses localhost:11051 --tlsRootCertFiles "$HPROD_TLS" \
   --peerAddresses localhost:14051 --tlsRootCertFiles "$HBUYER_TLS" \
-  -c '{"function":"admin:RegisterOrganization","Args":["hproducer1MSP","producer","hproducer1.go-platform.com"]}' --waitForEvent
+  -c '{"function":"device:RegisterOrgRole","Args":["hbuyer1MSP","consumer"]}' --waitForEvent
 sleep 1
 
-echo '=== admin:RegisterOrganization hbuyer1MSP (hydrogen-de) ==='
-peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
-  -C hydrogen-de -n golifecycle --tls --cafile "$ORDERER_CA" \
-  --peerAddresses localhost:8051 --tlsRootCertFiles "$HISSUER_TLS" \
-  --peerAddresses localhost:11051 --tlsRootCertFiles "$HPROD_TLS" \
-  --peerAddresses localhost:14051 --tlsRootCertFiles "$HBUYER_TLS" \
-  -c '{"function":"admin:RegisterOrganization","Args":["hbuyer1MSP","consumer","hbuyer1.go-platform.com"]}' --waitForEvent
-sleep 1
-
-echo '=== admin:ListOrganizations (hydrogen-de) ==='
+echo '=== device:ListDevices (hydrogen-de) ==='
 peer chaincode query -C hydrogen-de -n golifecycle \
-  -c '{"function":"admin:ListOrganizations","Args":[]}'
+  -c '{"function":"device:ListDevices","Args":[]}'
 
 echo ""
 echo "============================================"
 echo "Initialization complete"
 echo "============================================"
-echo "Electricity channel organizations:"
+echo "Electricity channel devices:"
 peer chaincode query -C electricity-de -n golifecycle \
-  -c '{"function":"admin:ListOrganizations","Args":[]}'
+  -c '{"function":"device:ListDevices","Args":[]}'
 echo ""
-echo "Hydrogen channel organizations:"
+echo "Hydrogen channel devices:"
 export CORE_PEER_LOCALMSPID=hissuerMSP
 export CORE_PEER_ADDRESS=localhost:8051
 peer chaincode query -C hydrogen-de -n golifecycle \
-  -c '{"function":"admin:ListOrganizations","Args":[]}'
+  -c '{"function":"device:ListDevices","Args":[]}'
 
 echo ""
 echo "=== Done ===" 
