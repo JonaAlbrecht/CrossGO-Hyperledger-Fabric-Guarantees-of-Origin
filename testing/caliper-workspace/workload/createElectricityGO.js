@@ -17,7 +17,8 @@ class CreateElectricityGO extends WorkloadModuleBase {
       contractFunction: "issuance:CreateElectricityGO",
       contractArguments: [],
       transientData: transient,
-      readOnly: false
+      readOnly: false,
+      invokerIdentity: "eproducer1_admin"
     };
     await this.sutAdapter.sendRequests(request);
     counter++;

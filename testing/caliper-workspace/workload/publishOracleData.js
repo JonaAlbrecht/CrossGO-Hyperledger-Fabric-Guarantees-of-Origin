@@ -20,7 +20,8 @@ class PublishOracleData extends WorkloadModuleBase {
       contractFunction: "oracle:PublishOracleData",
       contractArguments: [],
       transientData: { OracleData: Buffer.from(payload).toString("base64") },
-      readOnly: false
+      readOnly: false,
+      invokerIdentity: "eissuer_admin"
     });
   }
 }

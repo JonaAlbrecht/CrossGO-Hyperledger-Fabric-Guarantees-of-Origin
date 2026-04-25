@@ -2,11 +2,15 @@
 const { WorkloadModuleBase } = require("@hyperledger/caliper-core");
 class GetElectricityBacklog extends WorkloadModuleBase {
   async submitTransaction() {
+    // Generate a test DeviceID
+    const deviceId = `DEV-ELEC-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+    
     await this.sutAdapter.sendRequests({
       contractId: "golifecycle",
       contractFunction: "backlog:GetElectricityBacklog",
-      contractArguments: [],
-      readOnly: true
+      contractArguments: [deviceId],
+      readOnly: true,
+      invokerIdentity: "eproducer1_admin"
     });
   }
 }

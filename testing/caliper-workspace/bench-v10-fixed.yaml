@@ -1,0 +1,107 @@
+test:
+  name: GO Platform v10.1 Fixed Comprehensive Benchmark
+  description: Performance test with identity fixes and conversion tests
+  workers:
+    number: 4
+
+  rounds:
+  # ========== ELECTRICITY CHANNEL TESTS ==========
+  # -- READ benchmarks --
+  - label: GetVersion_Elec
+    description: admin:GetVersion on electricity-de (read)
+    txNumber: 200
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 50
+    workload:
+      module: workload/getVersion.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+
+  - label: GetCurrentEGOsList
+    description: query:GetCurrentEGOsList (read)
+    txNumber: 200
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 40
+    workload:
+      module: workload/getCurrentEGOsList.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+
+  # -- WRITE benchmarks --
+  - label: AddToBacklogElectricity
+    description: backlog:AddToBacklogElectricity (write with producer identity)
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 10
+    workload:
+      module: workload/addToBacklogElectricity.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+
+  - label: CreateElectricityGO
+    description: issuance:CreateElectricityGO (write, SBE endorsement)
+    txNumber: 50
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 5
+    workload:
+      module: workload/createElectricityGO.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+
+  # ========== HYDROGEN CHANNEL TESTS ==========
+  - label: GetVersion_H2
+    description: admin:GetVersion on hydrogen-de (read)
+    txNumber: 200
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 50
+    workload:
+      module: workload/getVersion.js
+    chaincodeId: golifecycle
+    channel: hydrogen-de
+
+  - label: GetCurrentHGOsList
+    description: query:GetCurrentHGOsList (read)
+    txNumber: 200
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 40
+    workload:
+      module: workload/getCurrentHGOsList.js
+    chaincodeId: golifecycle
+    channel: hydrogen-de
+
+  # ========== CROSS-CHANNEL CONVERSION TESTS ==========
+  - label: LockGOForConversion
+    description: conversion:LockGOForConversion (write, cross-channel)
+    txNumber: 50
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 5
+    workload:
+      module: workload/lockGOForConversion.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+
+  - label: GetConversionLocks
+    description: conversion:GetConversionLocks (read, cross-channel query)
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 20
+    workload:
+      module: workload/getConversionLocks.js
+    chaincodeId: golifecycle
+    channel: hydrogen-de
