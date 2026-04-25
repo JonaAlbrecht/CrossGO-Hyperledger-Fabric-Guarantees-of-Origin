@@ -1,0 +1,43 @@
+﻿name: go-platform-ebuyer1
+version: 1.0.0
+client:
+  organization: ebuyer1MSP
+  connection:
+    timeout:
+      peer:
+        endorser: 300
+
+organizations:
+  ebuyer1MSP:
+    mspid: ebuyer1MSP
+    peers:
+      - peer0.ebuyer1.go-platform.com
+    certificateAuthorities: []
+
+peers:
+  peer0.ebuyer1.go-platform.com:
+    url: grpcs://localhost:13051
+    tlsCACerts:
+      path: /root/hlf-go/repo/network/organizations/peerOrganizations/ebuyer1.go-platform.com/peers/peer0.ebuyer1.go-platform.com/tls/ca.crt
+    grpcOptions:
+      ssl-target-name-override: peer0.ebuyer1.go-platform.com
+      hostnameOverride: peer0.ebuyer1.go-platform.com
+
+orderers:
+  orderer1.go-platform.com:
+    url: grpcs://localhost:7050
+    tlsCACerts:
+      path: /root/hlf-go/repo/network/organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/tls/ca.crt
+    grpcOptions:
+      ssl-target-name-override: orderer1.go-platform.com
+
+channels:
+  electricity-de:
+    orderers:
+      - orderer1.go-platform.com
+    peers:
+      peer0.ebuyer1.go-platform.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true

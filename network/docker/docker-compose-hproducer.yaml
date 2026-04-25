@@ -1,10 +1,7 @@
-# Docker Compose for the Hydrogen Producer organization (Tier 2)
-version: '3.7'
-
+﻿version: '3.7'
 networks:
   go-platform:
     name: go-platform_network
-
 services:
   couchdb.hproducer1:
     extends:
@@ -12,12 +9,11 @@ services:
       service: couchdb-base
     container_name: couchdb.hproducer1
     ports:
-      - 9984:5984
+      - 8984:5984
     volumes:
       - couchdb.hproducer1:/opt/couchdb/data
     networks:
       - go-platform
-
   peer0.hproducer1.go-platform.com:
     extends:
       file: ../base.yaml
@@ -47,7 +43,6 @@ services:
       - couchdb.hproducer1
     networks:
       - go-platform
-
 volumes:
   couchdb.hproducer1:
   peer0.hproducer1.go-platform.com:

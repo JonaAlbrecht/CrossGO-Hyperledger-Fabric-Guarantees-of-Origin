@@ -1,0 +1,43 @@
+﻿name: go-platform-hissuer
+version: 1.0.0
+client:
+  organization: hissuerMSP
+  connection:
+    timeout:
+      peer:
+        endorser: 300
+
+organizations:
+  hissuerMSP:
+    mspid: hissuerMSP
+    peers:
+      - peer0.hissuer.go-platform.com
+    certificateAuthorities: []
+
+peers:
+  peer0.hissuer.go-platform.com:
+    url: grpcs://localhost:8051
+    tlsCACerts:
+      path: /root/hlf-go/repo/network/organizations/peerOrganizations/hissuer.go-platform.com/peers/peer0.hissuer.go-platform.com/tls/ca.crt
+    grpcOptions:
+      ssl-target-name-override: peer0.hissuer.go-platform.com
+      hostnameOverride: peer0.hissuer.go-platform.com
+
+orderers:
+  orderer1.go-platform.com:
+    url: grpcs://localhost:7050
+    tlsCACerts:
+      path: /root/hlf-go/repo/network/organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/tls/ca.crt
+    grpcOptions:
+      ssl-target-name-override: orderer1.go-platform.com
+
+channels:
+  hydrogen-de:
+    orderers:
+      - orderer1.go-platform.com
+    peers:
+      peer0.hissuer.go-platform.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true

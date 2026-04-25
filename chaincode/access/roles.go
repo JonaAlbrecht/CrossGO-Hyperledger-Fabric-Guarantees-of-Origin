@@ -84,3 +84,30 @@ func IsProducer(ctx contractapi.TransactionContextInterface) (bool, error) {
 	}
 	return role == RoleProducer, nil
 }
+
+// RequireRoleOneOf is an alias for RequireAnyRole for readability.
+func RequireRoleOneOf(ctx contractapi.TransactionContextInterface, roles ...string) error {
+	return RequireAnyRole(ctx, roles...)
+}
+
+// GetIssuerMSP scans the org-role registry and returns the MSP ID of the issuer on this channel.
+// Returns an error if no issuer is registered.
+func GetIssuerMSP(ctx contractapi.TransactionContextInterface) (string, error) {
+	iter, err := ctx.GetStub().GetStateByRange(orgRolePrefix, orgRolePrefix+"~")
+	if err != nil {
+		return "", fmt.Errorf("failed to query org role registry: %v", err)
+	}
+	defer iter.Close()
+
+	for iter.HasNext() {
+		kv, err := iter.Next()
+		if err != nil {
+			return "", fmt.Errorf("error iterating org roles: %v", err)
+		}
+		if string(kv.Value) == RoleIssuer {
+			// Strip the prefix to get the MSP ID
+			return kv.Key[len(orgRolePrefix):], nil
+		}
+	}
+	return "", fmt.Errorf("no issuer registered on this channel")
+}

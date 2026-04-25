@@ -1,0 +1,43 @@
+﻿name: go-platform-eproducer1
+version: 1.0.0
+client:
+  organization: eproducer1MSP
+  connection:
+    timeout:
+      peer:
+        endorser: 300
+
+organizations:
+  eproducer1MSP:
+    mspid: eproducer1MSP
+    peers:
+      - peer0.eproducer1.go-platform.com
+    certificateAuthorities: []
+
+peers:
+  peer0.eproducer1.go-platform.com:
+    url: grpcs://localhost:9051
+    tlsCACerts:
+      path: /root/hlf-go/repo/network/organizations/peerOrganizations/eproducer1.go-platform.com/peers/peer0.eproducer1.go-platform.com/tls/ca.crt
+    grpcOptions:
+      ssl-target-name-override: peer0.eproducer1.go-platform.com
+      hostnameOverride: peer0.eproducer1.go-platform.com
+
+orderers:
+  orderer1.go-platform.com:
+    url: grpcs://localhost:7050
+    tlsCACerts:
+      path: /root/hlf-go/repo/network/organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/tls/ca.crt
+    grpcOptions:
+      ssl-target-name-override: orderer1.go-platform.com
+
+channels:
+  electricity-de:
+    orderers:
+      - orderer1.go-platform.com
+    peers:
+      peer0.eproducer1.go-platform.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true

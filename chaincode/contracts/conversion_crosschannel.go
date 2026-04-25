@@ -648,12 +648,9 @@ func determineCarrierFromGOID(goAssetID string) (string, error) {
 	}
 }
 
-// getChannelIssuerMSP returns the issuer MSP for the current channel.
-// Assumes issuer1MSP is the issuer for all channels in the sample setup.
+// getChannelIssuerMSP returns the issuer MSP for the current channel by querying the role registry.
 func getChannelIssuerMSP(ctx contractapi.TransactionContextInterface) (string, error) {
-	// In the sample setup, issuer1MSP is the only issuer
-	// In production, this would query channel configuration or role registry
-	return "issuer1MSP", nil
+	return access.GetIssuerMSP(ctx)
 }
 
 // updateGOStatus updates the status field of a GO (both public and private data).

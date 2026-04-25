@@ -1,10 +1,7 @@
-# Docker Compose for the Electricity Producer organization (Tier 2)
-version: '3.7'
-
+﻿version: '3.7'
 networks:
   go-platform:
     name: go-platform_network
-
 services:
   couchdb.eproducer1:
     extends:
@@ -17,7 +14,6 @@ services:
       - couchdb.eproducer1:/opt/couchdb/data
     networks:
       - go-platform
-
   peer0.eproducer1.go-platform.com:
     extends:
       file: ../base.yaml
@@ -47,7 +43,6 @@ services:
       - couchdb.eproducer1
     networks:
       - go-platform
-
 volumes:
   couchdb.eproducer1:
   peer0.eproducer1.go-platform.com:

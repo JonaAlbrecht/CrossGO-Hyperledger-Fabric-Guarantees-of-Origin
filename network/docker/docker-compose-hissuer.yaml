@@ -1,0 +1,48 @@
+﻿version: '3.7'
+networks:
+  go-platform:
+    name: go-platform_network
+services:
+  couchdb.hissuer:
+    extends:
+      file: ../base.yaml
+      service: couchdb-base
+    container_name: couchdb.hissuer
+    ports:
+      - 6984:5984
+    volumes:
+      - couchdb.hissuer:/opt/couchdb/data
+    networks:
+      - go-platform
+  peer0.hissuer.go-platform.com:
+    extends:
+      file: ../base.yaml
+      service: peer-base
+    container_name: peer0.hissuer.go-platform.com
+    environment:
+      - CORE_PEER_ID=peer0.hissuer.go-platform.com
+      - CORE_PEER_ADDRESS=peer0.hissuer.go-platform.com:8051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.hissuer.go-platform.com:8052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.hissuer.go-platform.com:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.hissuer.go-platform.com:8051
+      - CORE_PEER_LOCALMSPID=hissuerMSP
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.hissuer:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../organizations/peerOrganizations/hissuer.go-platform.com/peers/peer0.hissuer.go-platform.com/msp:/etc/hyperledger/fabric/msp
+      - ../organizations/peerOrganizations/hissuer.go-platform.com/peers/peer0.hissuer.go-platform.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.hissuer.go-platform.com:/var/hyperledger/production
+    ports:
+      - 8051:8051
+    depends_on:
+      - couchdb.hissuer
+    networks:
+      - go-platform
+volumes:
+  couchdb.hissuer:
+  peer0.hissuer.go-platform.com:

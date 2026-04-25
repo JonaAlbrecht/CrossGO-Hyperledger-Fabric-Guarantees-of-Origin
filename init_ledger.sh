@@ -1,61 +1,127 @@
-#!/bin/bash
+﻿#!/bin/bash
+# init_ledger.sh — v10.1: Initialize both channels with orgs, roles, devices, backlog
 set -euo pipefail
 
-export PATH=/root/hlf-go/repo/fabric-bin/bin:$PATH
-export FABRIC_CFG_PATH=/root/hlf-go/repo/network
-NETWORK_DIR=/root/hlf-go/repo/network
+REPO_DIR=/root/hlf-go/repo
+NETWORK_DIR=$REPO_DIR/network
+export PATH=$REPO_DIR/fabric-bin/bin:$PATH
+export FABRIC_CFG_PATH=$NETWORK_DIR
 
-export CORE_PEER_TLS_ENABLED=true
-export CORE_PEER_LOCALMSPID=issuer1MSP
-export CORE_PEER_TLS_ROOTCERT_FILE=$NETWORK_DIR/organizations/peerOrganizations/issuer1.go-platform.com/peers/peer0.issuer1.go-platform.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=$NETWORK_DIR/organizations/peerOrganizations/issuer1.go-platform.com/users/Admin@issuer1.go-platform.com/msp
-export CORE_PEER_ADDRESS=localhost:7051
+E_CHANNEL="electricity-de"
+H_CHANNEL="hydrogen-de"
+CC="golifecycle"
+ORDERER_CA="$NETWORK_DIR/organizations/ordererOrganizations/orderer.go-platform.com/msp/tlscacerts/tlsca.orderer.go-platform.com-cert.pem"
 
-ORDERER_CA=$NETWORK_DIR/organizations/ordererOrganizations/orderer.go-platform.com/msp/tlscacerts/tlsca.orderer.go-platform.com-cert.pem
+set_peer_env() {
+  local org=$1 msp=$2 port=$3
+  export CORE_PEER_TLS_ENABLED=true
+  export CORE_PEER_LOCALMSPID="$msp"
+  export CORE_PEER_TLS_ROOTCERT_FILE="$NETWORK_DIR/organizations/peerOrganizations/${org}.go-platform.com/peers/peer0.${org}.go-platform.com/tls/ca.crt"
+  export CORE_PEER_MSPCONFIGPATH="$NETWORK_DIR/organizations/peerOrganizations/${org}.go-platform.com/users/Admin@${org}.go-platform.com/msp"
+  export CORE_PEER_ADDRESS="localhost:${port}"
+}
 
-PEER_CONN="--peerAddresses localhost:7051 --tlsRootCertFiles $NETWORK_DIR/organizations/peerOrganizations/issuer1.go-platform.com/peers/peer0.issuer1.go-platform.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles $NETWORK_DIR/organizations/peerOrganizations/eproducer1.go-platform.com/peers/peer0.eproducer1.go-platform.com/tls/ca.crt --peerAddresses localhost:11051 --tlsRootCertFiles $NETWORK_DIR/organizations/peerOrganizations/hproducer1.go-platform.com/peers/peer0.hproducer1.go-platform.com/tls/ca.crt --peerAddresses localhost:13051 --tlsRootCertFiles $NETWORK_DIR/organizations/peerOrganizations/buyer1.go-platform.com/peers/peer0.buyer1.go-platform.com/tls/ca.crt"
+invoke() {
+  local org=$1 msp=$2 port=$3 channel=$4; shift 4
+  set_peer_env "$org" "$msp" "$port"
+  peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
+    --tls --cafile "$ORDERER_CA" -C "$channel" -n "$CC" "$@" >/dev/null
+}
 
-echo "=== InitLedger ==="
-peer chaincode invoke \
-  -o localhost:7050 \
-  --ordererTLSHostnameOverride localhost \
-  -C goplatformchannel -n golifecycle \
-  --tls --cafile "$ORDERER_CA" \
-  $PEER_CONN \
-  -c '{"function":"device:InitLedger","Args":["issuer1MSP"]}'
+query() {
+  local org=$1 msp=$2 port=$3 channel=$4; shift 4
+  set_peer_env "$org" "$msp" "$port"
+  peer chaincode query -C "$channel" -n "$CC" "$@"
+}
 
+echo "====== Initializing Ledger — electricity-de ======"
+
+# 1. Register organizations (eissuer as admin)
+echo "[E1] Registering organizations on electricity-de..."
+
+REG=$(echo -n '{"DisplayName":"Electricity Issuer","OrgMSP":"eissuerMSP","OrgType":"issuer","EnergyCarriers":["electricity"],"Country":"DE"}' | base64 -w0)
+invoke eissuer eissuerMSP 7051 "$E_CHANNEL" -c '{"function":"admin:RegisterOrganization","Args":[]}' --transient "{\"OrgRegistration\":\"$REG\"}"
+
+REG=$(echo -n '{"DisplayName":"Electricity Producer 1","OrgMSP":"eproducer1MSP","OrgType":"producer","EnergyCarriers":["electricity"],"Country":"DE"}' | base64 -w0)
+invoke eissuer eissuerMSP 7051 "$E_CHANNEL" -c '{"function":"admin:RegisterOrganization","Args":[]}' --transient "{\"OrgRegistration\":\"$REG\"}"
+
+REG=$(echo -n '{"DisplayName":"Electricity Buyer 1","OrgMSP":"ebuyer1MSP","OrgType":"buyer","EnergyCarriers":["electricity"],"Country":"DE"}' | base64 -w0)
+invoke eissuer eissuerMSP 7051 "$E_CHANNEL" -c '{"function":"admin:RegisterOrganization","Args":[]}' --transient "{\"OrgRegistration\":\"$REG\"}"
+
+# 2. Register roles
+echo "[E2] Registering roles on electricity-de..."
+invoke eissuer eissuerMSP 7051 "$E_CHANNEL" -c '{"function":"admin:RegisterOrgRole","Args":["eissuerMSP","issuer"]}'
+invoke eissuer eissuerMSP 7051 "$E_CHANNEL" -c '{"function":"admin:RegisterOrgRole","Args":["eproducer1MSP","producer"]}'
+invoke eissuer eissuerMSP 7051 "$E_CHANNEL" -c '{"function":"admin:RegisterOrgRole","Args":["ebuyer1MSP","buyer"]}'
+
+# 3. Register electricity smart meter device (as eproducer1 + eissuer endorsement)
+echo "[E3] Registering electricity smart meter device..."
+EPRODUCER1_TLS="$NETWORK_DIR/organizations/peerOrganizations/eproducer1.go-platform.com/peers/peer0.eproducer1.go-platform.com/tls/ca.crt"
+EISSUER_TLS="$NETWORK_DIR/organizations/peerOrganizations/eissuer.go-platform.com/peers/peer0.eissuer.go-platform.com/tls/ca.crt"
+set_peer_env eproducer1 eproducer1MSP 9051
+DEV=$(echo -n '{"deviceType":"SmartMeter","ownerOrgMSP":"eproducer1MSP","energyCarriers":["electricity"],"attributes":{"vendor":"SiemensMeter","model":"SM-7000","serialNumber":"SM-001","calibrationDate":"2025-01-01"}}' | base64 -w0)
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
+  --tls --cafile "$ORDERER_CA" -C "$E_CHANNEL" -n "$CC" \
+  --peerAddresses localhost:9051 --tlsRootCertFiles "$EPRODUCER1_TLS" \
+  --peerAddresses localhost:7051 --tlsRootCertFiles "$EISSUER_TLS" \
+  -c '{"function":"device:RegisterDevice","Args":[]}' \
+  --transient "{\"Device\":\"$DEV\"}"
 sleep 2
 
-echo "=== RegisterOrgRole eproducer1MSP ==="
-peer chaincode invoke \
-  -o localhost:7050 \
-  --ordererTLSHostnameOverride localhost \
-  -C goplatformchannel -n golifecycle \
-  --tls --cafile "$ORDERER_CA" \
-  $PEER_CONN \
-  -c '{"function":"device:RegisterOrgRole","Args":["eproducer1MSP","producer"]}'
+# 4. Add electricity backlog (as eproducer1)
+echo "[E4] Adding electricity backlog..."
+set_peer_env eproducer1 eproducer1MSP 9051
+EBACKLOG=$(echo -n '{"AmountMWh":500,"Emissions":25.5,"ElectricityProductionMethod":"solar_pv","ElapsedSeconds":3600}' | base64 -w0)
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
+  --tls --cafile "$ORDERER_CA" -C "$E_CHANNEL" -n "$CC" \
+  -c '{"function":"backlog:AddToBacklogElectricity","Args":[]}' \
+  --transient "{\"eBacklog\":\"$EBACKLOG\"}"
+sleep 2
 
-sleep 1
+echo "====== Initializing Ledger — hydrogen-de ======"
 
-echo "=== RegisterOrgRole hproducer1MSP ==="
-peer chaincode invoke \
-  -o localhost:7050 \
-  --ordererTLSHostnameOverride localhost \
-  -C goplatformchannel -n golifecycle \
-  --tls --cafile "$ORDERER_CA" \
-  $PEER_CONN \
-  -c '{"function":"device:RegisterOrgRole","Args":["hproducer1MSP","producer"]}'
+# 5. Register organizations on hydrogen-de
+echo "[H1] Registering organizations on hydrogen-de..."
+REG=$(echo -n '{"DisplayName":"Hydrogen Issuer","OrgMSP":"hissuerMSP","OrgType":"issuer","EnergyCarriers":["hydrogen"],"Country":"DE"}' | base64 -w0)
+invoke hissuer hissuerMSP 8051 "$H_CHANNEL" -c '{"function":"admin:RegisterOrganization","Args":[]}' --transient "{\"OrgRegistration\":\"$REG\"}"
 
-sleep 1
+REG=$(echo -n '{"DisplayName":"Hydrogen Producer 1","OrgMSP":"hproducer1MSP","OrgType":"producer","EnergyCarriers":["hydrogen"],"Country":"DE"}' | base64 -w0)
+invoke hissuer hissuerMSP 8051 "$H_CHANNEL" -c '{"function":"admin:RegisterOrganization","Args":[]}' --transient "{\"OrgRegistration\":\"$REG\"}"
 
-echo "=== RegisterOrgRole buyer1MSP ==="
-peer chaincode invoke \
-  -o localhost:7050 \
-  --ordererTLSHostnameOverride localhost \
-  -C goplatformchannel -n golifecycle \
-  --tls --cafile "$ORDERER_CA" \
-  $PEER_CONN \
-  -c '{"function":"device:RegisterOrgRole","Args":["buyer1MSP","consumer"]}'
+REG=$(echo -n '{"DisplayName":"Hydrogen Buyer 1","OrgMSP":"hbuyer1MSP","OrgType":"buyer","EnergyCarriers":["hydrogen"],"Country":"DE"}' | base64 -w0)
+invoke hissuer hissuerMSP 8051 "$H_CHANNEL" -c '{"function":"admin:RegisterOrganization","Args":[]}' --transient "{\"OrgRegistration\":\"$REG\"}"
+
+# 6. Register roles on hydrogen-de
+echo "[H2] Registering roles on hydrogen-de..."
+invoke hissuer hissuerMSP 8051 "$H_CHANNEL" -c '{"function":"admin:RegisterOrgRole","Args":["hissuerMSP","issuer"]}'
+invoke hissuer hissuerMSP 8051 "$H_CHANNEL" -c '{"function":"admin:RegisterOrgRole","Args":["hproducer1MSP","producer"]}'
+invoke hissuer hissuerMSP 8051 "$H_CHANNEL" -c '{"function":"admin:RegisterOrgRole","Args":["hbuyer1MSP","buyer"]}'
+
+# 7. Register hydrogen production meter device
+echo "[H3] Registering hydrogen production meter device..."
+HPRODUCER1_TLS="$NETWORK_DIR/organizations/peerOrganizations/hproducer1.go-platform.com/peers/peer0.hproducer1.go-platform.com/tls/ca.crt"
+HISSUER_TLS="$NETWORK_DIR/organizations/peerOrganizations/hissuer.go-platform.com/peers/peer0.hissuer.go-platform.com/tls/ca.crt"
+set_peer_env hproducer1 hproducer1MSP 11051
+DEV=$(echo -n '{"deviceType":"OutputMeter","ownerOrgMSP":"hproducer1MSP","energyCarriers":["hydrogen"],"attributes":{"vendor":"NEL Hydrogen","model":"HM-2000","serialNumber":"HM-001","calibrationDate":"2025-01-01","electrolyzerType":"PEM","nominalCapacityKgPerDay":"200"}}' | base64 -w0)
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
+  --tls --cafile "$ORDERER_CA" -C "$H_CHANNEL" -n "$CC" \
+  --peerAddresses localhost:11051 --tlsRootCertFiles "$HPRODUCER1_TLS" \
+  --peerAddresses localhost:8051 --tlsRootCertFiles "$HISSUER_TLS" \
+  -c '{"function":"device:RegisterDevice","Args":[]}' \
+  --transient "{\"Device\":\"$DEV\"}"
+sleep 2
+
+# 8. Add hydrogen backlog
+echo "[H4] Adding hydrogen backlog..."
+set_peer_env hproducer1 hproducer1MSP 11051
+HBACKLOG=$(echo -n '{"Kilosproduced":1000,"EmissionsHydrogen":5.0,"UsedMWh":55.0,"HydrogenProductionMethod":"pem_electrolysis","ElapsedSeconds":3600}' | base64 -w0)
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
+  --tls --cafile "$ORDERER_CA" -C "$H_CHANNEL" -n "$CC" \
+  -c '{"function":"backlog:AddToBacklogHydrogen","Args":[]}' \
+  --transient "{\"hBacklog\":\"$HBACKLOG\"}"
+sleep 2
 
 echo ""
-echo "=== Ledger Initialized ==="
+echo "====== Ledger Initialized ======"
+echo "Both channels ready. Run Caliper benchmarks with:"
+echo "  cd /root/hlf-go/repo && npx caliper launch manager --caliper-workspace testing/caliper-workspace --caliper-networkconfig network-config-v10.yaml --caliper-benchconfig bench-v10-comprehensive.yaml"

@@ -1,43 +1,35 @@
-# ---------------------------------------------------------------------------
-# Cryptogen configuration for the GO Platform network
-# 4 peer orgs: Issuer, Electricity Producer, Hydrogen Producer, Buyer
-# 4-node Raft orderer cluster
-# ---------------------------------------------------------------------------
+﻿# v10.1 Two-Channel Topology (ADR-030)
+# 6 peer orgs: eissuer, hissuer, eproducer1, hproducer1, ebuyer1, hbuyer1
 OrdererOrgs:
   - Name: Orderer
     Domain: orderer.go-platform.com
     EnableNodeOUs: true
     Specs:
       - Hostname: orderer1
-        SANS:
-          - localhost
-          - 127.0.0.1
-          - orderer1.go-platform.com
+        SANS: [localhost, 127.0.0.1, orderer1.go-platform.com]
       - Hostname: orderer2
-        SANS:
-          - localhost
-          - 127.0.0.1
-          - orderer2.go-platform.com
+        SANS: [localhost, 127.0.0.1, orderer2.go-platform.com]
       - Hostname: orderer3
-        SANS:
-          - localhost
-          - 127.0.0.1
-          - orderer3.go-platform.com
+        SANS: [localhost, 127.0.0.1, orderer3.go-platform.com]
       - Hostname: orderer4
-        SANS:
-          - localhost
-          - 127.0.0.1
-          - orderer4.go-platform.com
+        SANS: [localhost, 127.0.0.1, orderer4.go-platform.com]
 
 PeerOrgs:
-  - Name: issuer1
-    Domain: issuer1.go-platform.com
+  - Name: eissuer
+    Domain: eissuer.go-platform.com
     EnableNodeOUs: true
     Template:
       Count: 1
-      SANS:
-        - localhost
-        - 127.0.0.1
+      SANS: [localhost, 127.0.0.1]
+    Users:
+      Count: 1
+
+  - Name: hissuer
+    Domain: hissuer.go-platform.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+      SANS: [localhost, 127.0.0.1]
     Users:
       Count: 1
 
@@ -46,9 +38,7 @@ PeerOrgs:
     EnableNodeOUs: true
     Template:
       Count: 1
-      SANS:
-        - localhost
-        - 127.0.0.1
+      SANS: [localhost, 127.0.0.1]
     Users:
       Count: 1
 
@@ -57,19 +47,24 @@ PeerOrgs:
     EnableNodeOUs: true
     Template:
       Count: 1
-      SANS:
-        - localhost
-        - 127.0.0.1
+      SANS: [localhost, 127.0.0.1]
     Users:
       Count: 1
 
-  - Name: buyer1
-    Domain: buyer1.go-platform.com
+  - Name: ebuyer1
+    Domain: ebuyer1.go-platform.com
     EnableNodeOUs: true
     Template:
       Count: 1
-      SANS:
-        - localhost
-        - 127.0.0.1
+      SANS: [localhost, 127.0.0.1]
+    Users:
+      Count: 1
+
+  - Name: hbuyer1
+    Domain: hbuyer1.go-platform.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+      SANS: [localhost, 127.0.0.1]
     Users:
       Count: 1

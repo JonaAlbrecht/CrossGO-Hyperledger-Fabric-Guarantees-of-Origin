@@ -1,0 +1,176 @@
+﻿test:
+  name: GO Platform v10.1 Comprehensive Benchmark
+  description: Performance test covering all 10 contract namespaces (electricity-de + hydrogen-de channels)
+  workers:
+    number: 4
+
+rounds:
+  # ── READ benchmarks (high TPS) ──────────────────────────────────────────
+  - label: GetVersion
+    description: admin:GetVersion (read)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 50
+    workload:
+      module: workload/getVersion.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eissuer_admin
+    invokerMsp: eissuerMSP
+
+  - label: GetOrganization
+    description: admin:GetOrganization (read)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 50
+    workload:
+      module: workload/getOrganization.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eissuer_admin
+    invokerMsp: eissuerMSP
+
+  - label: ListOrganizations
+    description: admin:ListOrganizations (read)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 40
+    workload:
+      module: workload/listOrganizations.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eissuer_admin
+    invokerMsp: eissuerMSP
+
+  - label: GetCurrentEGOsList
+    description: query:GetCurrentEGOsList (read, electricity-de)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 40
+    workload:
+      module: workload/getCurrentEGOsList.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eissuer_admin
+    invokerMsp: eissuerMSP
+
+  - label: GetCurrentHGOsList
+    description: query:GetCurrentHGOsList (read, hydrogen-de)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 40
+    workload:
+      module: workload/getCurrentHGOsList.js
+    chaincodeId: golifecycle
+    channel: hydrogen-de
+    invokerIdentity: hissuer_admin
+    invokerMsp: hissuerMSP
+
+  - label: GetElectricityBacklog
+    description: backlog:GetElectricityBacklog (read)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 40
+    workload:
+      module: workload/getElectricityBacklog.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eproducer1_admin
+    invokerMsp: eproducer1MSP
+
+  - label: ListOracleDataPaginated
+    description: oracle:ListOracleDataPaginated (read)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 40
+    workload:
+      module: workload/listOracleDataPaginated.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eissuer_admin
+    invokerMsp: eissuerMSP
+
+  # ── WRITE benchmarks ──────────────────────────────────────────────────────
+  - label: AddToBacklogElectricity
+    description: backlog:AddToBacklogElectricity (write, electricity-de)
+    txNumber: 200
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 10
+    workload:
+      module: workload/addToBacklogElectricity.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eproducer1_admin
+    invokerMsp: eproducer1MSP
+
+  - label: AddToBacklogHydrogen
+    description: backlog:AddToBacklogHydrogen (write, hydrogen-de)
+    txNumber: 200
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 10
+    workload:
+      module: workload/addToBacklogHydrogen.js
+    chaincodeId: golifecycle
+    channel: hydrogen-de
+    invokerIdentity: hproducer1_admin
+    invokerMsp: hproducer1MSP
+
+  - label: PublishOracleData
+    description: oracle:PublishOracleData (write, electricity-de)
+    txNumber: 200
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 10
+    workload:
+      module: workload/publishOracleData.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eissuer_admin
+    invokerMsp: eissuerMSP
+
+  - label: CreateElectricityGO
+    description: issuance:CreateElectricityGO (write, electricity-de, SBE endorsement)
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 5
+    workload:
+      module: workload/createElectricityGO.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eproducer1_admin
+    invokerMsp: eproducer1MSP
+
+  - label: CreateHydrogenGO
+    description: issuance:CreateHydrogenGO (write, hydrogen-de, SBE endorsement)
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 5
+    workload:
+      module: workload/createHydrogenGO.js
+    chaincodeId: golifecycle
+    channel: hydrogen-de
+    invokerIdentity: hproducer1_admin
+    invokerMsp: hproducer1MSP

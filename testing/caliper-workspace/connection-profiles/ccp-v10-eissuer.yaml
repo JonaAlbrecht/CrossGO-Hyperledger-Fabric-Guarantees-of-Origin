@@ -1,0 +1,43 @@
+﻿name: go-platform-eissuer
+version: 1.0.0
+client:
+  organization: eissuerMSP
+  connection:
+    timeout:
+      peer:
+        endorser: 300
+
+organizations:
+  eissuerMSP:
+    mspid: eissuerMSP
+    peers:
+      - peer0.eissuer.go-platform.com
+    certificateAuthorities: []
+
+peers:
+  peer0.eissuer.go-platform.com:
+    url: grpcs://localhost:7051
+    tlsCACerts:
+      path: /root/hlf-go/repo/network/organizations/peerOrganizations/eissuer.go-platform.com/peers/peer0.eissuer.go-platform.com/tls/ca.crt
+    grpcOptions:
+      ssl-target-name-override: peer0.eissuer.go-platform.com
+      hostnameOverride: peer0.eissuer.go-platform.com
+
+orderers:
+  orderer1.go-platform.com:
+    url: grpcs://localhost:7050
+    tlsCACerts:
+      path: /root/hlf-go/repo/network/organizations/ordererOrganizations/orderer.go-platform.com/orderers/orderer1.go-platform.com/tls/ca.crt
+    grpcOptions:
+      ssl-target-name-override: orderer1.go-platform.com
+
+channels:
+  electricity-de:
+    orderers:
+      - orderer1.go-platform.com
+    peers:
+      peer0.eissuer.go-platform.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true

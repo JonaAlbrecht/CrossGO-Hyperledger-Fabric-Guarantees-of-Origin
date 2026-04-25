@@ -1,13 +1,13 @@
 ﻿"use strict";
 const { WorkloadModuleBase } = require("@hyperledger/caliper-core");
-class GetOrganization extends WorkloadModuleBase {
+class GetCurrentHGOsList extends WorkloadModuleBase {
   async submitTransaction() {
     await this.sutAdapter.sendRequests({
       contractId: "golifecycle",
-      contractFunction: "admin:GetOrganization",
-      contractArguments: ["eissuerMSP"],
+      contractFunction: "query:GetCurrentHGOsList",
+      contractArguments: [],
       readOnly: true
     });
   }
 }
-module.exports.createWorkloadModule = () => new GetOrganization();
+module.exports.createWorkloadModule = () => new GetCurrentHGOsList();

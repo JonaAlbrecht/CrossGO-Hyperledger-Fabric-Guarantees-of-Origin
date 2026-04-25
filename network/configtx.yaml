@@ -1,8 +1,8 @@
----
-# ---------------------------------------------------------------------------
-# Tiered GO Platform — Channel Configuration
-# Roles: Issuer (Tier 1), EProducer / HProducer (Tier 2), Buyer (Tier 3)
-# ---------------------------------------------------------------------------
+﻿---
+# v10.1: Two-channel topology (ADR-030)
+# electricity-de: eissuerMSP + eproducer1MSP + ebuyer1MSP
+# hydrogen-de:   hissuerMSP + hproducer1MSP + hbuyer1MSP
+
 Organizations:
   - &OrdererOrg
     Name: OrdererOrg
@@ -24,26 +24,47 @@ Organizations:
       - orderer3.go-platform.com:9050
       - orderer4.go-platform.com:10050
 
-  - &Issuer1
-    Name: Issuer1
-    ID: issuer1MSP
-    MSPDir: organizations/peerOrganizations/issuer1.go-platform.com/msp
+  - &EIssuer
+    Name: EIssuer
+    ID: eissuerMSP
+    MSPDir: organizations/peerOrganizations/eissuer.go-platform.com/msp
     Policies:
       Readers:
         Type: Signature
-        Rule: "OR('issuer1MSP.admin', 'issuer1MSP.peer', 'issuer1MSP.client')"
+        Rule: "OR('eissuerMSP.admin', 'eissuerMSP.peer', 'eissuerMSP.client')"
       Writers:
         Type: Signature
-        Rule: "OR('issuer1MSP.admin', 'issuer1MSP.client')"
+        Rule: "OR('eissuerMSP.admin', 'eissuerMSP.client')"
       Admins:
         Type: Signature
-        Rule: "OR('issuer1MSP.admin')"
+        Rule: "OR('eissuerMSP.admin')"
       Endorsement:
         Type: Signature
-        Rule: "OR('issuer1MSP.peer')"
+        Rule: "OR('eissuerMSP.peer')"
     AnchorPeers:
-      - Host: peer0.issuer1.go-platform.com
+      - Host: peer0.eissuer.go-platform.com
         Port: 7051
+
+  - &HIssuer
+    Name: HIssuer
+    ID: hissuerMSP
+    MSPDir: organizations/peerOrganizations/hissuer.go-platform.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('hissuerMSP.admin', 'hissuerMSP.peer', 'hissuerMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('hissuerMSP.admin', 'hissuerMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('hissuerMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('hissuerMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.hissuer.go-platform.com
+        Port: 8051
 
   - &EProducer1
     Name: EProducer1
@@ -87,37 +108,56 @@ Organizations:
       - Host: peer0.hproducer1.go-platform.com
         Port: 11051
 
-  - &Buyer1
-    Name: Buyer1
-    ID: buyer1MSP
-    MSPDir: organizations/peerOrganizations/buyer1.go-platform.com/msp
+  - &EBuyer1
+    Name: EBuyer1
+    ID: ebuyer1MSP
+    MSPDir: organizations/peerOrganizations/ebuyer1.go-platform.com/msp
     Policies:
       Readers:
         Type: Signature
-        Rule: "OR('buyer1MSP.admin', 'buyer1MSP.peer', 'buyer1MSP.client')"
+        Rule: "OR('ebuyer1MSP.admin', 'ebuyer1MSP.peer', 'ebuyer1MSP.client')"
       Writers:
         Type: Signature
-        Rule: "OR('buyer1MSP.admin', 'buyer1MSP.client')"
+        Rule: "OR('ebuyer1MSP.admin', 'ebuyer1MSP.client')"
       Admins:
         Type: Signature
-        Rule: "OR('buyer1MSP.admin')"
+        Rule: "OR('ebuyer1MSP.admin')"
       Endorsement:
         Type: Signature
-        Rule: "OR('buyer1MSP.peer')"
+        Rule: "OR('ebuyer1MSP.peer')"
     AnchorPeers:
-      - Host: peer0.buyer1.go-platform.com
+      - Host: peer0.ebuyer1.go-platform.com
         Port: 13051
 
-# ---------------------------------------------------------------------------
+  - &HBuyer1
+    Name: HBuyer1
+    ID: hbuyer1MSP
+    MSPDir: organizations/peerOrganizations/hbuyer1.go-platform.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('hbuyer1MSP.admin', 'hbuyer1MSP.peer', 'hbuyer1MSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('hbuyer1MSP.admin', 'hbuyer1MSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('hbuyer1MSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('hbuyer1MSP.peer')"
+    AnchorPeers:
+      - Host: peer0.hbuyer1.go-platform.com
+        Port: 14051
+
 Capabilities:
   Channel: &ChannelCapabilities
     V2_0: true
   Orderer: &OrdererCapabilities
     V2_0: true
   Application: &ApplicationCapabilities
-    V2_0: true
+    V2_5: true
 
-# ---------------------------------------------------------------------------
 Application: &ApplicationDefaults
   Organizations:
   Policies:
@@ -139,7 +179,6 @@ Application: &ApplicationDefaults
   Capabilities:
     <<: *ApplicationCapabilities
 
-# ---------------------------------------------------------------------------
 Orderer: &OrdererDefaults
   OrdererType: etcdraft
   BatchTimeout: 500ms
@@ -182,7 +221,6 @@ Orderer: &OrdererDefaults
   Capabilities:
     <<: *OrdererCapabilities
 
-# ---------------------------------------------------------------------------
 Channel: &ChannelDefaults
   Policies:
     Readers:
@@ -197,26 +235,7 @@ Channel: &ChannelDefaults
   Capabilities:
     <<: *ChannelCapabilities
 
-# ---------------------------------------------------------------------------
 Profiles:
-  # v7.0 (legacy): All orgs on a single channel
-  GOPlatformChannel:
-    <<: *ChannelDefaults
-    Orderer:
-      <<: *OrdererDefaults
-      Organizations:
-        - *OrdererOrg
-    Application:
-      <<: *ApplicationDefaults
-      Organizations:
-        - *Issuer1
-        - *EProducer1
-        - *HProducer1
-        - *Buyer1
-
-  # v8.0 (ADR-030): Electricity carrier channel — DE jurisdiction
-  # Members: Issuer (trust anchor + relay), EProducer (electricity producer), Buyer (consumer)
-  # HProducer is NOT a member — cannot see electricity GO data or transactions
   ElectricityDEChannel:
     <<: *ChannelDefaults
     Orderer:
@@ -226,13 +245,10 @@ Profiles:
     Application:
       <<: *ApplicationDefaults
       Organizations:
-        - *Issuer1
+        - *EIssuer
         - *EProducer1
-        - *Buyer1
+        - *EBuyer1
 
-  # v8.0 (ADR-030): Hydrogen carrier channel — DE jurisdiction
-  # Members: Issuer (trust anchor + relay), HProducer (hydrogen producer), Buyer (consumer)
-  # EProducer is NOT a member — cannot see hydrogen GO data or transactions
   HydrogenDEChannel:
     <<: *ChannelDefaults
     Orderer:
@@ -242,38 +258,6 @@ Profiles:
     Application:
       <<: *ApplicationDefaults
       Organizations:
-        - *Issuer1
+        - *HIssuer
         - *HProducer1
-        - *Buyer1
-
-  # v10.1 (ADR-033): Biogas carrier channel — DE jurisdiction
-  # Members: Issuer (trust anchor + relay), EProducer (biogas producer), Buyer (consumer)
-  # In sample setup, EProducer produces both electricity and biogas (multi-carrier producer)
-  BiogasDEChannel:
-    <<: *ChannelDefaults
-    Orderer:
-      <<: *OrdererDefaults
-      Organizations:
-        - *OrdererOrg
-    Application:
-      <<: *ApplicationDefaults
-      Organizations:
-        - *Issuer1
-        - *EProducer1  # Multi-carrier: produces electricity + biogas
-        - *Buyer1
-
-  # v10.1 (ADR-033): Heating/Cooling carrier channel — DE jurisdiction
-  # Members: Issuer (trust anchor + relay), HProducer (heating producer), Buyer (consumer)
-  # In sample setup, HProducer produces both hydrogen and heating/cooling (multi-carrier producer)
-  HeatingDEChannel:
-    <<: *ChannelDefaults
-    Orderer:
-      <<: *OrdererDefaults
-      Organizations:
-        - *OrdererOrg
-    Application:
-      <<: *ApplicationDefaults
-      Organizations:
-        - *Issuer1
-        - *HProducer1  # Multi-carrier: produces hydrogen + heating/cooling
-        - *Buyer1
+        - *HBuyer1

@@ -1,0 +1,87 @@
+﻿name: go-platform-v10
+version: "2.0.0"
+caliper:
+  blockchain: fabric
+  sutOptions:
+    mutualTls: false
+
+channels:
+  - channelName: electricity-de
+    contracts:
+      - id: golifecycle
+  - channelName: hydrogen-de
+    contracts:
+      - id: golifecycle
+
+organizations:
+  - mspid: eissuerMSP
+    identities:
+      certificates:
+        - name: eissuer_admin
+          clientPrivateKey:
+            path: /root/hlf-go/repo/network/organizations/peerOrganizations/eissuer.go-platform.com/users/Admin@eissuer.go-platform.com/msp/keystore/priv_sk
+          clientSignedCert:
+            path: /root/hlf-go/repo/network/organizations/peerOrganizations/eissuer.go-platform.com/users/Admin@eissuer.go-platform.com/msp/signcerts/Admin@eissuer.go-platform.com-cert.pem
+    connectionProfile:
+      path: connection-profiles/ccp-v10-eissuer.yaml
+      discover: true
+
+  - mspid: hissuerMSP
+    identities:
+      certificates:
+        - name: hissuer_admin
+          clientPrivateKey:
+            path: /root/hlf-go/repo/network/organizations/peerOrganizations/hissuer.go-platform.com/users/Admin@hissuer.go-platform.com/msp/keystore/priv_sk
+          clientSignedCert:
+            path: /root/hlf-go/repo/network/organizations/peerOrganizations/hissuer.go-platform.com/users/Admin@hissuer.go-platform.com/msp/signcerts/Admin@hissuer.go-platform.com-cert.pem
+    connectionProfile:
+      path: connection-profiles/ccp-v10-hissuer.yaml
+      discover: true
+
+  - mspid: eproducer1MSP
+    identities:
+      certificates:
+        - name: eproducer1_admin
+          clientPrivateKey:
+            path: /root/hlf-go/repo/network/organizations/peerOrganizations/eproducer1.go-platform.com/users/Admin@eproducer1.go-platform.com/msp/keystore/priv_sk
+          clientSignedCert:
+            path: /root/hlf-go/repo/network/organizations/peerOrganizations/eproducer1.go-platform.com/users/Admin@eproducer1.go-platform.com/msp/signcerts/Admin@eproducer1.go-platform.com-cert.pem
+    connectionProfile:
+      path: connection-profiles/ccp-v10-eproducer1.yaml
+      discover: true
+
+  - mspid: hproducer1MSP
+    identities:
+      certificates:
+        - name: hproducer1_admin
+          clientPrivateKey:
+            path: /root/hlf-go/repo/network/organizations/peerOrganizations/hproducer1.go-platform.com/users/Admin@hproducer1.go-platform.com/msp/keystore/priv_sk
+          clientSignedCert:
+            path: /root/hlf-go/repo/network/organizations/peerOrganizations/hproducer1.go-platform.com/users/Admin@hproducer1.go-platform.com/msp/signcerts/Admin@hproducer1.go-platform.com-cert.pem
+    connectionProfile:
+      path: connection-profiles/ccp-v10-hproducer1.yaml
+      discover: true
+
+  - mspid: ebuyer1MSP
+    identities:
+      certificates:
+        - name: ebuyer1_admin
+          clientPrivateKey:
+            path: /root/hlf-go/repo/network/organizations/peerOrganizations/ebuyer1.go-platform.com/users/Admin@ebuyer1.go-platform.com/msp/keystore/priv_sk
+          clientSignedCert:
+            path: /root/hlf-go/repo/network/organizations/peerOrganizations/ebuyer1.go-platform.com/users/Admin@ebuyer1.go-platform.com/msp/signcerts/Admin@ebuyer1.go-platform.com-cert.pem
+    connectionProfile:
+      path: connection-profiles/ccp-v10-ebuyer1.yaml
+      discover: true
+
+  - mspid: hbuyer1MSP
+    identities:
+      certificates:
+        - name: hbuyer1_admin
+          clientPrivateKey:
+            path: /root/hlf-go/repo/network/organizations/peerOrganizations/hbuyer1.go-platform.com/users/Admin@hbuyer1.go-platform.com/msp/keystore/priv_sk
+          clientSignedCert:
+            path: /root/hlf-go/repo/network/organizations/peerOrganizations/hbuyer1.go-platform.com/users/Admin@hbuyer1.go-platform.com/msp/signcerts/Admin@hbuyer1.go-platform.com-cert.pem
+    connectionProfile:
+      path: connection-profiles/ccp-v10-hbuyer1.yaml
+      discover: true

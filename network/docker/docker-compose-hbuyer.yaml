@@ -1,0 +1,48 @@
+﻿version: '3.7'
+networks:
+  go-platform:
+    name: go-platform_network
+services:
+  couchdb.hbuyer1:
+    extends:
+      file: ../base.yaml
+      service: couchdb-base
+    container_name: couchdb.hbuyer1
+    ports:
+      - 10984:5984
+    volumes:
+      - couchdb.hbuyer1:/opt/couchdb/data
+    networks:
+      - go-platform
+  peer0.hbuyer1.go-platform.com:
+    extends:
+      file: ../base.yaml
+      service: peer-base
+    container_name: peer0.hbuyer1.go-platform.com
+    environment:
+      - CORE_PEER_ID=peer0.hbuyer1.go-platform.com
+      - CORE_PEER_ADDRESS=peer0.hbuyer1.go-platform.com:14051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:14051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.hbuyer1.go-platform.com:14052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:14052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.hbuyer1.go-platform.com:14051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.hbuyer1.go-platform.com:14051
+      - CORE_PEER_LOCALMSPID=hbuyer1MSP
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.hbuyer1:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../organizations/peerOrganizations/hbuyer1.go-platform.com/peers/peer0.hbuyer1.go-platform.com/msp:/etc/hyperledger/fabric/msp
+      - ../organizations/peerOrganizations/hbuyer1.go-platform.com/peers/peer0.hbuyer1.go-platform.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.hbuyer1.go-platform.com:/var/hyperledger/production
+    ports:
+      - 14051:14051
+    depends_on:
+      - couchdb.hbuyer1
+    networks:
+      - go-platform
+volumes:
+  couchdb.hbuyer1:
+  peer0.hbuyer1.go-platform.com:
