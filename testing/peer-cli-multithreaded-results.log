@@ -1,0 +1,39 @@
+==========================================
+Multi-threaded Write Operation Benchmark
+==========================================
+Transactions per function: 30
+Concurrent workers: 5
+
+[0;34mTest 1: AddToBacklogElectricity (producer role)[0m
+========================================
+[0;32m✓[0m Completed: 25/30 successful
+  TPS: 31.01 | Avg: 100ms | Min: 69ms | Max: 152ms
+
+[0;34mTest 2: CreateElectricityGO (producer + SBE policy)[0m
+========================================
+[0;32m✓[0m Completed: 19/30 successful
+  TPS: 4.23 | Avg: 133ms | Min: 95ms | Max: 161ms
+
+[0;34mTest 3: PublishOracleData (issuer, multi-threaded)[0m
+========================================
+[0;32m✓[0m Completed: 30/30 successful
+  TPS: 41.89 | Avg: 90ms | Min: 63ms | Max: 130ms
+
+==========================================
+Performance Results Summary
+==========================================
+
+| Function                       | Succ | Fail | TPS      | Avg (ms)   | Min (ms)   | Max (ms)   |
+|--------------------------------|------|------|----------|------------|------------|------------|
+| backlog:AddToBacklogElectricity | 25   | 5    | 31.01    | 100        | 69         | 152        |
+| issuance:CreateElectricityGO   | 19   | 11   | 4.23     | 133        | 95         | 161        |
+| oracle:PublishOracleData (MT)  | 30   | 0    | 41.89    | 90         | 63         | 130        |
+
+==========================================
+Configuration
+==========================================
+Transactions per function: 30
+Concurrent workers: 5
+Execution mode: Multi-threaded (background jobs)
+
+[0;32mMulti-threaded performance benchmark completed![0m
