@@ -1,0 +1,11 @@
+========================================
+Test 1: PublishOracleData (eissuer)
+========================================
+[34m2026-04-25 12:39:33.677 UTC 0001 INFO[0m [chaincodeCmd] [34;1mchaincodeInvokeOrQuery[0m -> Chaincode invoke successful. result: status:200 payload:"{\"recordId\":\"oracle_electricity_63e0063845c96118\",\"carrierType\":\"electricity\",\"zone\":\"DE-LU\",\"periodStart\":1700000000,\"periodEnd\":1700003600,\"productionMethod\":\"solar_pv\",\"energyUnit\":\"MWh\",\"quantity\":500,\"emissionFactor\":0,\"dataSource\":\"ENTSO-E-TP\",\"attributes\":{},\"publishedBy\":\"eissuerMSP\",\"publishedAt\":1777120773}" 
+
+========================================
+Test 2: GetCurrentEGOsList (verify)
+========================================
+
+
+All tests completed successfully!
