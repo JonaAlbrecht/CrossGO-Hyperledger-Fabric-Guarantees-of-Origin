@@ -1,0 +1,43 @@
+test:
+  name: GO Platform v10.1 Electricity Channel Tests
+  description: Performance test for electricity-de channel (read operations)
+  workers:
+    number: 4
+
+  rounds:
+  # -- READ benchmarks --
+  - label: GetVersion
+    description: admin:GetVersion on electricity-de (read)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 50
+    workload:
+      module: workload/getVersion.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+
+  - label: GetCurrentEGOsList
+    description: query:GetCurrentEGOsList (read)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 40
+    workload:
+      module: workload/getCurrentEGOsList.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+
+  - label: GetElectricityBacklog
+    description: backlog:GetElectricityBacklog for device (read)
+    txNumber: 300
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 40
+    workload:
+      module: workload/getElectricityBacklog.js
+    chaincodeId: golifecycle
+    channel: electricity-de
