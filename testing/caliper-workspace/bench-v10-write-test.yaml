@@ -20,7 +20,7 @@ test:
 
   # -- WRITE benchmarks --
   - label: AddToBacklogElectricity
-    description: backlog:AddToBacklogElectricity (write with MSP-prefixed producer identity)
+    description: backlog:AddToBacklogElectricity (write with producer identity)
     txNumber: 50
     rateControl:
       type: fixed-rate
@@ -44,7 +44,7 @@ test:
     channel: electricity-de
 
   - label: CreateElectricityGO
-    description: issuance:CreateElectricityGO (write, SBE endorsement, MSP-prefixed identity)
+    description: issuance:CreateElectricityGO (write, SBE endorsement, producer identity)
     txNumber: 30
     rateControl:
       type: fixed-rate
@@ -55,9 +55,9 @@ test:
     chaincodeId: golifecycle
     channel: electricity-de
 
-  # -- READ with MSP-prefixed identity --
+  # -- READ with specific identity --
   - label: GetElectricityBacklog
-    description: backlog:GetElectricityBacklog (read with MSP-prefixed identity)
+    description: backlog:GetElectricityBacklog (read with producer identity)
     txNumber: 100
     rateControl:
       type: fixed-rate
@@ -67,28 +67,3 @@ test:
       module: workload/getElectricityBacklog.js
     chaincodeId: golifecycle
     channel: electricity-de
-
-  # -- CONVERSION CONTRACT TESTS --
-  - label: LockGOForConversion
-    description: conversion:LockGOForConversion (cross-channel write, MSP-prefixed identity)
-    txNumber: 20
-    rateControl:
-      type: fixed-rate
-      opts:
-        tps: 5
-    workload:
-      module: workload/lockGOForConversion.js
-    chaincodeId: golifecycle
-    channel: electricity-de
-
-  - label: GetConversionLocks
-    description: conversion:GetConversionLocks (cross-channel read, hydrogen identity)
-    txNumber: 50
-    rateControl:
-      type: fixed-rate
-      opts:
-        tps: 10
-    workload:
-      module: workload/getConversionLocks.js
-    chaincodeId: golifecycle
-    channel: hydrogen-de
