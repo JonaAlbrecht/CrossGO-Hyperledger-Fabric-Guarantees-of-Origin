@@ -1,22 +1,51 @@
 #!/bin/bash
-# Test write operations using docker exec from inside peer containers
-# This approach resolves the hostname issue by running commands from within the Docker network
+# Test write operations using peer CLI with proper hostname resolution
+# Uses host /etc/hosts for DNS resolution and peer binary from host filesystem
 
 set -e
 
+# Add peer hostnames to /etc/hosts if not already present
+echo "Setting up hostname resolution..."
+HOSTS_TO_ADD=(
+    "127.0.0.1 peer0.eissuer.go-platform.com"
+    "127.0.0.1 peer0.eproducer1.go-platform.com"
+    "127.0.0.1 peer0.ebuyer1.go-platform.com"
+    "127.0.0.1 peer0.hissuer.go-platform.com"
+    "127.0.0.1 peer0.hproducer1.go-platform.com"
+    "127.0.0.1 peer0.hbuyer1.go-platform.com"
+    "127.0.0.1 orderer1.go-platform.com"
+    "127.0.0.1 orderer2.go-platform.com"
+    "127.0.0.1 orderer3.go-platform.com"
+    "127.0.0.1 orderer4.go-platform.com"
+)
+
+for host_entry in "${HOSTS_TO_ADD[@]}"; do
+    if ! grep -q "${host_entry}" /etc/hosts; then
+        echo "${host_entry}" | sudo tee -a /etc/hosts > /dev/null
+        echo "Added: ${host_entry}"
+    fi
+done
+
+export FABRIC_CFG_PATH=/root/hlf-go/repo/fabric-bin/config
+PEER_BIN="/root/hlf-go/repo/fabric-bin/bin/peer"
 CHANNEL_NAME="electricity-de"
 CC_NAME="golifecycle"
 ORDERER_ADDR="orderer1.go-platform.com:7050"
-ORDERER_CA="/organizations/ordererOrganizations/go-platform.com/tlsca/tlsca.go-platform.com-cert.pem"
+ORDERER_CA="/root/hlf-go/repo/network/organizations/ordererOrganizations/go-platform.com/tlsca/tlsca.go-platform.com-cert.pem"
 
 echo "==============================================="
 echo "Testing Write Operations via Docker Exec"
 echo "==============================================="
 echo ""
 
-# Test 1: PublishOracleData (requires issuer role) - execute from eissuer peer
 echo "Test 1: PublishOracleData (issuer role)"
 echo "---------------------------------------"
+
+# Set environment for eissuer peer
+export CORE_PEER_LOCALMSPID="eissuerMSP"
+export CORE_PEER_TLS_ROOTCERT_FILE=/root/hlf-go/repo/network/organizations/peerOrganizations/eissuer.go-platform.com/peers/peer0.eissuer.go-platform.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=/root/hlf-go/repo/network/organizations/peerOrganizations/eissuer.go-platform.com/users/Admin@eissuer.go-platform.com/msp
+export CORE_PEER_ADDRESS=peer0.eissuer.go-platform.com:7051
 
 ORACLE_DATA=$(cat <<'EOF'
 {
@@ -33,7 +62,7 @@ EOF
 
 ORACLE_B64=$(echo -n "$ORACLE_DATA" | base64 -w0)
 
-docker exec peer0.eissuer.go-platform.com peer chaincode invoke \
+$PEER_BIN chaincode invoke \
   -o ${ORDERER_ADDR} \
   --ordererTLSHostnameOverride orderer1.go-platform.com \
   --tls --cafile ${ORDERER_CA} \
@@ -42,14 +71,19 @@ docker exec peer0.eissuer.go-platform.com peer chaincode invoke \
   -c '{"function":"oracle:PublishOracleData","Args":[]}' \
   --transient "{\"oracleData\":\"${ORACLE_B64}\"}" \
   --peerAddresses peer0.eissuer.go-platform.com:7051 \
-  --tlsRootCertFiles /organizations/peerOrganizations/eissuer.go-platform.com/peers/peer0.eissuer.go-platform.com/tls/ca.crt
+  --tlsRootCertFiles /root/hlf-go/repo/network/organizations/peerOrganizations/eissuer.go-platform.com/peers/peer0.eissuer.go-platform.com/tls/ca.crt
 
 echo "✅ PublishOracleData successful (executed by eissuer)"
 echo ""
 
-# Test 2: AddToBacklogElectricity (requires producer role) - execute from eproducer1 peer
 echo "Test 2: AddToBacklogElectricity (producer role)"
 echo "-----------------------------------------------"
+
+# Set environment for eproducer1 peer
+export CORE_PEER_LOCALMSPID="eproducer1MSP"
+export CORE_PEER_TLS_ROOTCERT_FILE=/root/hlf-go/repo/network/organizations/peerOrganizations/eproducer1.go-platform.com/peers/peer0.eproducer1.go-platform.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=/root/hlf-go/repo/network/organizations/peerOrganizations/eproducer1.go-platform.com/users/Admin@eproducer1.go-platform.com/msp
+export CORE_PEER_ADDRESS=peer0.eproducer1.go-platform.com:9051
 
 BACKLOG_DATA=$(cat <<'EOF'
 {
@@ -63,7 +97,7 @@ EOF
 
 BACKLOG_B64=$(echo -n "$BACKLOG_DATA" | base64 -w0)
 
-docker exec peer0.eproducer1.go-platform.com peer chaincode invoke \
+$PEER_BIN chaincode invoke \
   -o ${ORDERER_ADDR} \
   --ordererTLSHostnameOverride orderer1.go-platform.com \
   --tls --cafile ${ORDERER_CA} \
@@ -71,15 +105,16 @@ docker exec peer0.eproducer1.go-platform.com peer chaincode invoke \
   -n ${CC_NAME} \
   -c '{"function":"backlog:AddToBacklogElectricity","Args":[]}' \
   --transient "{\"eBacklog\":\"${BACKLOG_B64}\"}" \
-  --peerAddresses peer0.eproducer1.go-platform.com:8051 \
-  --tlsRootCertFiles /organizations/peerOrganizations/eproducer1.go-platform.com/peers/peer0.eproducer1.go-platform.com/tls/ca.crt
+  --peerAddresses peer0.eproducer1.go-platform.com:9051 \
+  --tlsRootCertFiles /root/hlf-go/repo/network/organizations/peerOrganizations/eproducer1.go-platform.com/peers/peer0.eproducer1.go-platform.com/tls/ca.crt
 
 echo "✅ AddToBacklogElectricity successful (executed by eproducer1)"
 echo ""
 
-# Test 3: CreateElectricityGO (requires producer role + SBE endorsement)
 echo "Test 3: CreateElectricityGO (producer role, SBE)"
 echo "------------------------------------------------"
+
+# Keep eproducer1 environment from previous test
 
 EGO_DATA=$(cat <<'EOF'
 {
@@ -93,7 +128,7 @@ EOF
 
 EGO_B64=$(echo -n "$EGO_DATA" | base64 -w0)
 
-docker exec peer0.eproducer1.go-platform.com peer chaincode invoke \
+$PEER_BIN chaincode invoke \
   -o ${ORDERER_ADDR} \
   --ordererTLSHostnameOverride orderer1.go-platform.com \
   --tls --cafile ${ORDERER_CA} \
@@ -102,28 +137,27 @@ docker exec peer0.eproducer1.go-platform.com peer chaincode invoke \
   -c '{"function":"issuance:CreateElectricityGO","Args":[]}' \
   --transient "{\"eGO\":\"${EGO_B64}\"}" \
   --peerAddresses peer0.eissuer.go-platform.com:7051 \
-  --tlsRootCertFiles /organizations/peerOrganizations/eissuer.go-platform.com/peers/peer0.eissuer.go-platform.com/tls/ca.crt \
-  --peerAddresses peer0.eproducer1.go-platform.com:8051 \
-  --tlsRootCertFiles /organizations/peerOrganizations/eproducer1.go-platform.com/peers/peer0.eproducer1.go-platform.com/tls/ca.crt \
-  --peerAddresses peer0.ebuyer1.go-platform.com:9051 \
-  --tlsRootCertFiles /organizations/peerOrganizations/ebuyer1.go-platform.com/peers/peer0.ebuyer1.go-platform.com/tls/ca.crt
+  --tlsRootCertFiles /root/hlf-go/repo/network/organizations/peerOrganizations/eissuer.go-platform.com/peers/peer0.eissuer.go-platform.com/tls/ca.crt \
+  --peerAddresses peer0.eproducer1.go-platform.com:9051 \
+  --tlsRootCertFiles /root/hlf-go/repo/network/organizations/peerOrganizations/eproducer1.go-platform.com/peers/peer0.eproducer1.go-platform.com/tls/ca.crt \
+  --peerAddresses peer0.ebuyer1.go-platform.com:13051 \
+  --tlsRootCertFiles /root/hlf-go/repo/network/organizations/peerOrganizations/ebuyer1.go-platform.com/peers/peer0.ebuyer1.go-platform.com/tls/ca.crt
 
 echo "✅ CreateElectricityGO successful (executed by eproducer1)"
 echo ""
 
-# Test 4: Query operations to verify writes
 echo "Test 4: Verification Queries"
 echo "----------------------------"
 
 echo "4.1 - GetCurrentEGOsList:"
-docker exec peer0.eissuer.go-platform.com peer chaincode query \
+$PEER_BIN chaincode query \
   -C ${CHANNEL_NAME} \
   -n ${CC_NAME} \
   -c '{"function":"issuance:GetCurrentEGOsList","Args":[]}'
 
 echo ""
 echo "4.2 - GetElectricityBacklog for DEV-ELEC-123:"
-docker exec peer0.eproducer1.go-platform.com peer chaincode query \
+$PEER_BIN chaincode query \
   -C ${CHANNEL_NAME} \
   -n ${CC_NAME} \
   -c '{"function":"backlog:GetElectricityBacklog","Args":["DEV-ELEC-123"]}'
