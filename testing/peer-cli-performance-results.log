@@ -1,0 +1,47 @@
+========================================
+Write Operation Performance Benchmark
+========================================
+Function: oracle:PublishOracleData
+Transactions: 50
+Identity: eissuerMSP
+
+[0;34mStarting performance test...[0m
+
+[0;32m✓[0m Completed 10/50 transactions (last: 106ms)
+[0;32m✓[0m Completed 20/50 transactions (last: 114ms)
+[0;32m✓[0m Completed 30/50 transactions (last: 106ms)
+[0;32m✓[0m Completed 40/50 transactions (last: 137ms)
+[0;32m✓[0m Completed 50/50 transactions (last: 113ms)
+
+========================================
+Performance Results
+========================================
+
+Transaction Summary:
+  Total Transactions:  50
+  Successful:          50 (100.00%)
+  Failed:              0
+  Total Time:          6081ms (6s)
+
+Performance Metrics:
+  Throughput (TPS):    8
+  Avg Latency:         115ms
+  Min Latency:         79ms
+  Max Latency:         143ms
+
+========================================
+Results Table (Caliper-compatible format)
+========================================
+
+| Name                      | Succ | Fail | Send Rate (TPS) | Max Latency (s)   | Min Latency (s)   | Avg Latency (s)   | Throughput (TPS) |
+|---------------------------|------|------|-----------------|------------------|------------------|------------------|------------------|
+| oracle:PublishOracleData  | 50   | 0    | 8               | .143              | .079              | .115              | 8                |
+
+========================================
+Benchmark Complete
+========================================
+
+Running verification query...
+[1;33m⚠[0m Ledger query returned empty (expected if no GOs exist)
+
+[0;32mPerformance benchmark completed successfully![0m
