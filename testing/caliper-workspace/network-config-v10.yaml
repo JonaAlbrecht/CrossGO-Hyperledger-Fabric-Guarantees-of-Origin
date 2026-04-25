@@ -9,11 +9,9 @@ channels:
   - channelName: electricity-de
     contracts:
       - id: golifecycle-elec
-        contractID: golifecycle
   - channelName: hydrogen-de
     contracts:
       - id: golifecycle-h2
-        contractID: golifecycle
 
 organizations:
   - mspid: eissuerMSP
