@@ -15,7 +15,7 @@ class AddToBacklogElectricity extends WorkloadModuleBase {
       contractArguments: [],
       transientData: { eBacklog: Buffer.from(payload).toString("base64") },
       readOnly: false,
-      invokerIdentity: "eproducer1_admin"
+      invokerIdentity: "eproducer1MSP_eproducer1_admin"
     });
   }
 }
