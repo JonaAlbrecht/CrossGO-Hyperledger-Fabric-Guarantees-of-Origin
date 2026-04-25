@@ -10,7 +10,7 @@ class GetConversionLocks extends WorkloadModuleBase {
       contractFunction: "conversion:GetConversionLocks",
       contractArguments: [targetCarrier],
       readOnly: true,
-      invokerIdentity: "hissuer_admin"
+      invokerIdentity: "_hissuerMSP_hissuer_admin"
     });
   }
 }
