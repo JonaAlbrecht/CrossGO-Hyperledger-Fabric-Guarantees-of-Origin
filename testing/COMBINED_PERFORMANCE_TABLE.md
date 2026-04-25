@@ -10,6 +10,7 @@
 | **Write (Command-line)** | oracle:PublishOracleData | 30 | 0 | 41.9 | 0.09 | 41.9 |
 | **Write (Command-line)** | backlog:AddToBacklogElectricity | 25 | 5 | 31.0 | 0.10 | 31.0 |
 | **Write (Command-line)** | issuance:CreateElectricityGO | 19 | 11 | 4.2 | 0.13 | 4.2 |
+| **Write (Command-line)** | conversion:LockGOForConversion | - | - | Not tested* | - | - |
 
 ## Notes
 
@@ -21,6 +22,7 @@
 - **CreateElectricityGO** requires 3-org state-based endorsement (SBE), explaining lower throughput and higher failure rate under concurrent load
 - **All read operations** achieved 100% success rate
 - **Write operations** show 63-100% success rates depending on endorsement complexity
+- *\*conversion:LockGOForConversion* not tested - requires cross-channel coordination, network was stopped after primary testing completed. Transient key identified as "LockForConversion" with fields: GOAssetID, DestinationChannel, DestinationCarrier, ConversionMethod, ConversionEfficiency, OwnerMSP. Requires producer role.
 
 ## Performance Summary by Category
 
