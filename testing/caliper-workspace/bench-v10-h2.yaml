@@ -1,0 +1,64 @@
+test:
+  name: GO Platform v10.1 Hydrogen Channel Benchmark
+  description: Performance test for hydrogen-de channel
+  workers:
+    number: 4
+
+  rounds:
+  # -- READ benchmarks ----------------------------------------
+  - label: GetVersion
+    description: admin:GetVersion (read)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 50
+    workload:
+      module: workload/getVersion.js
+    chaincodeId: golifecycle
+    channel: hydrogen-de
+    invokerIdentity: hissuer_admin
+    invokerMsp: hissuerMSP
+
+  - label: GetCurrentHGOsList
+    description: query:GetCurrentHGOsList (read)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 40
+    workload:
+      module: workload/getCurrentHGOsList.js
+    chaincodeId: golifecycle
+    channel: hydrogen-de
+    invokerIdentity: hissuer_admin
+    invokerMsp: hissuerMSP
+
+  # -- WRITE benchmarks ---------------------------------------
+  - label: AddToBacklogHydrogen
+    description: backlog:AddToBacklogHydrogen (write)
+    txNumber: 200
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 10
+    workload:
+      module: workload/addToBacklogHydrogen.js
+    chaincodeId: golifecycle
+    channel: hydrogen-de
+    invokerIdentity: hproducer1_admin
+    invokerMsp: hproducer1MSP
+
+  - label: CreateHydrogenGO
+    description: issuance:CreateHydrogenGO (write, SBE endorsement)
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 5
+    workload:
+      module: workload/createHydrogenGO.js
+    chaincodeId: golifecycle
+    channel: hydrogen-de
+    invokerIdentity: hproducer1_admin
+    invokerMsp: hproducer1MSP

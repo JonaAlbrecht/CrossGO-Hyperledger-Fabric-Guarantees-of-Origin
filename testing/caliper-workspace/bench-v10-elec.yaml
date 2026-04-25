@@ -1,0 +1,92 @@
+test:
+  name: GO Platform v10.1 Electricity Channel Benchmark
+  description: Performance test for electricity-de channel
+  workers:
+    number: 4
+
+  rounds:
+  # -- READ benchmarks ----------------------------------------
+  - label: GetVersion
+    description: admin:GetVersion (read)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 50
+    workload:
+      module: workload/getVersion.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eissuer_admin
+    invokerMsp: eissuerMSP
+
+  - label: GetCurrentEGOsList
+    description: query:GetCurrentEGOsList (read)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 40
+    workload:
+      module: workload/getCurrentEGOsList.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eissuer_admin
+    invokerMsp: eissuerMSP
+
+  - label: GetElectricityBacklog
+    description: backlog:GetElectricityBacklog (read)
+    txNumber: 500
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 40
+    workload:
+      module: workload/getElectricityBacklog.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eproducer1_admin
+    invokerMsp: eproducer1MSP
+
+  # -- WRITE benchmarks ---------------------------------------
+  - label: AddToBacklogElectricity
+    description: backlog:AddToBacklogElectricity (write)
+    txNumber: 200
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 10
+    workload:
+      module: workload/addToBacklogElectricity.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eproducer1_admin
+    invokerMsp: eproducer1MSP
+
+  - label: PublishOracleData
+    description: oracle:PublishOracleData (write)
+    txNumber: 200
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 10
+    workload:
+      module: workload/publishOracleData.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eissuer_admin
+    invokerMsp: eissuerMSP
+
+  - label: CreateElectricityGO
+    description: issuance:CreateElectricityGO (write, SBE endorsement)
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 5
+    workload:
+      module: workload/createElectricityGO.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+    invokerIdentity: eproducer1_admin
+    invokerMsp: eproducer1MSP
