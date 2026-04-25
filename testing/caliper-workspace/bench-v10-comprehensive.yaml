@@ -1,11 +1,11 @@
-﻿test:
+test:
   name: GO Platform v10.1 Comprehensive Benchmark
   description: Performance test covering all 10 contract namespaces (electricity-de + hydrogen-de channels)
   workers:
     number: 4
 
 rounds:
-  # ── READ benchmarks (high TPS) ──────────────────────────────────────────
+  # -- READ benchmarks (high TPS) ------------------------------------------
   - label: GetVersion
     description: admin:GetVersion (read)
     txNumber: 500
@@ -15,7 +15,7 @@ rounds:
         tps: 50
     workload:
       module: workload/getVersion.js
-    chaincodeId: golifecycle
+    chaincodeId: golifecycle-elec
     channel: electricity-de
     invokerIdentity: eissuer_admin
     invokerMsp: eissuerMSP
@@ -29,7 +29,7 @@ rounds:
         tps: 50
     workload:
       module: workload/getOrganization.js
-    chaincodeId: golifecycle
+    chaincodeId: golifecycle-elec
     channel: electricity-de
     invokerIdentity: eissuer_admin
     invokerMsp: eissuerMSP
@@ -43,7 +43,7 @@ rounds:
         tps: 40
     workload:
       module: workload/listOrganizations.js
-    chaincodeId: golifecycle
+    chaincodeId: golifecycle-elec
     channel: electricity-de
     invokerIdentity: eissuer_admin
     invokerMsp: eissuerMSP
@@ -57,7 +57,7 @@ rounds:
         tps: 40
     workload:
       module: workload/getCurrentEGOsList.js
-    chaincodeId: golifecycle
+    chaincodeId: golifecycle-elec
     channel: electricity-de
     invokerIdentity: eissuer_admin
     invokerMsp: eissuerMSP
@@ -71,7 +71,7 @@ rounds:
         tps: 40
     workload:
       module: workload/getCurrentHGOsList.js
-    chaincodeId: golifecycle
+    chaincodeId: golifecycle-h2
     channel: hydrogen-de
     invokerIdentity: hissuer_admin
     invokerMsp: hissuerMSP
@@ -85,7 +85,7 @@ rounds:
         tps: 40
     workload:
       module: workload/getElectricityBacklog.js
-    chaincodeId: golifecycle
+    chaincodeId: golifecycle-elec
     channel: electricity-de
     invokerIdentity: eproducer1_admin
     invokerMsp: eproducer1MSP
@@ -99,12 +99,12 @@ rounds:
         tps: 40
     workload:
       module: workload/listOracleDataPaginated.js
-    chaincodeId: golifecycle
+    chaincodeId: golifecycle-elec
     channel: electricity-de
     invokerIdentity: eissuer_admin
     invokerMsp: eissuerMSP
 
-  # ── WRITE benchmarks ──────────────────────────────────────────────────────
+  # -- WRITE benchmarks ------------------------------------------------------
   - label: AddToBacklogElectricity
     description: backlog:AddToBacklogElectricity (write, electricity-de)
     txNumber: 200
@@ -114,7 +114,7 @@ rounds:
         tps: 10
     workload:
       module: workload/addToBacklogElectricity.js
-    chaincodeId: golifecycle
+    chaincodeId: golifecycle-elec
     channel: electricity-de
     invokerIdentity: eproducer1_admin
     invokerMsp: eproducer1MSP
@@ -128,7 +128,7 @@ rounds:
         tps: 10
     workload:
       module: workload/addToBacklogHydrogen.js
-    chaincodeId: golifecycle
+    chaincodeId: golifecycle-h2
     channel: hydrogen-de
     invokerIdentity: hproducer1_admin
     invokerMsp: hproducer1MSP
@@ -142,7 +142,7 @@ rounds:
         tps: 10
     workload:
       module: workload/publishOracleData.js
-    chaincodeId: golifecycle
+    chaincodeId: golifecycle-elec
     channel: electricity-de
     invokerIdentity: eissuer_admin
     invokerMsp: eissuerMSP
@@ -156,7 +156,7 @@ rounds:
         tps: 5
     workload:
       module: workload/createElectricityGO.js
-    chaincodeId: golifecycle
+    chaincodeId: golifecycle-elec
     channel: electricity-de
     invokerIdentity: eproducer1_admin
     invokerMsp: eproducer1MSP
@@ -170,7 +170,7 @@ rounds:
         tps: 5
     workload:
       module: workload/createHydrogenGO.js
-    chaincodeId: golifecycle
+    chaincodeId: golifecycle-h2
     channel: hydrogen-de
     invokerIdentity: hproducer1_admin
     invokerMsp: hproducer1MSP
