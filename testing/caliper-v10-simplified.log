@@ -1,0 +1,593 @@
+2026.04.25-12:16:19.169 info  [caliper] [cli-launch-manager] 	Set workspace path: /root/hlf-go/repo/testing/caliper-workspace
+2026.04.25-12:16:19.170 info  [caliper] [cli-launch-manager] 	Set benchmark configuration path: /root/hlf-go/repo/testing/caliper-workspace/bench-v10-write-test.yaml
+2026.04.25-12:16:19.170 info  [caliper] [cli-launch-manager] 	Set network configuration path: /root/hlf-go/repo/testing/caliper-workspace/network-config-v10-elec.yaml
+2026.04.25-12:16:19.170 info  [caliper] [cli-launch-manager] 	Set SUT type: fabric
+2026.04.25-12:16:19.174 info  [caliper] [benchmark-validator] 	No observer specified, will default to `none`
+2026.04.25-12:16:19.174 info  [caliper] [caliper-engine] 	Starting benchmark flow
+2026.04.25-12:16:19.174 info  [caliper] [caliper-engine] 	Skipping start commands due to benchmark flow conditioning
+2026.04.25-12:16:19.174 info  [caliper] [caliper-engine] 	Skipping initialization phase due to benchmark flow conditioning
+2026.04.25-12:16:19.174 info  [caliper] [caliper-engine] 	Skipping install smart contract phase due to benchmark flow conditioning
+2026.04.25-12:16:19.475 info  [caliper] [FabricConnectorFactory] 	Initializing peer gateway connector compatible with installed fabric-gateway SDK: 1.5.0
+2026.04.25-12:16:19.484 info  [caliper] [IdentityManager] 	Adding eissuer_admin (admin=false) as eissuer_admin for organization eissuerMSP
+2026.04.25-12:16:19.485 info  [caliper] [IdentityManager] 	Adding eproducer1_admin (admin=false) as _eproducer1MSP_eproducer1_admin for organization eproducer1MSP
+2026.04.25-12:16:19.486 info  [caliper] [IdentityManager] 	Adding ebuyer1_admin (admin=false) as _ebuyer1MSP_ebuyer1_admin for organization ebuyer1MSP
+2026.04.25-12:16:19.487 info  [caliper] [monitor.js] 	No resource monitors specified
+2026.04.25-12:16:19.488 info  [caliper] [default-observer] 	Observer interval set to 5000 milliseconds
+2026.04.25-12:16:19.490 info  [caliper] [round-orchestrator] 	Preparing worker connections
+2026.04.25-12:16:19.490 info  [caliper] [worker-orchestrator] 	Launching worker 1 of 4
+2026.04.25-12:16:19.494 info  [caliper] [worker-orchestrator] 	Launching worker 2 of 4
+2026.04.25-12:16:19.497 info  [caliper] [worker-orchestrator] 	Launching worker 3 of 4
+2026.04.25-12:16:19.500 info  [caliper] [worker-orchestrator] 	Launching worker 4 of 4
+2026.04.25-12:16:19.503 info  [caliper] [worker-orchestrator] 	Messenger not configured, entering configure phase...
+2026.04.25-12:16:19.503 info  [caliper] [worker-orchestrator] 	No existing workers detected, entering worker launch phase...
+2026.04.25-12:16:19.503 info  [caliper] [worker-orchestrator] 	Waiting for 4 workers to be connected...
+2026.04.25-12:16:19.700 info  [caliper] [cli-launch-worker] 	Set workspace path: /root/hlf-go/repo/testing/caliper-workspace
+2026.04.25-12:16:19.701 info  [caliper] [cli-launch-worker] 	Set benchmark configuration path: /root/hlf-go/repo/testing/caliper-workspace/bench-v10-write-test.yaml
+2026.04.25-12:16:19.701 info  [caliper] [cli-launch-worker] 	Set network configuration path: /root/hlf-go/repo/testing/caliper-workspace/network-config-v10-elec.yaml
+2026.04.25-12:16:19.701 info  [caliper] [cli-launch-worker] 	Set SUT type: fabric
+2026.04.25-12:16:19.709 info  [caliper] [cli-launch-worker] 	Set workspace path: /root/hlf-go/repo/testing/caliper-workspace
+2026.04.25-12:16:19.710 info  [caliper] [cli-launch-worker] 	Set benchmark configuration path: /root/hlf-go/repo/testing/caliper-workspace/bench-v10-write-test.yaml
+2026.04.25-12:16:19.710 info  [caliper] [cli-launch-worker] 	Set network configuration path: /root/hlf-go/repo/testing/caliper-workspace/network-config-v10-elec.yaml
+2026.04.25-12:16:19.710 info  [caliper] [cli-launch-worker] 	Set SUT type: fabric
+2026.04.25-12:16:19.711 info  [caliper] [cli-launch-worker] 	Set workspace path: /root/hlf-go/repo/testing/caliper-workspace
+2026.04.25-12:16:19.712 info  [caliper] [cli-launch-worker] 	Set benchmark configuration path: /root/hlf-go/repo/testing/caliper-workspace/bench-v10-write-test.yaml
+2026.04.25-12:16:19.712 info  [caliper] [cli-launch-worker] 	Set network configuration path: /root/hlf-go/repo/testing/caliper-workspace/network-config-v10-elec.yaml
+2026.04.25-12:16:19.712 info  [caliper] [cli-launch-worker] 	Set SUT type: fabric
+2026.04.25-12:16:19.713 info  [caliper] [cli-launch-worker] 	Set workspace path: /root/hlf-go/repo/testing/caliper-workspace
+2026.04.25-12:16:19.714 info  [caliper] [cli-launch-worker] 	Set benchmark configuration path: /root/hlf-go/repo/testing/caliper-workspace/bench-v10-write-test.yaml
+2026.04.25-12:16:19.714 info  [caliper] [cli-launch-worker] 	Set network configuration path: /root/hlf-go/repo/testing/caliper-workspace/network-config-v10-elec.yaml
+2026.04.25-12:16:19.714 info  [caliper] [cli-launch-worker] 	Set SUT type: fabric
+2026.04.25-12:16:19.726 info  [caliper] [worker-orchestrator] 	4 workers connected, progressing to worker assignment phase.
+2026.04.25-12:16:19.726 info  [caliper] [worker-orchestrator] 	Workers currently unassigned, awaiting index assignment...
+2026.04.25-12:16:19.727 info  [caliper] [worker-orchestrator] 	Waiting for 4 workers to be assigned...
+2026.04.25-12:16:19.748 info  [caliper] [worker-orchestrator] 	4 workers assigned, progressing to worker initialization phase.
+2026.04.25-12:16:19.749 info  [caliper] [worker-orchestrator] 	Waiting for 4 workers to be ready...
+2026.04.25-12:16:19.749 info  [caliper] [worker-message-handler] 	Initializing Worker#1...
+2026.04.25-12:16:19.749 info  [caliper] [worker-message-handler] 	Initializing Worker#2...
+2026.04.25-12:16:19.749 info  [caliper] [worker-message-handler] 	Initializing Worker#3...
+2026.04.25-12:16:19.750 info  [caliper] [worker-message-handler] 	Initializing Worker#0...
+2026.04.25-12:16:20.045 info  [caliper] [FabricConnectorFactory] 	Initializing peer gateway connector compatible with installed fabric-gateway SDK: 1.5.0
+2026.04.25-12:16:20.049 info  [caliper] [IdentityManager] 	Adding eissuer_admin (admin=false) as eissuer_admin for organization eissuerMSP
+2026.04.25-12:16:20.050 info  [caliper] [FabricConnectorFactory] 	Initializing peer gateway connector compatible with installed fabric-gateway SDK: 1.5.0
+2026.04.25-12:16:20.051 info  [caliper] [IdentityManager] 	Adding eproducer1_admin (admin=false) as _eproducer1MSP_eproducer1_admin for organization eproducer1MSP
+2026.04.25-12:16:20.053 info  [caliper] [IdentityManager] 	Adding ebuyer1_admin (admin=false) as _ebuyer1MSP_ebuyer1_admin for organization ebuyer1MSP
+2026.04.25-12:16:20.054 info  [caliper] [IdentityManager] 	Adding eissuer_admin (admin=false) as eissuer_admin for organization eissuerMSP
+2026.04.25-12:16:20.055 info  [caliper] [IdentityManager] 	Adding eproducer1_admin (admin=false) as _eproducer1MSP_eproducer1_admin for organization eproducer1MSP
+2026.04.25-12:16:20.056 info  [caliper] [worker-message-handler] 	Worker#1 initialized
+2026.04.25-12:16:20.057 info  [caliper] [IdentityManager] 	Adding ebuyer1_admin (admin=false) as _ebuyer1MSP_ebuyer1_admin for organization ebuyer1MSP
+2026.04.25-12:16:20.060 info  [caliper] [worker-message-handler] 	Worker#2 initialized
+2026.04.25-12:16:20.066 info  [caliper] [FabricConnectorFactory] 	Initializing peer gateway connector compatible with installed fabric-gateway SDK: 1.5.0
+2026.04.25-12:16:20.067 info  [caliper] [FabricConnectorFactory] 	Initializing peer gateway connector compatible with installed fabric-gateway SDK: 1.5.0
+2026.04.25-12:16:20.070 info  [caliper] [IdentityManager] 	Adding eissuer_admin (admin=false) as eissuer_admin for organization eissuerMSP
+2026.04.25-12:16:20.070 info  [caliper] [IdentityManager] 	Adding eissuer_admin (admin=false) as eissuer_admin for organization eissuerMSP
+2026.04.25-12:16:20.071 info  [caliper] [IdentityManager] 	Adding eproducer1_admin (admin=false) as _eproducer1MSP_eproducer1_admin for organization eproducer1MSP
+2026.04.25-12:16:20.071 info  [caliper] [IdentityManager] 	Adding eproducer1_admin (admin=false) as _eproducer1MSP_eproducer1_admin for organization eproducer1MSP
+2026.04.25-12:16:20.072 info  [caliper] [IdentityManager] 	Adding ebuyer1_admin (admin=false) as _ebuyer1MSP_ebuyer1_admin for organization ebuyer1MSP
+2026.04.25-12:16:20.072 info  [caliper] [IdentityManager] 	Adding ebuyer1_admin (admin=false) as _ebuyer1MSP_ebuyer1_admin for organization ebuyer1MSP
+2026.04.25-12:16:20.073 info  [caliper] [worker-message-handler] 	Worker#0 initialized
+2026.04.25-12:16:20.073 info  [caliper] [worker-message-handler] 	Worker#3 initialized
+2026.04.25-12:16:20.073 info  [caliper] [worker-orchestrator] 	4 workers ready, progressing to test preparation phase.
+2026.04.25-12:16:20.073 info  [caliper] [round-orchestrator] 	Started round 1 (GetVersion)
+2026.04.25-12:16:20.074 info  [caliper] [worker-message-handler] 	Preparing Worker#0 for Round#0
+2026.04.25-12:16:20.074 info  [caliper] [worker-message-handler] 	Preparing Worker#3 for Round#0
+2026.04.25-12:16:20.075 info  [caliper] [worker-message-handler] 	Preparing Worker#1 for Round#0
+2026.04.25-12:16:20.075 info  [caliper] [worker-message-handler] 	Preparing Worker#2 for Round#0
+2026.04.25-12:16:20.083 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:20.085 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:20.087 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:20.087 info  [caliper] [caliper-worker] 	Info: worker 3 prepare test phase for round 0 is starting...
+2026.04.25-12:16:20.089 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:20.089 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:20.089 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:20.089 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:20.089 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:20.089 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:20.089 info  [caliper] [caliper-worker] 	Info: worker 3 prepare test phase for round 0 is completed
+2026.04.25-12:16:20.089 info  [caliper] [worker-message-handler] 	Worker#3 prepared for Round#0
+2026.04.25-12:16:20.092 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:20.095 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:20.095 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:20.099 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:20.101 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:20.101 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:20.105 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:20.106 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 0 is starting...
+2026.04.25-12:16:20.107 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:20.107 info  [caliper] [caliper-worker] 	Info: worker 1 prepare test phase for round 0 is starting...
+2026.04.25-12:16:20.107 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:20.107 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:20.107 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:20.107 info  [caliper] [caliper-worker] 	Info: worker 2 prepare test phase for round 0 is starting...
+2026.04.25-12:16:20.108 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:20.108 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:20.108 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:20.109 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:20.109 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 0 is completed
+2026.04.25-12:16:20.109 info  [caliper] [worker-message-handler] 	Worker#0 prepared for Round#0
+2026.04.25-12:16:20.109 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:20.109 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:20.109 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:20.109 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:20.109 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:20.109 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:20.109 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:20.109 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:20.110 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:20.110 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:20.110 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:20.110 info  [caliper] [caliper-worker] 	Info: worker 1 prepare test phase for round 0 is completed
+2026.04.25-12:16:20.110 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:20.110 info  [caliper] [worker-message-handler] 	Worker#1 prepared for Round#0
+2026.04.25-12:16:20.110 info  [caliper] [caliper-worker] 	Info: worker 2 prepare test phase for round 0 is completed
+2026.04.25-12:16:20.111 info  [caliper] [worker-message-handler] 	Worker#2 prepared for Round#0
+2026.04.25-12:16:20.111 info  [caliper] [worker-orchestrator] 	4 workers prepared, progressing to test phase.
+2026.04.25-12:16:20.111 info  [caliper] [round-orchestrator] 	Monitors successfully started
+2026.04.25-12:16:20.112 info  [caliper] [worker-message-handler] 	Worker#0 is starting Round#0
+2026.04.25-12:16:20.113 info  [caliper] [worker-message-handler] 	Worker#3 is starting Round#0
+2026.04.25-12:16:20.113 info  [caliper] [worker-message-handler] 	Worker#1 is starting Round#0
+2026.04.25-12:16:20.113 info  [caliper] [worker-message-handler] 	Worker#2 is starting Round#0
+2026.04.25-12:16:20.115 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:20.116 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:20.116 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:20.116 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:20.118 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:20.118 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:20.119 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:20.119 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:20.120 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:20.120 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:20.122 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:20.122 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:20.122 info  [caliper] [caliper-worker] 	Worker #0 starting workload loop
+2026.04.25-12:16:20.122 info  [caliper] [caliper-worker] 	Worker #2 starting workload loop
+(node:1133668) TimeoutNegativeWarning: -2 is a negative number.
+Timeout duration was set to 1.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1133670) TimeoutNegativeWarning: -2 is a negative number.
+Timeout duration was set to 1.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026.04.25-12:16:20.123 info  [caliper] [caliper-worker] 	Worker #1 starting workload loop
+(node:1133669) TimeoutNegativeWarning: -2 is a negative number.
+Timeout duration was set to 1.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026.04.25-12:16:20.124 info  [caliper] [caliper-worker] 	Worker #3 starting workload loop
+(node:1133671) TimeoutNegativeWarning: -2 is a negative number.
+Timeout duration was set to 1.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026.04.25-12:16:23.144 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:23.144 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:23.144 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:23.144 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:23.145 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:23.145 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:23.145 info  [caliper] [worker-message-handler] 	Worker#0 finished Round#0
+2026.04.25-12:16:23.146 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:23.146 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:23.146 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:23.146 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:23.147 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:23.147 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:23.147 info  [caliper] [worker-message-handler] 	Worker#2 finished Round#0
+2026.04.25-12:16:23.147 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:23.148 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:23.148 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:23.148 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:23.148 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:23.149 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:23.149 info  [caliper] [worker-message-handler] 	Worker#1 finished Round#0
+2026.04.25-12:16:23.149 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:23.149 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:23.149 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:23.149 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:23.150 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:23.150 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:23.150 info  [caliper] [worker-message-handler] 	Worker#3 finished Round#0
+2026.04.25-12:16:28.166 info  [caliper] [default-observer] 	Resetting txCount indicator count
+2026.04.25-12:16:28.167 info  [caliper] [report-builder] 	### Test result ###
+2026.04.25-12:16:28.173 info  [caliper] [report-builder] 	
++------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+| Name       | Succ | Fail | Send Rate (TPS) | Max Latency (s) | Min Latency (s) | Avg Latency (s) | Throughput (TPS) |
+|------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| GetVersion | 100  | 0    | 52.2            | 0.04            | 0.01            | 0.01            | 52.0             |
++------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+
+2026.04.25-12:16:28.174 info  [caliper] [round-orchestrator] 	Finished round 1 (GetVersion) in 2.027 seconds
+2026.04.25-12:16:28.174 info  [caliper] [monitor.js] 	Stopping all monitors
+2026.04.25-12:16:28.174 info  [caliper] [round-orchestrator] 	Waiting 5 seconds for the next round...
+2026.04.25-12:16:33.179 info  [caliper] [round-orchestrator] 	Started round 2 (PublishOracleData)
+2026.04.25-12:16:33.180 info  [caliper] [worker-message-handler] 	Preparing Worker#0 for Round#1
+2026.04.25-12:16:33.181 info  [caliper] [worker-message-handler] 	Preparing Worker#1 for Round#1
+2026.04.25-12:16:33.181 info  [caliper] [worker-message-handler] 	Preparing Worker#2 for Round#1
+2026.04.25-12:16:33.181 info  [caliper] [worker-message-handler] 	Preparing Worker#3 for Round#1
+2026.04.25-12:16:33.185 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:33.185 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:33.185 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:33.185 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:33.188 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:33.188 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:33.188 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:33.188 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:33.190 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:33.191 info  [caliper] [caliper-worker] 	Info: worker 3 prepare test phase for round 1 is starting...
+2026.04.25-12:16:33.191 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:33.191 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:33.191 info  [caliper] [caliper-worker] 	Info: worker 1 prepare test phase for round 1 is starting...
+2026.04.25-12:16:33.191 info  [caliper] [caliper-worker] 	Info: worker 2 prepare test phase for round 1 is starting...
+2026.04.25-12:16:33.191 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:33.191 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 1 is starting...
+2026.04.25-12:16:33.192 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:33.192 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:33.192 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:33.192 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:33.192 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:33.192 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:33.192 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:33.192 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:33.192 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:33.192 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:33.192 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:33.192 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:33.193 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:33.193 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:33.193 info  [caliper] [caliper-worker] 	Info: worker 3 prepare test phase for round 1 is completed
+2026.04.25-12:16:33.193 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:33.193 info  [caliper] [worker-message-handler] 	Worker#3 prepared for Round#1
+2026.04.25-12:16:33.193 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:33.193 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:33.193 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:33.193 info  [caliper] [caliper-worker] 	Info: worker 1 prepare test phase for round 1 is completed
+2026.04.25-12:16:33.193 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:33.193 info  [caliper] [worker-message-handler] 	Worker#1 prepared for Round#1
+2026.04.25-12:16:33.193 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:33.193 info  [caliper] [caliper-worker] 	Info: worker 2 prepare test phase for round 1 is completed
+2026.04.25-12:16:33.193 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:33.193 info  [caliper] [worker-message-handler] 	Worker#2 prepared for Round#1
+2026.04.25-12:16:33.193 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:33.193 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:33.193 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:33.193 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 1 is completed
+2026.04.25-12:16:33.194 info  [caliper] [worker-message-handler] 	Worker#0 prepared for Round#1
+2026.04.25-12:16:33.194 info  [caliper] [worker-orchestrator] 	4 workers prepared, progressing to test phase.
+2026.04.25-12:16:33.194 info  [caliper] [round-orchestrator] 	Monitors successfully started
+2026.04.25-12:16:33.194 info  [caliper] [worker-message-handler] 	Worker#0 is starting Round#1
+2026.04.25-12:16:33.195 info  [caliper] [worker-message-handler] 	Worker#1 is starting Round#1
+2026.04.25-12:16:33.195 info  [caliper] [worker-message-handler] 	Worker#3 is starting Round#1
+2026.04.25-12:16:33.195 info  [caliper] [worker-message-handler] 	Worker#2 is starting Round#1
+2026.04.25-12:16:33.198 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:33.198 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:33.198 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:33.198 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:33.200 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:33.200 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:33.200 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:33.200 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:33.202 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:33.202 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:33.202 info  [caliper] [caliper-worker] 	Worker #3 starting workload loop
+2026.04.25-12:16:33.202 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:33.203 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:33.203 info  [caliper] [caliper-worker] 	Worker #0 starting workload loop
+2026.04.25-12:16:33.203 info  [caliper] [caliper-worker] 	Worker #1 starting workload loop
+2026.04.25-12:16:33.203 info  [caliper] [caliper-worker] 	Worker #2 starting workload loop
+2026.04.25-12:16:33.222 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:33.222 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:33.222 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:33.222 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:33.610 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:33.611 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:33.611 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:33.611 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:34.013 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:34.014 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:34.014 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:34.014 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:34.410 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:34.411 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:34.411 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:34.412 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:34.812 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:34.812 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:34.812 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:34.812 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:35.212 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:35.212 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:35.212 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:35.213 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:35.611 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:35.611 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:35.611 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:35.612 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:36.007 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:36.007 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:36.009 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:36.009 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:36.414 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:36.419 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:36.419 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:36.419 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:36.813 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:36.813 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:36.813 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:36.814 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:37.212 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:37.212 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:37.212 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:37.212 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:37.612 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:37.612 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:37.612 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:37.612 error [caliper] [connectors/peer-gateway/PeerGateway] 	Failed to perform submit transaction [oracle:PublishOracleData] using arguments [],  with error: EndorseError: 10 ABORTED: failed to endorse transaction, see attached details for more info
+Details:
+-  peer0.eissuer.go-platform.com:7051:chaincode response 500, "OracleData" must be a key in the transient map
+2026.04.25-12:16:38.195 info  [caliper] [default-observer] 	[PublishOracleData Round 1 Transaction Info] - Submitted: 48 Succ: 0 Fail:48 Unfinished:0
+2026.04.25-12:16:38.706 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:38.706 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:38.706 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:38.706 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:38.706 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:38.707 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:38.707 info  [caliper] [worker-message-handler] 	Worker#3 finished Round#1
+2026.04.25-12:16:38.707 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:38.707 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:38.707 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:38.707 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:38.707 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:38.708 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:38.708 info  [caliper] [worker-message-handler] 	Worker#2 finished Round#1
+2026.04.25-12:16:38.708 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:38.708 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:38.708 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:38.708 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:38.708 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:38.708 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:38.708 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:38.708 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:38.708 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:38.708 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:38.708 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:38.708 info  [caliper] [worker-message-handler] 	Worker#1 finished Round#1
+2026.04.25-12:16:38.709 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:38.709 info  [caliper] [worker-message-handler] 	Worker#0 finished Round#1
+2026.04.25-12:16:43.708 info  [caliper] [default-observer] 	Resetting txCount indicator count
+2026.04.25-12:16:43.709 info  [caliper] [report-builder] 	### Test result ###
+2026.04.25-12:16:43.710 info  [caliper] [report-builder] 	
++-------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+| Name              | Succ | Fail | Send Rate (TPS) | Max Latency (s) | Min Latency (s) | Avg Latency (s) | Throughput (TPS) |
+|-------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| PublishOracleData | 0    | 48   | 10.9            | -               | -               | -               | 10.9             |
++-------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+
+2026.04.25-12:16:43.710 info  [caliper] [round-orchestrator] 	Finished round 2 (PublishOracleData) in 4.506 seconds
+2026.04.25-12:16:43.710 info  [caliper] [monitor.js] 	Stopping all monitors
+2026.04.25-12:16:43.710 info  [caliper] [round-orchestrator] 	Waiting 5 seconds for the next round...
+2026.04.25-12:16:48.715 info  [caliper] [round-orchestrator] 	Started round 3 (GetCurrentEGOsList)
+2026.04.25-12:16:48.716 info  [caliper] [worker-message-handler] 	Preparing Worker#0 for Round#2
+2026.04.25-12:16:48.716 info  [caliper] [worker-message-handler] 	Preparing Worker#1 for Round#2
+2026.04.25-12:16:48.716 info  [caliper] [worker-message-handler] 	Preparing Worker#3 for Round#2
+2026.04.25-12:16:48.716 info  [caliper] [worker-message-handler] 	Preparing Worker#2 for Round#2
+2026.04.25-12:16:48.720 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:48.720 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:48.720 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:48.720 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:48.722 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:48.722 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:48.723 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:48.723 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:48.724 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:48.724 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 2 is starting...
+2026.04.25-12:16:48.724 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:48.724 info  [caliper] [caliper-worker] 	Info: worker 3 prepare test phase for round 2 is starting...
+2026.04.25-12:16:48.725 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:48.725 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:48.725 info  [caliper] [caliper-worker] 	Info: worker 1 prepare test phase for round 2 is starting...
+2026.04.25-12:16:48.725 info  [caliper] [caliper-worker] 	Info: worker 2 prepare test phase for round 2 is starting...
+2026.04.25-12:16:48.725 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:48.726 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:48.726 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:48.726 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:48.726 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:48.726 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:48.726 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 2 is completed
+2026.04.25-12:16:48.726 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:48.726 info  [caliper] [worker-message-handler] 	Worker#0 prepared for Round#2
+2026.04.25-12:16:48.726 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:48.726 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:48.726 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:48.726 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:48.726 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:48.726 info  [caliper] [caliper-worker] 	Info: worker 3 prepare test phase for round 2 is completed
+2026.04.25-12:16:48.726 info  [caliper] [worker-message-handler] 	Worker#3 prepared for Round#2
+2026.04.25-12:16:48.727 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:48.727 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:48.727 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:48.727 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:48.727 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:48.727 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:48.727 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:48.727 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:48.727 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:48.727 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:48.727 info  [caliper] [caliper-worker] 	Info: worker 1 prepare test phase for round 2 is completed
+2026.04.25-12:16:48.727 info  [caliper] [worker-message-handler] 	Worker#1 prepared for Round#2
+2026.04.25-12:16:48.727 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:48.727 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:48.727 info  [caliper] [caliper-worker] 	Info: worker 2 prepare test phase for round 2 is completed
+2026.04.25-12:16:48.727 info  [caliper] [worker-message-handler] 	Worker#2 prepared for Round#2
+2026.04.25-12:16:48.728 info  [caliper] [worker-orchestrator] 	4 workers prepared, progressing to test phase.
+2026.04.25-12:16:48.728 info  [caliper] [round-orchestrator] 	Monitors successfully started
+2026.04.25-12:16:48.728 info  [caliper] [worker-message-handler] 	Worker#0 is starting Round#2
+2026.04.25-12:16:48.728 info  [caliper] [worker-message-handler] 	Worker#1 is starting Round#2
+2026.04.25-12:16:48.729 info  [caliper] [worker-message-handler] 	Worker#2 is starting Round#2
+2026.04.25-12:16:48.729 info  [caliper] [worker-message-handler] 	Worker#3 is starting Round#2
+2026.04.25-12:16:48.731 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:48.731 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:48.731 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:48.731 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-12:16:48.733 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:48.733 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:48.733 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:48.734 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:48.735 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:48.735 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:48.735 info  [caliper] [caliper-worker] 	Worker #0 starting workload loop
+2026.04.25-12:16:48.735 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:48.735 info  [caliper] [caliper-worker] 	Worker #3 starting workload loop
+2026.04.25-12:16:48.736 info  [caliper] [caliper-worker] 	Worker #2 starting workload loop
+2026.04.25-12:16:48.736 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:48.736 info  [caliper] [caliper-worker] 	Worker #1 starting workload loop
+2026.04.25-12:16:53.728 info  [caliper] [default-observer] 	[GetCurrentEGOsList Round 2 Transaction Info] - Submitted: 100 Succ: 100 Fail:0 Unfinished:0
+2026.04.25-12:16:54.640 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:54.641 info  [caliper] [worker-message-handler] 	Worker#0 finished Round#2
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-12:16:54.641 info  [caliper] [worker-message-handler] 	Worker#3 finished Round#2
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:54.641 info  [caliper] [worker-message-handler] 	Worker#1 finished Round#2
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-12:16:54.641 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-12:16:54.642 info  [caliper] [worker-message-handler] 	Worker#2 finished Round#2
+2026.04.25-12:16:59.643 info  [caliper] [default-observer] 	Resetting txCount indicator count
+2026.04.25-12:16:59.644 info  [caliper] [report-builder] 	### Test result ###
+2026.04.25-12:16:59.645 info  [caliper] [report-builder] 	
++--------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+| Name               | Succ | Fail | Send Rate (TPS) | Max Latency (s) | Min Latency (s) | Avg Latency (s) | Throughput (TPS) |
+|--------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| GetCurrentEGOsList | 100  | 0    | 20.8            | 0.03            | 0.01            | 0.01            | 20.8             |
++--------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+
+2026.04.25-12:16:59.645 info  [caliper] [round-orchestrator] 	Finished round 3 (GetCurrentEGOsList) in 4.905 seconds
+2026.04.25-12:16:59.645 info  [caliper] [monitor.js] 	Stopping all monitors
+2026.04.25-12:16:59.646 info  [caliper] [report-builder] 	### All test results ###
+2026.04.25-12:16:59.647 info  [caliper] [report-builder] 	
++--------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+| Name               | Succ | Fail | Send Rate (TPS) | Max Latency (s) | Min Latency (s) | Avg Latency (s) | Throughput (TPS) |
+|--------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| GetVersion         | 100  | 0    | 52.2            | 0.04            | 0.01            | 0.01            | 52.0             |
+|--------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| PublishOracleData  | 0    | 48   | 10.9            | -               | -               | -               | 10.9             |
+|--------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| GetCurrentEGOsList | 100  | 0    | 20.8            | 0.03            | 0.01            | 0.01            | 20.8             |
++--------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+
+2026.04.25-12:16:59.655 info  [caliper] [report-builder] 	Generated report with path /root/hlf-go/repo/testing/caliper-workspace/report.html
+2026.04.25-12:16:59.655 info  [caliper] [monitor.js] 	Stopping all monitors
+2026.04.25-12:16:59.655 info  [caliper] [worker-orchestrator] 	Sending exit message to connected workers
+2026.04.25-12:16:59.656 info  [caliper] [round-orchestrator] 	Benchmark finished in 39.583 seconds. Total rounds: 3. Successful rounds: 3. Failed rounds: 0.
+2026.04.25-12:16:59.656 info  [caliper] [caliper-engine] 	Skipping end command due to benchmark flow conditioning
+2026.04.25-12:16:59.656 info  [caliper] [cli-launch-manager] 	Benchmark successfully finished!
+2026.04.25-12:16:59.656 info  [caliper] [worker-message-handler] 	Worker#3 is exiting
+2026.04.25-12:16:59.656 info  [caliper] [worker-message-handler] 	Worker#1 is exiting
+2026.04.25-12:16:59.656 info  [caliper] [worker-message-handler] 	Worker#0 is exiting
+2026.04.25-12:16:59.656 info  [caliper] [worker-message-handler] 	Worker#2 is exiting
