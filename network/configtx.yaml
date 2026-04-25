@@ -245,3 +245,35 @@ Profiles:
         - *Issuer1
         - *HProducer1
         - *Buyer1
+
+  # v10.1 (ADR-033): Biogas carrier channel — DE jurisdiction
+  # Members: Issuer (trust anchor + relay), EProducer (biogas producer), Buyer (consumer)
+  # In sample setup, EProducer produces both electricity and biogas (multi-carrier producer)
+  BiogasDEChannel:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *Issuer1
+        - *EProducer1  # Multi-carrier: produces electricity + biogas
+        - *Buyer1
+
+  # v10.1 (ADR-033): Heating/Cooling carrier channel — DE jurisdiction
+  # Members: Issuer (trust anchor + relay), HProducer (heating producer), Buyer (consumer)
+  # In sample setup, HProducer produces both hydrogen and heating/cooling (multi-carrier producer)
+  HeatingDEChannel:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *Issuer1
+        - *HProducer1  # Multi-carrier: produces hydrogen + heating/cooling
+        - *Buyer1

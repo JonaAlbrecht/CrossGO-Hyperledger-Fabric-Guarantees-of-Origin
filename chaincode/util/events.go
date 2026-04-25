@@ -13,13 +13,16 @@ import (
 type LifecycleEventType string
 
 const (
-	EventGOCreated    LifecycleEventType = "GO_CREATED"
-	EventGOTransferred LifecycleEventType = "GO_TRANSFERRED"
-	EventGOCancelled  LifecycleEventType = "GO_CANCELLED"
-	EventGOConverted  LifecycleEventType = "GO_CONVERTED"
-	EventGOSplit      LifecycleEventType = "GO_SPLIT"
-	EventDeviceRegistered LifecycleEventType = "DEVICE_REGISTERED"
-	EventDeviceRevoked    LifecycleEventType = "DEVICE_REVOKED"
+	EventGOCreated               LifecycleEventType = "GO_CREATED"
+	EventGOTransferred           LifecycleEventType = "GO_TRANSFERRED"
+	EventGOCancelled             LifecycleEventType = "GO_CANCELLED"
+	EventGOConverted             LifecycleEventType = "GO_CONVERTED"
+	EventGOSplit                 LifecycleEventType = "GO_SPLIT"
+	EventDeviceRegistered        LifecycleEventType = "DEVICE_REGISTERED"
+	EventDeviceRevoked           LifecycleEventType = "DEVICE_REVOKED"
+	EventConversionLockCreated   LifecycleEventType = "CONVERSION_LOCK_CREATED"   // ADR-033: Phase 1 complete
+	EventConversionMintCreated   LifecycleEventType = "CONVERSION_MINT_CREATED"   // ADR-033: Phase 2 complete
+	EventConversionFinalized     LifecycleEventType = "CONVERSION_FINALIZED"      // ADR-033: Phase 3 complete
 )
 
 // LifecycleEvent is the payload attached to a Fabric chaincode event.
@@ -32,7 +35,7 @@ type LifecycleEvent struct {
 	Initiator string             `json:"initiator,omitempty"` // MSP ID of the transaction submitter
 	TxID      string             `json:"txId"`
 	Timestamp int64              `json:"timestamp,omitempty"`
-	Details   map[string]string  `json:"details,omitempty"` // arbitrary key-value metadata
+	Details   map[string]interface{}  `json:"details,omitempty"` // arbitrary key-value metadata (changed from map[string]string to support complex objects)
 }
 
 // EmitLifecycleEvent sets a Fabric chaincode event on the current transaction.

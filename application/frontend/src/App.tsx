@@ -8,6 +8,7 @@ import GuaranteesPage from './pages/GuaranteesPage';
 import TransfersPage from './pages/TransfersPage';
 import ConversionsPage from './pages/ConversionsPage';
 import CancellationsPage from './pages/CertificatesPage';
+import BridgePage from './pages/BridgePage';
 import VerificationPage from './pages/VerificationPage';
 import OrganizationsPage from './pages/OrganizationsPage';
 
@@ -34,6 +35,7 @@ export default function App() {
                 <Route path="transfers" element={<TransfersPage />} />
                 <Route path="conversions" element={<ConversionsPage />} />
                 <Route path="cancellations" element={<CancellationsPage />} />
+                <Route path="bridge" element={<BridgePage />} />
                 <Route path="organizations" element={<OrganizationsPage />} />
                 <Route path="verification" element={<VerificationPage />} />
                 {/* Legacy route redirect */}

@@ -382,6 +382,198 @@ func (c *CancellationContract) ClaimRenewableAttributesHydrogen(ctx contractapi.
 	return nil
 }
 
+// ClaimRenewableAttributesBiogas cancels biogas GOs to claim their renewable attributes.
+// v10.0: Moved from separate BiogasContract into standard CancellationContract.
+// Transient key: "ClaimBiogas" containing BGOID, Collection.
+func (c *CancellationContract) ClaimRenewableAttributesBiogas(ctx contractapi.TransactionContextInterface) error {
+	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleBuyer); err != nil {
+		return fmt.Errorf("only producers and buyers can cancel bGOs: %v", err)
+	}
+
+	type cancelInput struct {
+		BGOID      string `json:"BGOID"`
+		Collection string `json:"Collection"`
+	}
+
+	var input cancelInput
+	if err := util.UnmarshalTransient(ctx, "ClaimBiogas", &input); err != nil {
+		return err
+	}
+	if err := util.ValidateNonEmpty("BGOID", input.BGOID); err != nil {
+		return err
+	}
+	if err := util.ValidateNonEmpty("Collection", input.Collection); err != nil {
+		return err
+	}
+
+	bGOJSON, err := ctx.GetStub().GetPrivateData(input.Collection, input.BGOID)
+	if err != nil {
+		return fmt.Errorf("failed to read bGO %s: %v", input.BGOID, err)
+	}
+	if bGOJSON == nil {
+		return fmt.Errorf("bGO %s does not exist in collection %s", input.BGOID, input.Collection)
+	}
+
+	var bGOPrivate assets.BiogasGOPrivateDetails
+	if err := json.Unmarshal(bGOJSON, &bGOPrivate); err != nil {
+		return fmt.Errorf("failed to unmarshal bGO: %v", err)
+	}
+
+	now, err := util.GetTimestamp(ctx)
+	if err != nil {
+		return err
+	}
+
+	cancelKey, err := assets.GenerateID(ctx, assets.PrefixBCancellation, 0)
+	if err != nil {
+		return fmt.Errorf("error generating cancellation key: %v", err)
+	}
+
+	statement := assets.CancellationStatementBiogas{
+		BCancellationkey:       cancelKey,
+		CancellationTime:       now,
+		OwnerID:                bGOPrivate.OwnerID,
+		VolumeNm3:              bGOPrivate.VolumeNm3,
+		EnergyContentMWh:       bGOPrivate.EnergyContentMWh,
+		Emissions:              bGOPrivate.Emissions,
+		BiogasProductionMethod: bGOPrivate.BiogasProductionMethod,
+		FeedstockType:          bGOPrivate.FeedstockType,
+	}
+	stmtBytes, err := json.Marshal(statement)
+	if err != nil {
+		return fmt.Errorf("failed to marshal biogas cancellation: %v", err)
+	}
+
+	// ADR-007: Tombstone — mark as cancelled instead of deleting
+	bGOPubJSON, err := ctx.GetStub().GetState(input.BGOID)
+	if err != nil {
+		return fmt.Errorf("error reading bGO public state: %v", err)
+	}
+	if bGOPubJSON != nil {
+		var bGOPub assets.BiogasGO
+		if err := json.Unmarshal(bGOPubJSON, &bGOPub); err != nil {
+			return fmt.Errorf("error unmarshalling bGO public: %v", err)
+		}
+		bGOPub.Status = assets.GOStatusCancelled
+		updatedBytes, err := json.Marshal(bGOPub)
+		if err != nil {
+			return fmt.Errorf("error marshalling tombstoned bGO: %v", err)
+		}
+		if err := ctx.GetStub().PutState(input.BGOID, updatedBytes); err != nil {
+			return fmt.Errorf("error writing tombstoned bGO: %v", err)
+		}
+	}
+
+	if err := ctx.GetStub().PutPrivateData(input.Collection, cancelKey, stmtBytes); err != nil {
+		return fmt.Errorf("failed to write biogas cancellation: %v", err)
+	}
+
+	// ADR-016: Emit lifecycle event
+	clientMSP, _ := access.GetClientMSPID(ctx)
+	return util.EmitLifecycleEvent(ctx, util.LifecycleEvent{
+		EventType: util.EventGOCancelled,
+		AssetID:   input.BGOID,
+		GOType:    "Biogas",
+		Initiator: clientMSP,
+		Timestamp: now,
+	})
+}
+
+// ClaimRenewableAttributesHeatingCooling cancels heating/cooling GOs to claim their renewable attributes.
+// v10.0: Moved from separate HeatingCoolingContract into standard CancellationContract.
+// Transient key: "ClaimHeatingCooling" containing HCGOID, Collection.
+func (c *CancellationContract) ClaimRenewableAttributesHeatingCooling(ctx contractapi.TransactionContextInterface) error {
+	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleBuyer); err != nil {
+		return fmt.Errorf("only producers and buyers can cancel hcGOs: %v", err)
+	}
+
+	type cancelInput struct {
+		HCGOID     string `json:"HCGOID"`
+		Collection string `json:"Collection"`
+	}
+
+	var input cancelInput
+	if err := util.UnmarshalTransient(ctx, "ClaimHeatingCooling", &input); err != nil {
+		return err
+	}
+	if err := util.ValidateNonEmpty("HCGOID", input.HCGOID); err != nil {
+		return err
+	}
+	if err := util.ValidateNonEmpty("Collection", input.Collection); err != nil {
+		return err
+	}
+
+	hcGOJSON, err := ctx.GetStub().GetPrivateData(input.Collection, input.HCGOID)
+	if err != nil {
+		return fmt.Errorf("failed to read hcGO %s: %v", input.HCGOID, err)
+	}
+	if hcGOJSON == nil {
+		return fmt.Errorf("hcGO %s does not exist in collection %s", input.HCGOID, input.Collection)
+	}
+
+	var hcGOPrivate assets.HeatingCoolingGOPrivateDetails
+	if err := json.Unmarshal(hcGOJSON, &hcGOPrivate); err != nil {
+		return fmt.Errorf("failed to unmarshal hcGO: %v", err)
+	}
+
+	now, err := util.GetTimestamp(ctx)
+	if err != nil {
+		return err
+	}
+
+	cancelKey, err := assets.GenerateID(ctx, assets.PrefixHCCancellation, 0)
+	if err != nil {
+		return fmt.Errorf("error generating cancellation key: %v", err)
+	}
+
+	statement := assets.CancellationStatementHeatingCooling{
+		HCCancellationKey:              cancelKey,
+		CancellationTime:               now,
+		OwnerID:                        hcGOPrivate.OwnerID,
+		AmountMWh:                      hcGOPrivate.AmountMWh,
+		Emissions:                      hcGOPrivate.Emissions,
+		HeatingCoolingProductionMethod: hcGOPrivate.HeatingCoolingProductionMethod,
+	}
+	stmtBytes, err := json.Marshal(statement)
+	if err != nil {
+		return fmt.Errorf("failed to marshal heating/cooling cancellation: %v", err)
+	}
+
+	// ADR-007: Tombstone — mark as cancelled instead of deleting
+	hcGOPubJSON, err := ctx.GetStub().GetState(input.HCGOID)
+	if err != nil {
+		return fmt.Errorf("error reading hcGO public state: %v", err)
+	}
+	if hcGOPubJSON != nil {
+		var hcGOPub assets.HeatingCoolingGO
+		if err := json.Unmarshal(hcGOPubJSON, &hcGOPub); err != nil {
+			return fmt.Errorf("error unmarshalling hcGO public: %v", err)
+		}
+		hcGOPub.Status = assets.GOStatusCancelled
+		updatedBytes, err := json.Marshal(hcGOPub)
+		if err != nil {
+			return fmt.Errorf("error marshalling tombstoned hcGO: %v", err)
+		}
+		if err := ctx.GetStub().PutState(input.HCGOID, updatedBytes); err != nil {
+			return fmt.Errorf("error writing tombstoned hcGO: %v", err)
+		}
+	}
+
+	if err := ctx.GetStub().PutPrivateData(input.Collection, cancelKey, stmtBytes); err != nil {
+		return fmt.Errorf("failed to write heating/cooling cancellation: %v", err)
+	}
+
+	// ADR-016: Emit lifecycle event
+	clientMSP, _ := access.GetClientMSPID(ctx)
+	return util.EmitLifecycleEvent(ctx, util.LifecycleEvent{
+		EventType: util.EventGOCancelled,
+		AssetID:   input.HCGOID,
+		GOType:    "HeatingCooling",
+		Initiator: clientMSP,
+		Timestamp: now,
+	})
+}
+
 // VerifyCancellationStatement verifies a cancellation statement's hash against on-chain data.
 // Bug fix #11: uses correct collection and key format for hash comparison.
 func (c *CancellationContract) VerifyCancellationStatement(ctx contractapi.TransactionContextInterface, assetID string, sellerCollection string) (bool, error) {

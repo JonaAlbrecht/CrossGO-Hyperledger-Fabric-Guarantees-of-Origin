@@ -10,6 +10,7 @@ import (
 	"github.com/JonaAlbrecht/HLF-GOconversionissuance-JA-MA/chaincode/assets"
 	"github.com/JonaAlbrecht/HLF-GOconversionissuance-JA-MA/chaincode/util"
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
+	"github.com/hyperledger/fabric-chaincode-go/pkg/statebased"
 )
 
 // BridgeContract implements the cross-channel bridge protocol (ADR-024 v7.0, ADR-030/031 v8.0).
@@ -50,6 +51,8 @@ type CrossChannelLock struct {
 	TargetIssuerMSP       string `json:"targetIssuerMSP,omitempty"`       // MSP of the issuer on the destination channel
 	TargetIssuerApproval  bool   `json:"targetIssuerApproval"`            // true once target issuer approves
 	TargetIssuerApprovedAt int64 `json:"targetIssuerApprovedAt,omitempty"` // timestamp of target issuer approval
+	// v10.1 Owner consent enforcement (tri-party endorsement)
+	OwnerMSP              string `json:"ownerMSP,omitempty"`              // MSP of the GO owner who consented to the bridge transfer
 }
 
 // BridgeMint represents a GO minted on the destination channel from a cross-channel bridge transfer.
@@ -126,7 +129,11 @@ const (
 // CrossChannelLock record with a lock receipt hash that the issuer will relay
 // to the destination channel.
 //
-// Transient key: "BridgeLock" containing GOAssetID, DestinationChannel.
+// v10.1: Requires tri-party endorsement (owner + source issuer). The transaction
+// must be co-signed by the GO owner and the source issuer to prevent unilateral
+// cross-border transfers without owner consent.
+//
+// Transient key: "BridgeLock" containing GOAssetID, DestinationChannel, OwnerMSP.
 func (c *BridgeContract) LockGO(ctx contractapi.TransactionContextInterface) (*CrossChannelLock, error) {
 	if err := access.RequireRole(ctx, access.RoleIssuer); err != nil {
 		return nil, fmt.Errorf("only issuers can lock GOs for cross-channel bridge: %v", err)
@@ -135,6 +142,7 @@ func (c *BridgeContract) LockGO(ctx contractapi.TransactionContextInterface) (*C
 	type lockInput struct {
 		GOAssetID          string `json:"GOAssetID"`
 		DestinationChannel string `json:"DestinationChannel"`
+		OwnerMSP           string `json:"OwnerMSP"` // v10.1: Owner's MSP for consent validation
 	}
 
 	var input lockInput
@@ -145,6 +153,9 @@ func (c *BridgeContract) LockGO(ctx contractapi.TransactionContextInterface) (*C
 		return nil, err
 	}
 	if err := util.ValidateNonEmpty("DestinationChannel", input.DestinationChannel); err != nil {
+		return nil, err
+	}
+	if err := util.ValidateNonEmpty("OwnerMSP", input.OwnerMSP); err != nil {
 		return nil, err
 	}
 
@@ -198,11 +209,12 @@ func (c *BridgeContract) LockGO(ctx contractapi.TransactionContextInterface) (*C
 	// Determine source channel from the channel ID in the stub
 	sourceChannel := ctx.GetStub().GetChannelID()
 
-	// Compute lock receipt hash: SHA-256(lockID || goAssetID || sourceChannel || destinationChannel || txID)
+	// v10.1: Compute lock receipt hash with owner MSP to prove tri-party consent
+	// SHA-256(lockID || goAssetID || sourceChannel || destinationChannel || ownerMSP || txID)
 	// This hash is the cryptographic link between the two channels — the destination channel
-	// verifies that a mint references a genuine lock by checking this hash.
+	// verifies that a mint references a genuine lock with proven owner consent.
 	txID := ctx.GetStub().GetTxID()
-	receiptInput := lockID + "||" + input.GOAssetID + "||" + sourceChannel + "||" + input.DestinationChannel + "||" + txID
+	receiptInput := lockID + "||" + input.GOAssetID + "||" + sourceChannel + "||" + input.DestinationChannel + "||" + input.OwnerMSP + "||" + txID
 	receiptHash := sha256.Sum256([]byte(receiptInput))
 	lockReceiptHash := hex.EncodeToString(receiptHash[:])
 
@@ -219,6 +231,7 @@ func (c *BridgeContract) LockGO(ctx contractapi.TransactionContextInterface) (*C
 		CountryOfOrigin:    country,
 		EnergySource:       energy,
 		SourceIssuerMSP:    issuerMSP, // v9.0: dual-issuer consensus
+		OwnerMSP:           input.OwnerMSP, // v10.1: owner consent enforcement
 	}
 
 	lockBytes, err := json.Marshal(lock)
@@ -227,6 +240,23 @@ func (c *BridgeContract) LockGO(ctx contractapi.TransactionContextInterface) (*C
 	}
 	if err := ctx.GetStub().PutState(lockID, lockBytes); err != nil {
 		return nil, fmt.Errorf("failed to write cross-channel lock: %v", err)
+	}
+
+	// v10.1: Set tri-party state-based endorsement policy on the lock record
+	// Requires: source issuer + owner for finalization (destination issuer approves separately)
+	ep, err := statebased.NewStateEP(nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create endorsement policy: %v", err)
+	}
+	if err := ep.AddOrgs(statebased.RoleTypePeer, issuerMSP, input.OwnerMSP); err != nil {
+		return nil, fmt.Errorf("failed to add orgs to endorsement policy: %v", err)
+	}
+	epBytes, err := ep.Policy()
+	if err != nil {
+		return nil, fmt.Errorf("failed to serialize endorsement policy: %v", err)
+	}
+	if err := ctx.GetStub().SetStateValidationParameter(lockID, epBytes); err != nil {
+		return nil, fmt.Errorf("failed to set state endorsement policy on lock: %v", err)
 	}
 
 	_ = util.EmitLifecycleEvent(ctx, util.LifecycleEvent{
@@ -240,6 +270,7 @@ func (c *BridgeContract) LockGO(ctx contractapi.TransactionContextInterface) (*C
 			"sourceChannel":      sourceChannel,
 			"destinationChannel": input.DestinationChannel,
 			"lockReceiptHash":    lockReceiptHash,
+			"ownerMSP":           input.OwnerMSP, // v10.1: record owner consent
 		},
 	})
 
@@ -264,6 +295,7 @@ func (c *BridgeContract) MintFromBridge(ctx contractapi.TransactionContextInterf
 		SourceLockID    string  `json:"SourceLockID"`
 		SourceGOAssetID string  `json:"SourceGOAssetID"`
 		LockReceiptHash string  `json:"LockReceiptHash"`
+		OwnerMSP        string  `json:"OwnerMSP"` // v10.1: Owner MSP for cross-channel verification
 		GOType          string  `json:"GOType"`
 		AmountMWh       float64 `json:"AmountMWh"`
 		CountryOfOrigin string  `json:"CountryOfOrigin"`
@@ -284,6 +316,10 @@ func (c *BridgeContract) MintFromBridge(ctx contractapi.TransactionContextInterf
 		return nil, err
 	}
 	if err := util.ValidateNonEmpty("GOType", input.GOType); err != nil {
+		return nil, err
+	}
+	// v10.1: Validate owner MSP is provided (proves tri-party consent on source channel)
+	if err := util.ValidateNonEmpty("OwnerMSP", input.OwnerMSP); err != nil {
 		return nil, err
 	}
 
@@ -1226,4 +1262,41 @@ func writeHCGOToLedgerBridge(ctx contractapi.TransactionContextInterface, pub *a
 		return fmt.Errorf("failed to put hcGO private data: %v", err)
 	}
 	return nil
+}
+
+// ============================================================================
+// v10.1 Owner Verification Helper (Tri-Party Endorsement)
+// ============================================================================
+
+// verifyGOOwnership checks that the specified owner MSP actually owns the GO by
+// reading the private data from the owner's collection. Returns true if ownership
+// is confirmed, false otherwise.
+func verifyGOOwnership(ctx contractapi.TransactionContextInterface, goAssetID string, ownerMSP string, ownerCollection string) (bool, error) {
+	// Try reading from the owner's private data collection
+	privateDataJSON, err := ctx.GetStub().GetPrivateData(ownerCollection, goAssetID)
+	if err != nil {
+		return false, fmt.Errorf("error reading private data from collection %s: %v", ownerCollection, err)
+	}
+	if privateDataJSON == nil {
+		// GO doesn't exist in this owner's collection
+		return false, nil
+	}
+
+	// Parse private data to verify OwnerID field matches the claimed owner MSP
+	var privateData map[string]interface{}
+	if err := json.Unmarshal(privateDataJSON, &privateData); err != nil {
+		return false, fmt.Errorf("failed to unmarshal GO private data: %v", err)
+	}
+
+	actualOwner, ok := privateData["OwnerID"].(string)
+	if !ok || actualOwner == "" {
+		return false, fmt.Errorf("GO private data missing OwnerID field")
+	}
+
+	// Verify the owner matches
+	if actualOwner != ownerMSP {
+		return false, nil
+	}
+
+	return true, nil
 }

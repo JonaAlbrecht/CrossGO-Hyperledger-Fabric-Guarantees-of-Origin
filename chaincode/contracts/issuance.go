@@ -276,3 +276,255 @@ func (c *IssuanceContract) CreateHydrogenGO(ctx contractapi.TransactionContextIn
 		Timestamp: creationTime,
 	})
 }
+
+// CreateBiogasGO creates a new biogas guarantee of origin from metering data.
+// v10.0: Moved from separate BiogasContract into standard IssuanceContract.
+// Transient key: "bGO" containing VolumeNm3, EnergyContentMWh, Emissions,
+// BiogasProductionMethod, FeedstockType, ElapsedSeconds.
+func (c *IssuanceContract) CreateBiogasGO(ctx contractapi.TransactionContextInterface) error {
+	if err := access.RequireRole(ctx, access.RoleProducer); err != nil {
+		return fmt.Errorf("only producers can create biogas GOs: %v", err)
+	}
+
+	type bGOTransientInput struct {
+		VolumeNm3              json.Number `json:"VolumeNm3"`
+		EnergyContentMWh       json.Number `json:"EnergyContentMWh"`
+		Emissions              json.Number `json:"Emissions"`
+		BiogasProductionMethod string      `json:"BiogasProductionMethod"`
+		FeedstockType          string      `json:"FeedstockType"`
+		ElapsedSeconds         json.Number `json:"ElapsedSeconds"`
+	}
+
+	var input bGOTransientInput
+	if err := util.UnmarshalTransient(ctx, "bGO", &input); err != nil {
+		return err
+	}
+
+	volumeNm3, err := input.VolumeNm3.Float64()
+	if err != nil {
+		return fmt.Errorf("failed to convert VolumeNm3: %v", err)
+	}
+	energyMWh, err := input.EnergyContentMWh.Float64()
+	if err != nil {
+		return fmt.Errorf("failed to convert EnergyContentMWh: %v", err)
+	}
+	emissions, err := input.Emissions.Float64()
+	if err != nil {
+		return fmt.Errorf("failed to convert Emissions: %v", err)
+	}
+	elapsedSeconds, err := input.ElapsedSeconds.Float64()
+	if err != nil {
+		return fmt.Errorf("failed to convert ElapsedSeconds: %v", err)
+	}
+
+	if err := util.ValidatePositive(map[string]float64{
+		"VolumeNm3":        volumeNm3,
+		"EnergyContentMWh": energyMWh,
+		"ElapsedSeconds":   elapsedSeconds,
+	}); err != nil {
+		return err
+	}
+	if err := util.ValidateNonEmpty("BiogasProductionMethod", input.BiogasProductionMethod); err != nil {
+		return err
+	}
+	if err := util.ValidateNonEmpty("FeedstockType", input.FeedstockType); err != nil {
+		return err
+	}
+
+	bGOID, err := assets.GenerateID(ctx, assets.PrefixBGO, 0)
+	if err != nil {
+		return fmt.Errorf("error generating bGO ID: %v", err)
+	}
+
+	creationTime, err := util.GetTimestamp(ctx)
+	if err != nil {
+		return err
+	}
+
+	clientMSP, err := access.GetClientMSPID(ctx)
+	if err != nil {
+		return err
+	}
+
+	commitment, salt, err := assets.GenerateCommitment(ctx, volumeNm3)
+	if err != nil {
+		return fmt.Errorf("error generating quantity commitment: %v", err)
+	}
+
+	pub := &assets.BiogasGO{
+		AssetID:               bGOID,
+		CreationDateTime:      creationTime,
+		GOType:                "Biogas",
+		Status:                assets.GOStatusActive,
+		QuantityCommitment:    commitment,
+		CountryOfOrigin:       "DE",
+		EnergySource:          input.BiogasProductionMethod,
+		SupportScheme:         "none",
+		ProductionPeriodStart: creationTime - int64(elapsedSeconds),
+		ProductionPeriodEnd:   creationTime,
+	}
+
+	priv := &assets.BiogasGOPrivateDetails{
+		AssetID:                bGOID,
+		OwnerID:                clientMSP,
+		CreationDateTime:       creationTime,
+		VolumeNm3:              volumeNm3,
+		EnergyContentMWh:       energyMWh,
+		Emissions:              emissions,
+		BiogasProductionMethod: input.BiogasProductionMethod,
+		FeedstockType:          input.FeedstockType,
+		ConsumptionDeclarations: []string{"none"},
+		CommitmentSalt:         salt,
+	}
+
+	collection := access.GetCollectionForOrg(clientMSP)
+	if err := util.WriteBGOToLedger(ctx, pub, priv, collection); err != nil {
+		return err
+	}
+
+	ep, err := statebased.NewStateEP(nil)
+	if err != nil {
+		return fmt.Errorf("failed to create state endorsement policy: %v", err)
+	}
+	if err := ep.AddOrgs(statebased.RoleTypePeer, clientMSP, "issuer1MSP"); err != nil {
+		return fmt.Errorf("failed to add orgs to endorsement policy: %v", err)
+	}
+	epBytes, err := ep.Policy()
+	if err != nil {
+		return fmt.Errorf("failed to serialize endorsement policy: %v", err)
+	}
+	if err := ctx.GetStub().SetStateValidationParameter(bGOID, epBytes); err != nil {
+		return fmt.Errorf("failed to set state endorsement policy: %v", err)
+	}
+
+	return util.EmitLifecycleEvent(ctx, util.LifecycleEvent{
+		EventType: util.EventGOCreated,
+		AssetID:   bGOID,
+		GOType:    "Biogas",
+		Initiator: clientMSP,
+		Timestamp: creationTime,
+	})
+}
+
+// CreateHeatingCoolingGO creates a new heating/cooling guarantee of origin from metering data.
+// v10.0: Moved from separate HeatingCoolingContract into standard IssuanceContract.
+// Transient key: "hcGO" containing AmountMWh, Emissions, HeatingCoolingProductionMethod,
+// SupplyTemperature, ElapsedSeconds.
+func (c *IssuanceContract) CreateHeatingCoolingGO(ctx contractapi.TransactionContextInterface) error {
+	if err := access.RequireRole(ctx, access.RoleProducer); err != nil {
+		return fmt.Errorf("only producers can create heating/cooling GOs: %v", err)
+	}
+
+	type hcGOTransientInput struct {
+		AmountMWh                      json.Number `json:"AmountMWh"`
+		Emissions                      json.Number `json:"Emissions"`
+		HeatingCoolingProductionMethod string      `json:"HeatingCoolingProductionMethod"`
+		SupplyTemperature              json.Number `json:"SupplyTemperature"`
+		ElapsedSeconds                 json.Number `json:"ElapsedSeconds"`
+	}
+
+	var input hcGOTransientInput
+	if err := util.UnmarshalTransient(ctx, "hcGO", &input); err != nil {
+		return err
+	}
+
+	amountMWh, err := input.AmountMWh.Float64()
+	if err != nil {
+		return fmt.Errorf("failed to convert AmountMWh: %v", err)
+	}
+	emissions, err := input.Emissions.Float64()
+	if err != nil {
+		return fmt.Errorf("failed to convert Emissions: %v", err)
+	}
+	supplyTemp, err := input.SupplyTemperature.Float64()
+	if err != nil {
+		return fmt.Errorf("failed to convert SupplyTemperature: %v", err)
+	}
+	elapsedSeconds, err := input.ElapsedSeconds.Float64()
+	if err != nil {
+		return fmt.Errorf("failed to convert ElapsedSeconds: %v", err)
+	}
+
+	if err := util.ValidatePositive(map[string]float64{
+		"AmountMWh":      amountMWh,
+		"ElapsedSeconds": elapsedSeconds,
+	}); err != nil {
+		return err
+	}
+	if err := util.ValidateNonEmpty("HeatingCoolingProductionMethod", input.HeatingCoolingProductionMethod); err != nil {
+		return err
+	}
+
+	hcGOID, err := assets.GenerateID(ctx, assets.PrefixHCGO, 0)
+	if err != nil {
+		return fmt.Errorf("error generating hcGO ID: %v", err)
+	}
+
+	creationTime, err := util.GetTimestamp(ctx)
+	if err != nil {
+		return err
+	}
+
+	clientMSP, err := access.GetClientMSPID(ctx)
+	if err != nil {
+		return err
+	}
+
+	commitment, salt, err := assets.GenerateCommitment(ctx, amountMWh)
+	if err != nil {
+		return fmt.Errorf("error generating quantity commitment: %v", err)
+	}
+
+	pub := &assets.HeatingCoolingGO{
+		AssetID:               hcGOID,
+		CreationDateTime:      creationTime,
+		GOType:                "HeatingCooling",
+		Status:                assets.GOStatusActive,
+		QuantityCommitment:    commitment,
+		CountryOfOrigin:       "DE",
+		EnergySource:          input.HeatingCoolingProductionMethod,
+		SupportScheme:         "none",
+		ProductionPeriodStart: creationTime - int64(elapsedSeconds),
+		ProductionPeriodEnd:   creationTime,
+	}
+
+	priv := &assets.HeatingCoolingGOPrivateDetails{
+		AssetID:                        hcGOID,
+		OwnerID:                        clientMSP,
+		CreationDateTime:               creationTime,
+		AmountMWh:                      amountMWh,
+		Emissions:                      emissions,
+		HeatingCoolingProductionMethod: input.HeatingCoolingProductionMethod,
+		SupplyTemperature:              supplyTemp,
+		ConsumptionDeclarations:        []string{"none"},
+		CommitmentSalt:                 salt,
+	}
+
+	collection := access.GetCollectionForOrg(clientMSP)
+	if err := util.WriteHCGOToLedger(ctx, pub, priv, collection); err != nil {
+		return err
+	}
+
+	ep, err := statebased.NewStateEP(nil)
+	if err != nil {
+		return fmt.Errorf("failed to create state endorsement policy: %v", err)
+	}
+	if err := ep.AddOrgs(statebased.RoleTypePeer, clientMSP, "issuer1MSP"); err != nil {
+		return fmt.Errorf("failed to add orgs to endorsement policy: %v", err)
+	}
+	epBytes, err := ep.Policy()
+	if err != nil {
+		return fmt.Errorf("failed to serialize endorsement policy: %v", err)
+	}
+	if err := ctx.GetStub().SetStateValidationParameter(hcGOID, epBytes); err != nil {
+		return fmt.Errorf("failed to set state endorsement policy: %v", err)
+	}
+
+	return util.EmitLifecycleEvent(ctx, util.LifecycleEvent{
+		EventType: util.EventGOCreated,
+		AssetID:   hcGOID,
+		GOType:    "HeatingCooling",
+		Initiator: clientMSP,
+		Timestamp: creationTime,
+	})
+}

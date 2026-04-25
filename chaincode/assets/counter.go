@@ -27,7 +27,8 @@ const (
 	PrefixEGO           = "eGO_"
 	PrefixHGO           = "hGO_"
 	PrefixBGO            = "bGO_"      // ADR-015: biogas
-	PrefixHCGO           = "hcGO_"     // v9: heating/cooling
+	PrefixHTGO           = "htGO_"     // v9/v10: heating/cooling (updated from hcGO)
+	PrefixHCGO           = "hcGO_"     // v9: heating/cooling (deprecated, use HTGO)
 	PrefixECancellation  = "eCancel_"
 	PrefixHCancellation  = "hCancel_"
 	PrefixBCancellation  = "bCancel_"  // ADR-015: biogas
@@ -49,13 +50,15 @@ const (
 	RangeEndDevice = "device_~"
 )
 
-// GO lifecycle status constants (ADR-007: tombstone pattern, ADR-031: bridge states).
+// GO lifecycle status constants (ADR-007: tombstone pattern, ADR-031: bridge states, ADR-033: conversion states).
 const (
-	GOStatusActive      = "active"
-	GOStatusCancelled   = "cancelled"
-	GOStatusTransferred = "transferred"
-	GOStatusLocked      = "locked"  // ADR-031: locked for cross-channel bridge transfer
-	GOStatusBridged     = "bridged" // ADR-031: successfully bridged to another channel
+	GOStatusActive            = "active"
+	GOStatusCancelled         = "cancelled"
+	GOStatusTransferred       = "transferred"
+	GOStatusLocked            = "locked"            // ADR-031: locked for cross-channel bridge transfer
+	GOStatusBridged           = "bridged"           // ADR-031: successfully bridged to another channel
+	GOStatusLockedConversion  = "locked_conversion" // ADR-033: locked for cross-channel conversion
+	GOStatusConsumed          = "consumed"          // ADR-033: consumed by conversion process
 )
 
 // MaxTimestampDrift is the maximum allowed difference (in seconds) between

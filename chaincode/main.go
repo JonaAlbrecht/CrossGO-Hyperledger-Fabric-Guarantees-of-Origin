@@ -16,9 +16,16 @@ func main() {
 	transferContract.Name = "transfer"
 	transferContract.TransactionContextHandler = new(contractapi.TransactionContext)
 
-	conversionContract := new(contracts.ConversionContract)
+	// v10.1: ADR-033 cross-channel conversion (lock-mint-finalize protocol)
+	// All carrier-to-carrier conversions span channels per ADR-030, so one contract covers all.
+	conversionContract := new(contracts.ConversionCrossChannelContract)
 	conversionContract.Name = "conversion"
 	conversionContract.TransactionContextHandler = new(contractapi.TransactionContext)
+
+	// v10.1: Dedicated backlog contract for UI integration
+	backlogContract := new(contracts.BacklogContract)
+	backlogContract.Name = "backlog"
+	backlogContract.TransactionContextHandler = new(contractapi.TransactionContext)
 
 	cancellationContract := new(contracts.CancellationContract)
 	cancellationContract.Name = "cancellation"
@@ -36,10 +43,7 @@ func main() {
 	adminContract.Name = "admin"
 	adminContract.TransactionContextHandler = new(contractapi.TransactionContext)
 
-	biogasContract := new(contracts.BiogasContract)
-	biogasContract.Name = "biogas"
-	biogasContract.TransactionContextHandler = new(contractapi.TransactionContext)
-
+	// v10.0: Single bridge contract for all country-to-country transfers (already carrier-agnostic)
 	bridgeContract := new(contracts.BridgeContract)
 	bridgeContract.Name = "bridge"
 	bridgeContract.TransactionContextHandler = new(contractapi.TransactionContext)
@@ -48,22 +52,21 @@ func main() {
 	oracleContract.Name = "oracle"
 	oracleContract.TransactionContextHandler = new(contractapi.TransactionContext)
 
-	heatingCoolingContract := new(contracts.HeatingCoolingContract)
-	heatingCoolingContract.Name = "heating_cooling"
-	heatingCoolingContract.TransactionContextHandler = new(contractapi.TransactionContext)
+	// v10.0: Biogas and HeatingCooling contracts removed — functionality merged into
+	// IssuanceContract (create), CancellationContract (cancel), and TransferContract (transfer)
+	// v10.1: Backlog management extracted to dedicated BacklogContract with query functions for UI
 
 	chaincode, err := contractapi.NewChaincode(
 		issuanceContract,
 		transferContract,
 		conversionContract,
+		backlogContract,
 		cancellationContract,
 		queryContract,
 		deviceContract,
 		adminContract,
-		biogasContract,
 		bridgeContract,
 		oracleContract,
-		heatingCoolingContract,
 	)
 	if err != nil {
 		log.Panicf("Error creating GO lifecycle chaincode: %v", err)

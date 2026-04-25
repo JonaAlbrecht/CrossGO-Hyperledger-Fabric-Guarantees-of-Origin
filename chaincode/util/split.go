@@ -222,6 +222,162 @@ func WriteHGOToLedger(ctx contractapi.TransactionContextInterface, pub *assets.G
 	return nil
 }
 
+// WriteBGOToLedger writes both the public and private parts of a biogas GO.
+func WriteBGOToLedger(ctx contractapi.TransactionContextInterface, pub *assets.BiogasGO, priv *assets.BiogasGOPrivateDetails, collection string) error {
+	pubBytes, err := json.Marshal(pub)
+	if err != nil {
+		return fmt.Errorf("failed to marshal bGO public data: %v", err)
+	}
+	err = ctx.GetStub().PutState(pub.AssetID, pubBytes)
+	if err != nil {
+		return fmt.Errorf("failed to put bGO in public state: %v", err)
+	}
+	privBytes, err := json.Marshal(priv)
+	if err != nil {
+		return fmt.Errorf("failed to marshal bGO private data: %v", err)
+	}
+	err = ctx.GetStub().PutPrivateData(collection, priv.AssetID, privBytes)
+	if err != nil {
+		return fmt.Errorf("failed to put bGO private data: %v", err)
+	}
+	return nil
+}
+
+// WriteHCGOToLedger writes both the public and private parts of a heating/cooling GO.
+func WriteHCGOToLedger(ctx contractapi.TransactionContextInterface, pub *assets.HeatingCoolingGO, priv *assets.HeatingCoolingGOPrivateDetails, collection string) error {
+	pubBytes, err := json.Marshal(pub)
+	if err != nil {
+		return fmt.Errorf("failed to marshal hcGO public data: %v", err)
+	}
+	err = ctx.GetStub().PutState(pub.AssetID, pubBytes)
+	if err != nil {
+		return fmt.Errorf("failed to put hcGO in public state: %v", err)
+	}
+	privBytes, err := json.Marshal(priv)
+	if err != nil {
+		return fmt.Errorf("failed to marshal hcGO private data: %v", err)
+	}
+	err = ctx.GetStub().PutPrivateData(collection, priv.AssetID, privBytes)
+	if err != nil {
+		return fmt.Errorf("failed to put hcGO private data: %v", err)
+	}
+	return nil
+}
+
+// SplitBiogasGO performs a proportional split of a BiogasGO.
+func SplitBiogasGO(
+	ctx contractapi.TransactionContextInterface,
+	original *assets.BiogasGOPrivateDetails,
+	takenVolumeNm3 float64,
+	newOwnerID string,
+) (taken *assets.BiogasGOPrivateDetails, remainderPrivate *assets.BiogasGOPrivateDetails, remainderPublic *assets.BiogasGO, err error) {
+	excessVolumeNm3 := original.VolumeNm3 - takenVolumeNm3
+	ratio := excessVolumeNm3 / original.VolumeNm3
+	takenEnergyMWh := (1 - ratio) * original.EnergyContentMWh
+	excessEnergyMWh := ratio * original.EnergyContentMWh
+	takenEmissions := (1 - ratio) * original.Emissions
+	excessEmissions := ratio * original.Emissions
+
+	declarations := make([]string, len(original.ConsumptionDeclarations))
+	copy(declarations, original.ConsumptionDeclarations)
+	declarations = append(declarations, "split")
+
+	taken = &assets.BiogasGOPrivateDetails{
+		AssetID:                original.AssetID,
+		OwnerID:                newOwnerID,
+		CreationDateTime:       original.CreationDateTime,
+		VolumeNm3:              takenVolumeNm3,
+		EnergyContentMWh:       takenEnergyMWh,
+		Emissions:              takenEmissions,
+		BiogasProductionMethod: original.BiogasProductionMethod,
+		FeedstockType:          original.FeedstockType,
+		ConsumptionDeclarations: declarations,
+		DeviceID:               original.DeviceID,
+	}
+
+	remainderID, err := assets.GenerateID(ctx, assets.PrefixBGO, 0)
+	if err != nil {
+		return nil, nil, nil, fmt.Errorf("error generating new bGO ID for remainder: %v", err)
+	}
+
+	remainderPublic = &assets.BiogasGO{
+		AssetID:          remainderID,
+		CreationDateTime: original.CreationDateTime,
+		GOType:           "Biogas",
+		Status:           assets.GOStatusActive,
+	}
+
+	remainderPrivate = &assets.BiogasGOPrivateDetails{
+		AssetID:                remainderID,
+		OwnerID:                original.OwnerID,
+		CreationDateTime:       original.CreationDateTime,
+		VolumeNm3:              excessVolumeNm3,
+		EnergyContentMWh:       excessEnergyMWh,
+		Emissions:              excessEmissions,
+		BiogasProductionMethod: original.BiogasProductionMethod,
+		FeedstockType:          original.FeedstockType,
+		ConsumptionDeclarations: declarations,
+		DeviceID:               original.DeviceID,
+	}
+
+	return taken, remainderPrivate, remainderPublic, nil
+}
+
+// SplitHeatingCoolingGO performs a proportional split of a HeatingCoolingGO.
+func SplitHeatingCoolingGO(
+	ctx contractapi.TransactionContextInterface,
+	original *assets.HeatingCoolingGOPrivateDetails,
+	takenAmountMWh float64,
+	newOwnerID string,
+) (taken *assets.HeatingCoolingGOPrivateDetails, remainderPrivate *assets.HeatingCoolingGOPrivateDetails, remainderPublic *assets.HeatingCoolingGO, err error) {
+	excessAmountMWh := original.AmountMWh - takenAmountMWh
+	ratio := excessAmountMWh / original.AmountMWh
+	takenEmissions := (1 - ratio) * original.Emissions
+	excessEmissions := ratio * original.Emissions
+
+	declarations := make([]string, len(original.ConsumptionDeclarations))
+	copy(declarations, original.ConsumptionDeclarations)
+	declarations = append(declarations, "split")
+
+	taken = &assets.HeatingCoolingGOPrivateDetails{
+		AssetID:                        original.AssetID,
+		OwnerID:                        newOwnerID,
+		CreationDateTime:               original.CreationDateTime,
+		AmountMWh:                      takenAmountMWh,
+		Emissions:                      takenEmissions,
+		HeatingCoolingProductionMethod: original.HeatingCoolingProductionMethod,
+		SupplyTemperature:              original.SupplyTemperature,
+		ConsumptionDeclarations:        declarations,
+		DeviceID:                       original.DeviceID,
+	}
+
+	remainderID, err := assets.GenerateID(ctx, assets.PrefixHCGO, 0)
+	if err != nil {
+		return nil, nil, nil, fmt.Errorf("error generating new hcGO ID for remainder: %v", err)
+	}
+
+	remainderPublic = &assets.HeatingCoolingGO{
+		AssetID:          remainderID,
+		CreationDateTime: original.CreationDateTime,
+		GOType:           "HeatingCooling",
+		Status:           assets.GOStatusActive,
+	}
+
+	remainderPrivate = &assets.HeatingCoolingGOPrivateDetails{
+		AssetID:                        remainderID,
+		OwnerID:                        original.OwnerID,
+		CreationDateTime:               original.CreationDateTime,
+		AmountMWh:                      excessAmountMWh,
+		Emissions:                      excessEmissions,
+		HeatingCoolingProductionMethod: original.HeatingCoolingProductionMethod,
+		SupplyTemperature:              original.SupplyTemperature,
+		ConsumptionDeclarations:        declarations,
+		DeviceID:                       original.DeviceID,
+	}
+
+	return taken, remainderPrivate, remainderPublic, nil
+}
+
 // DeleteEGOFromLedger marks an electricity GO as cancelled (tombstone) instead of deleting.
 // ADR-007: Preserves audit trail by updating Status rather than calling DelState.
 // Private data is retained for audit; only the public status changes.

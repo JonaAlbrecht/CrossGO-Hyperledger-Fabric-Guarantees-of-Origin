@@ -327,3 +327,211 @@ func (c *TransferContract) TransferHGOByAmount(ctx contractapi.TransactionContex
 	}
 	return nil
 }
+
+// TransferBGOByAmount transfers a specified volume (Nm3) amount across one or more biogas GOs.
+// v10.0: Added to support biogas GO transfers in the unified lifecycle.
+// Transient key: "TransferInput" containing BGOList ("+"-separated), Recipient, NeededVolumeNm3.
+func (c *TransferContract) TransferBGOByAmount(ctx contractapi.TransactionContextInterface) error {
+	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleBuyer); err != nil {
+		return fmt.Errorf("only producers and buyers can transfer bGOs: %v", err)
+	}
+
+	type transferInput struct {
+		BGOList         string      `json:"BGOList"`
+		Recipient       string      `json:"Recipient"`
+		NeededVolumeNm3 json.Number `json:"NeededVolumeNm3"`
+	}
+
+	var input transferInput
+	if err := util.UnmarshalTransient(ctx, "TransferInput", &input); err != nil {
+		return err
+	}
+
+	neededVolumeNm3, err := input.NeededVolumeNm3.Float64()
+	if err != nil {
+		return fmt.Errorf("error converting NeededVolumeNm3: %v", err)
+	}
+	if err := util.ValidatePositive(map[string]float64{"NeededVolumeNm3": neededVolumeNm3}); err != nil {
+		return err
+	}
+
+	clientMSP, err := access.GetClientMSPID(ctx)
+	if err != nil {
+		return err
+	}
+	senderCollection := access.GetCollectionForOrg(clientMSP)
+	receiverCollection := access.GetCollectionForOrg(input.Recipient)
+	bGOList := strings.Split(input.BGOList, "+")
+
+	var transferredVolumeNm3 float64
+
+	for i := 0; transferredVolumeNm3 < neededVolumeNm3; i++ {
+		if i >= len(bGOList) {
+			return fmt.Errorf("insufficient bGOs: transferred %.4f Nm3 of %.4f needed", transferredVolumeNm3, neededVolumeNm3)
+		}
+
+		currentID := bGOList[i]
+		currentAssetJSON, err := ctx.GetStub().GetPrivateData(senderCollection, currentID)
+		if err != nil {
+			return fmt.Errorf("error reading bGO %s: %v", currentID, err)
+		}
+		if currentAssetJSON == nil {
+			return fmt.Errorf("bGO %s does not exist in your collection", currentID)
+		}
+
+		var currentAsset assets.BiogasGOPrivateDetails
+		if err := json.Unmarshal(currentAssetJSON, &currentAsset); err != nil {
+			return fmt.Errorf("error unmarshaling bGO %s: %v", currentID, err)
+		}
+
+		transferredVolumeNm3 += currentAsset.VolumeNm3
+
+		if transferredVolumeNm3 <= neededVolumeNm3 {
+			// Transfer entire bGO
+			if err := util.TransferConsumptionDeclarations(ctx, currentAsset.ConsumptionDeclarations, senderCollection, receiverCollection, true); err != nil {
+				return err
+			}
+			currentAsset.OwnerID = input.Recipient
+			updatedBytes, err := json.Marshal(currentAsset)
+			if err != nil {
+				return fmt.Errorf("error marshaling bGO: %v", err)
+			}
+			if err := ctx.GetStub().PutPrivateData(receiverCollection, currentAsset.AssetID, updatedBytes); err != nil {
+				return fmt.Errorf("error writing bGO to receiver: %v", err)
+			}
+			if err := ctx.GetStub().DelPrivateData(senderCollection, currentAsset.AssetID); err != nil {
+				return fmt.Errorf("error deleting bGO from sender: %v", err)
+			}
+		} else {
+			// Split
+			takenVolumeNm3 := currentAsset.VolumeNm3 - (transferredVolumeNm3 - neededVolumeNm3)
+			taken, remainderPriv, remainderPub, err := util.SplitBiogasGO(ctx, &currentAsset, takenVolumeNm3, input.Recipient)
+			if err != nil {
+				return fmt.Errorf("error splitting bGO %s: %v", currentID, err)
+			}
+
+			if err := util.TransferConsumptionDeclarations(ctx, currentAsset.ConsumptionDeclarations, senderCollection, receiverCollection, false); err != nil {
+				return err
+			}
+
+			takenBytes, err := json.Marshal(taken)
+			if err != nil {
+				return fmt.Errorf("error marshaling taken bGO portion: %v", err)
+			}
+			if err := ctx.GetStub().PutPrivateData(receiverCollection, taken.AssetID, takenBytes); err != nil {
+				return fmt.Errorf("error writing taken bGO portion to receiver: %v", err)
+			}
+			if err := ctx.GetStub().DelPrivateData(senderCollection, currentAsset.AssetID); err != nil {
+				return fmt.Errorf("error deleting original bGO from sender: %v", err)
+			}
+			if err := util.WriteBGOToLedger(ctx, remainderPub, remainderPriv, senderCollection); err != nil {
+				return fmt.Errorf("error writing remainder bGO: %v", err)
+			}
+		}
+	}
+	return nil
+}
+
+// TransferHCGOByAmount transfers a specified MWh amount across one or more heating/cooling GOs.
+// v10.0: Added to support heating/cooling GO transfers in the unified lifecycle.
+// Transient key: "TransferInput" containing HCGOList ("+"-separated), Recipient, NeededAmountMWh.
+func (c *TransferContract) TransferHCGOByAmount(ctx contractapi.TransactionContextInterface) error {
+	if err := access.RequireAnyRole(ctx, access.RoleProducer, access.RoleBuyer); err != nil {
+		return fmt.Errorf("only producers and buyers can transfer hcGOs: %v", err)
+	}
+
+	type transferInput struct {
+		HCGOList        string      `json:"HCGOList"`
+		Recipient       string      `json:"Recipient"`
+		NeededAmountMWh json.Number `json:"NeededAmountMWh"`
+	}
+
+	var input transferInput
+	if err := util.UnmarshalTransient(ctx, "TransferInput", &input); err != nil {
+		return err
+	}
+
+	neededAmountMWh, err := input.NeededAmountMWh.Float64()
+	if err != nil {
+		return fmt.Errorf("error converting NeededAmountMWh: %v", err)
+	}
+	if err := util.ValidatePositive(map[string]float64{"NeededAmountMWh": neededAmountMWh}); err != nil {
+		return err
+	}
+
+	clientMSP, err := access.GetClientMSPID(ctx)
+	if err != nil {
+		return err
+	}
+	senderCollection := access.GetCollectionForOrg(clientMSP)
+	receiverCollection := access.GetCollectionForOrg(input.Recipient)
+	hcGOList := strings.Split(input.HCGOList, "+")
+
+	var transferredAmountMWh float64
+
+	for i := 0; transferredAmountMWh < neededAmountMWh; i++ {
+		if i >= len(hcGOList) {
+			return fmt.Errorf("insufficient hcGOs: transferred %.4f MWh of %.4f needed", transferredAmountMWh, neededAmountMWh)
+		}
+
+		currentID := hcGOList[i]
+		currentAssetJSON, err := ctx.GetStub().GetPrivateData(senderCollection, currentID)
+		if err != nil {
+			return fmt.Errorf("error reading hcGO %s: %v", currentID, err)
+		}
+		if currentAssetJSON == nil {
+			return fmt.Errorf("hcGO %s does not exist in your collection", currentID)
+		}
+
+		var currentAsset assets.HeatingCoolingGOPrivateDetails
+		if err := json.Unmarshal(currentAssetJSON, &currentAsset); err != nil {
+			return fmt.Errorf("error unmarshaling hcGO %s: %v", currentID, err)
+		}
+
+		transferredAmountMWh += currentAsset.AmountMWh
+
+		if transferredAmountMWh <= neededAmountMWh {
+			// Transfer entire hcGO
+			if err := util.TransferConsumptionDeclarations(ctx, currentAsset.ConsumptionDeclarations, senderCollection, receiverCollection, true); err != nil {
+				return err
+			}
+			currentAsset.OwnerID = input.Recipient
+			updatedBytes, err := json.Marshal(currentAsset)
+			if err != nil {
+				return fmt.Errorf("error marshaling hcGO: %v", err)
+			}
+			if err := ctx.GetStub().PutPrivateData(receiverCollection, currentAsset.AssetID, updatedBytes); err != nil {
+				return fmt.Errorf("error writing hcGO to receiver: %v", err)
+			}
+			if err := ctx.GetStub().DelPrivateData(senderCollection, currentAsset.AssetID); err != nil {
+				return fmt.Errorf("error deleting hcGO from sender: %v", err)
+			}
+		} else {
+			// Split
+			takenAmountMWh := currentAsset.AmountMWh - (transferredAmountMWh - neededAmountMWh)
+			taken, remainderPriv, remainderPub, err := util.SplitHeatingCoolingGO(ctx, &currentAsset, takenAmountMWh, input.Recipient)
+			if err != nil {
+				return fmt.Errorf("error splitting hcGO %s: %v", currentID, err)
+			}
+
+			if err := util.TransferConsumptionDeclarations(ctx, currentAsset.ConsumptionDeclarations, senderCollection, receiverCollection, false); err != nil {
+				return err
+			}
+
+			takenBytes, err := json.Marshal(taken)
+			if err != nil {
+				return fmt.Errorf("error marshaling taken hcGO portion: %v", err)
+			}
+			if err := ctx.GetStub().PutPrivateData(receiverCollection, taken.AssetID, takenBytes); err != nil {
+				return fmt.Errorf("error writing taken hcGO portion to receiver: %v", err)
+			}
+			if err := ctx.GetStub().DelPrivateData(senderCollection, currentAsset.AssetID); err != nil {
+				return fmt.Errorf("error deleting original hcGO from sender: %v", err)
+			}
+			if err := util.WriteHCGOToLedger(ctx, remainderPub, remainderPriv, senderCollection); err != nil {
+				return fmt.Errorf("error writing remainder hcGO: %v", err)
+			}
+		}
+	}
+	return nil
+}

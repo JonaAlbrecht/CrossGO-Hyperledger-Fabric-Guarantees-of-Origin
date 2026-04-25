@@ -4,7 +4,7 @@ import { orgDisplayName } from '../types';
 import Tooltip from './Tooltip';
 import {
     Zap, ArrowRightLeft, FlaskConical, FileX2, Cpu, LayoutDashboard, LogOut,
-    ShieldCheck, Building2,
+    ShieldCheck, Building2, ArrowLeftRight,
 } from 'lucide-react';
 
 const NAV_SECTIONS = [
@@ -55,6 +55,11 @@ const NAV_SECTIONS = [
                 to: '/cancellations', label: 'Cancellation Statements', icon: FileX2,
                 roles: ['issuer', 'producer', 'consumer'],
                 tooltip: 'Cancel Guarantees of Origin to claim renewable attributes and generate Cancellation Statements',
+            },
+            {
+                to: '/bridge', label: 'Cross-Channel Bridge', icon: ArrowLeftRight,
+                roles: ['issuer', 'producer', 'consumer'],
+                tooltip: 'Transfer GOs across sovereign national registries with tri-party endorsement (owner + source issuer + dest issuer)',
             },
         ],
     },
