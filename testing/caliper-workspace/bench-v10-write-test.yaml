@@ -18,21 +18,9 @@ test:
     chaincodeId: golifecycle
     channel: electricity-de
 
-  # -- WRITE benchmarks --
-  - label: AddToBacklogElectricity
-    description: backlog:AddToBacklogElectricity (write with producer identity)
-    txNumber: 50
-    rateControl:
-      type: fixed-rate
-      opts:
-        tps: 10
-    workload:
-      module: workload/addToBacklogElectricity.js
-    chaincodeId: golifecycle
-    channel: electricity-de
-
+  # -- WRITE benchmarks (using default identity from first org in channel) --
   - label: PublishOracleData
-    description: oracle:PublishOracleData (write with issuer identity)
+    description: oracle:PublishOracleData (write, issuer identity from network config default)
     txNumber: 50
     rateControl:
       type: fixed-rate
@@ -43,27 +31,15 @@ test:
     chaincodeId: golifecycle
     channel: electricity-de
 
-  - label: CreateElectricityGO
-    description: issuance:CreateElectricityGO (write, SBE endorsement, producer identity)
-    txNumber: 30
-    rateControl:
-      type: fixed-rate
-      opts:
-        tps: 5
-    workload:
-      module: workload/createElectricityGO.js
-    chaincodeId: golifecycle
-    channel: electricity-de
-
-  # -- READ with specific identity --
-  - label: GetElectricityBacklog
-    description: backlog:GetElectricityBacklog (read with producer identity)
+  # -- READ benchmark --
+  - label: GetCurrentEGOsList
+    description: issuance:GetCurrentEGOsList (read)
     txNumber: 100
     rateControl:
       type: fixed-rate
       opts:
         tps: 20
     workload:
-      module: workload/getElectricityBacklog.js
+      module: workload/getCurrentEGOsList.js
     chaincodeId: golifecycle
     channel: electricity-de

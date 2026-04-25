@@ -1,0 +1,588 @@
+2026.04.25-11:41:24.340 info  [caliper] [cli-launch-manager] 	Set workspace path: /root/hlf-go/repo/testing/caliper-workspace
+2026.04.25-11:41:24.340 info  [caliper] [cli-launch-manager] 	Set benchmark configuration path: /root/hlf-go/repo/testing/caliper-workspace/bench-v10-elec-fixed.yaml
+2026.04.25-11:41:24.340 info  [caliper] [cli-launch-manager] 	Set network configuration path: /root/hlf-go/repo/testing/caliper-workspace/network-config-v10-elec.yaml
+2026.04.25-11:41:24.341 info  [caliper] [cli-launch-manager] 	Set SUT type: fabric
+2026.04.25-11:41:24.344 info  [caliper] [benchmark-validator] 	No observer specified, will default to `none`
+2026.04.25-11:41:24.344 info  [caliper] [caliper-engine] 	Starting benchmark flow
+2026.04.25-11:41:24.344 info  [caliper] [caliper-engine] 	Skipping start commands due to benchmark flow conditioning
+2026.04.25-11:41:24.344 info  [caliper] [caliper-engine] 	Skipping initialization phase due to benchmark flow conditioning
+2026.04.25-11:41:24.345 info  [caliper] [caliper-engine] 	Skipping install smart contract phase due to benchmark flow conditioning
+2026.04.25-11:41:24.644 info  [caliper] [FabricConnectorFactory] 	Initializing peer gateway connector compatible with installed fabric-gateway SDK: 1.5.0
+2026.04.25-11:41:24.655 info  [caliper] [IdentityManager] 	Adding eissuer_admin (admin=false) as eissuer_admin for organization eissuerMSP
+2026.04.25-11:41:24.656 info  [caliper] [IdentityManager] 	Adding eproducer1_admin (admin=false) as _eproducer1MSP_eproducer1_admin for organization eproducer1MSP
+2026.04.25-11:41:24.657 info  [caliper] [IdentityManager] 	Adding ebuyer1_admin (admin=false) as _ebuyer1MSP_ebuyer1_admin for organization ebuyer1MSP
+2026.04.25-11:41:24.658 info  [caliper] [monitor.js] 	No resource monitors specified
+2026.04.25-11:41:24.659 info  [caliper] [default-observer] 	Observer interval set to 5000 milliseconds
+2026.04.25-11:41:24.660 info  [caliper] [round-orchestrator] 	Preparing worker connections
+2026.04.25-11:41:24.661 info  [caliper] [worker-orchestrator] 	Launching worker 1 of 4
+2026.04.25-11:41:24.666 info  [caliper] [worker-orchestrator] 	Launching worker 2 of 4
+2026.04.25-11:41:24.668 info  [caliper] [worker-orchestrator] 	Launching worker 3 of 4
+2026.04.25-11:41:24.671 info  [caliper] [worker-orchestrator] 	Launching worker 4 of 4
+2026.04.25-11:41:24.674 info  [caliper] [worker-orchestrator] 	Messenger not configured, entering configure phase...
+2026.04.25-11:41:24.674 info  [caliper] [worker-orchestrator] 	No existing workers detected, entering worker launch phase...
+2026.04.25-11:41:24.674 info  [caliper] [worker-orchestrator] 	Waiting for 4 workers to be connected...
+2026.04.25-11:41:24.865 info  [caliper] [cli-launch-worker] 	Set workspace path: /root/hlf-go/repo/testing/caliper-workspace
+2026.04.25-11:41:24.866 info  [caliper] [cli-launch-worker] 	Set benchmark configuration path: /root/hlf-go/repo/testing/caliper-workspace/bench-v10-elec-fixed.yaml
+2026.04.25-11:41:24.866 info  [caliper] [cli-launch-worker] 	Set network configuration path: /root/hlf-go/repo/testing/caliper-workspace/network-config-v10-elec.yaml
+2026.04.25-11:41:24.866 info  [caliper] [cli-launch-worker] 	Set SUT type: fabric
+2026.04.25-11:41:24.875 info  [caliper] [cli-launch-worker] 	Set workspace path: /root/hlf-go/repo/testing/caliper-workspace
+2026.04.25-11:41:24.876 info  [caliper] [cli-launch-worker] 	Set benchmark configuration path: /root/hlf-go/repo/testing/caliper-workspace/bench-v10-elec-fixed.yaml
+2026.04.25-11:41:24.876 info  [caliper] [cli-launch-worker] 	Set network configuration path: /root/hlf-go/repo/testing/caliper-workspace/network-config-v10-elec.yaml
+2026.04.25-11:41:24.876 info  [caliper] [cli-launch-worker] 	Set SUT type: fabric
+2026.04.25-11:41:24.881 info  [caliper] [cli-launch-worker] 	Set workspace path: /root/hlf-go/repo/testing/caliper-workspace
+2026.04.25-11:41:24.881 info  [caliper] [cli-launch-worker] 	Set benchmark configuration path: /root/hlf-go/repo/testing/caliper-workspace/bench-v10-elec-fixed.yaml
+2026.04.25-11:41:24.882 info  [caliper] [cli-launch-worker] 	Set network configuration path: /root/hlf-go/repo/testing/caliper-workspace/network-config-v10-elec.yaml
+2026.04.25-11:41:24.882 info  [caliper] [cli-launch-worker] 	Set SUT type: fabric
+2026.04.25-11:41:24.884 info  [caliper] [cli-launch-worker] 	Set workspace path: /root/hlf-go/repo/testing/caliper-workspace
+2026.04.25-11:41:24.885 info  [caliper] [cli-launch-worker] 	Set benchmark configuration path: /root/hlf-go/repo/testing/caliper-workspace/bench-v10-elec-fixed.yaml
+2026.04.25-11:41:24.885 info  [caliper] [cli-launch-worker] 	Set network configuration path: /root/hlf-go/repo/testing/caliper-workspace/network-config-v10-elec.yaml
+2026.04.25-11:41:24.885 info  [caliper] [cli-launch-worker] 	Set SUT type: fabric
+2026.04.25-11:41:24.899 info  [caliper] [worker-orchestrator] 	4 workers connected, progressing to worker assignment phase.
+2026.04.25-11:41:24.899 info  [caliper] [worker-orchestrator] 	Workers currently unassigned, awaiting index assignment...
+2026.04.25-11:41:24.901 info  [caliper] [worker-orchestrator] 	Waiting for 4 workers to be assigned...
+2026.04.25-11:41:24.918 info  [caliper] [worker-orchestrator] 	4 workers assigned, progressing to worker initialization phase.
+2026.04.25-11:41:24.918 info  [caliper] [worker-orchestrator] 	Waiting for 4 workers to be ready...
+2026.04.25-11:41:24.919 info  [caliper] [worker-message-handler] 	Initializing Worker#0...
+2026.04.25-11:41:24.919 info  [caliper] [worker-message-handler] 	Initializing Worker#2...
+2026.04.25-11:41:24.919 info  [caliper] [worker-message-handler] 	Initializing Worker#1...
+2026.04.25-11:41:24.919 info  [caliper] [worker-message-handler] 	Initializing Worker#3...
+2026.04.25-11:41:25.206 info  [caliper] [FabricConnectorFactory] 	Initializing peer gateway connector compatible with installed fabric-gateway SDK: 1.5.0
+2026.04.25-11:41:25.210 info  [caliper] [IdentityManager] 	Adding eissuer_admin (admin=false) as eissuer_admin for organization eissuerMSP
+2026.04.25-11:41:25.211 info  [caliper] [IdentityManager] 	Adding eproducer1_admin (admin=false) as _eproducer1MSP_eproducer1_admin for organization eproducer1MSP
+2026.04.25-11:41:25.212 info  [caliper] [IdentityManager] 	Adding ebuyer1_admin (admin=false) as _ebuyer1MSP_ebuyer1_admin for organization ebuyer1MSP
+2026.04.25-11:41:25.213 info  [caliper] [worker-message-handler] 	Worker#0 initialized
+2026.04.25-11:41:25.215 info  [caliper] [FabricConnectorFactory] 	Initializing peer gateway connector compatible with installed fabric-gateway SDK: 1.5.0
+2026.04.25-11:41:25.217 info  [caliper] [FabricConnectorFactory] 	Initializing peer gateway connector compatible with installed fabric-gateway SDK: 1.5.0
+2026.04.25-11:41:25.219 info  [caliper] [IdentityManager] 	Adding eissuer_admin (admin=false) as eissuer_admin for organization eissuerMSP
+2026.04.25-11:41:25.220 info  [caliper] [IdentityManager] 	Adding eproducer1_admin (admin=false) as _eproducer1MSP_eproducer1_admin for organization eproducer1MSP
+2026.04.25-11:41:25.221 info  [caliper] [IdentityManager] 	Adding ebuyer1_admin (admin=false) as _ebuyer1MSP_ebuyer1_admin for organization ebuyer1MSP
+2026.04.25-11:41:25.221 info  [caliper] [IdentityManager] 	Adding eissuer_admin (admin=false) as eissuer_admin for organization eissuerMSP
+2026.04.25-11:41:25.222 info  [caliper] [worker-message-handler] 	Worker#3 initialized
+2026.04.25-11:41:25.222 info  [caliper] [IdentityManager] 	Adding eproducer1_admin (admin=false) as _eproducer1MSP_eproducer1_admin for organization eproducer1MSP
+2026.04.25-11:41:25.223 info  [caliper] [IdentityManager] 	Adding ebuyer1_admin (admin=false) as _ebuyer1MSP_ebuyer1_admin for organization ebuyer1MSP
+2026.04.25-11:41:25.224 info  [caliper] [worker-message-handler] 	Worker#1 initialized
+2026.04.25-11:41:25.238 info  [caliper] [FabricConnectorFactory] 	Initializing peer gateway connector compatible with installed fabric-gateway SDK: 1.5.0
+2026.04.25-11:41:25.241 info  [caliper] [IdentityManager] 	Adding eissuer_admin (admin=false) as eissuer_admin for organization eissuerMSP
+2026.04.25-11:41:25.242 info  [caliper] [IdentityManager] 	Adding eproducer1_admin (admin=false) as _eproducer1MSP_eproducer1_admin for organization eproducer1MSP
+2026.04.25-11:41:25.243 info  [caliper] [IdentityManager] 	Adding ebuyer1_admin (admin=false) as _ebuyer1MSP_ebuyer1_admin for organization ebuyer1MSP
+2026.04.25-11:41:25.244 info  [caliper] [worker-message-handler] 	Worker#2 initialized
+2026.04.25-11:41:25.245 info  [caliper] [worker-orchestrator] 	4 workers ready, progressing to test preparation phase.
+2026.04.25-11:41:25.245 info  [caliper] [round-orchestrator] 	Started round 1 (GetVersion)
+2026.04.25-11:41:25.246 info  [caliper] [worker-message-handler] 	Preparing Worker#0 for Round#0
+2026.04.25-11:41:25.246 info  [caliper] [worker-message-handler] 	Preparing Worker#2 for Round#0
+2026.04.25-11:41:25.246 info  [caliper] [worker-message-handler] 	Preparing Worker#1 for Round#0
+2026.04.25-11:41:25.246 info  [caliper] [worker-message-handler] 	Preparing Worker#3 for Round#0
+2026.04.25-11:41:25.254 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:25.255 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:25.256 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:25.256 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:25.258 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:25.259 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:25.259 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:25.260 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:25.260 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 0 is starting...
+2026.04.25-11:41:25.261 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:25.261 info  [caliper] [caliper-worker] 	Info: worker 3 prepare test phase for round 0 is starting...
+2026.04.25-11:41:25.261 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:25.261 info  [caliper] [caliper-worker] 	Info: worker 1 prepare test phase for round 0 is starting...
+2026.04.25-11:41:25.261 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:25.261 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:25.261 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:25.261 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:25.261 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:25.262 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:25.262 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:25.262 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 0 is completed
+2026.04.25-11:41:25.262 info  [caliper] [worker-message-handler] 	Worker#0 prepared for Round#0
+2026.04.25-11:41:25.262 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:25.262 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:25.262 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:25.262 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:25.262 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:25.262 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:25.262 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:25.262 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:25.263 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:25.263 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:25.263 info  [caliper] [caliper-worker] 	Info: worker 3 prepare test phase for round 0 is completed
+2026.04.25-11:41:25.263 info  [caliper] [worker-message-handler] 	Worker#3 prepared for Round#0
+2026.04.25-11:41:25.263 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:25.263 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:25.263 info  [caliper] [caliper-worker] 	Info: worker 1 prepare test phase for round 0 is completed
+2026.04.25-11:41:25.263 info  [caliper] [worker-message-handler] 	Worker#1 prepared for Round#0
+2026.04.25-11:41:25.265 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:25.265 info  [caliper] [caliper-worker] 	Info: worker 2 prepare test phase for round 0 is starting...
+2026.04.25-11:41:25.267 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:25.267 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:25.267 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:25.267 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:25.268 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:25.268 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:25.268 info  [caliper] [caliper-worker] 	Info: worker 2 prepare test phase for round 0 is completed
+2026.04.25-11:41:25.268 info  [caliper] [worker-message-handler] 	Worker#2 prepared for Round#0
+2026.04.25-11:41:25.268 info  [caliper] [worker-orchestrator] 	4 workers prepared, progressing to test phase.
+2026.04.25-11:41:25.269 info  [caliper] [round-orchestrator] 	Monitors successfully started
+2026.04.25-11:41:25.270 info  [caliper] [worker-message-handler] 	Worker#0 is starting Round#0
+2026.04.25-11:41:25.270 info  [caliper] [worker-message-handler] 	Worker#1 is starting Round#0
+2026.04.25-11:41:25.271 info  [caliper] [worker-message-handler] 	Worker#3 is starting Round#0
+2026.04.25-11:41:25.271 info  [caliper] [worker-message-handler] 	Worker#2 is starting Round#0
+2026.04.25-11:41:25.272 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:25.272 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:25.273 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:25.274 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:25.274 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:25.274 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:25.275 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:25.276 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:25.276 info  [caliper] [caliper-worker] 	Worker #0 starting workload loop
+2026.04.25-11:41:25.277 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:25.276 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+(node:1131778) TimeoutNegativeWarning: -1 is a negative number.
+Timeout duration was set to 1.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026.04.25-11:41:25.277 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:25.277 info  [caliper] [caliper-worker] 	Worker #1 starting workload loop
+(node:1131779) TimeoutNegativeWarning: -1 is a negative number.
+Timeout duration was set to 1.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026.04.25-11:41:25.278 info  [caliper] [caliper-worker] 	Worker #3 starting workload loop
+(node:1131781) TimeoutNegativeWarning: -1 is a negative number.
+Timeout duration was set to 1.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026.04.25-11:41:25.279 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:25.281 info  [caliper] [caliper-worker] 	Worker #2 starting workload loop
+(node:1131780) TimeoutNegativeWarning: -1 is a negative number.
+Timeout duration was set to 1.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026.04.25-11:41:30.276 info  [caliper] [default-observer] 	[GetVersion Round 0 Transaction Info] - Submitted: 201 Succ: 200 Fail:0 Unfinished:1
+2026.04.25-11:41:35.271 info  [caliper] [default-observer] 	[GetVersion Round 0 Transaction Info] - Submitted: 452 Succ: 452 Fail:0 Unfinished:0
+2026.04.25-11:41:36.301 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:36.301 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:36.301 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:36.301 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:36.302 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:36.302 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:36.302 info  [caliper] [worker-message-handler] 	Worker#0 finished Round#0
+2026.04.25-11:41:36.302 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:36.302 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:36.302 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:36.302 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:36.303 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:36.303 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:36.303 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:36.303 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:36.303 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:36.303 info  [caliper] [worker-message-handler] 	Worker#1 finished Round#0
+2026.04.25-11:41:36.303 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:36.303 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:36.303 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:36.304 info  [caliper] [worker-message-handler] 	Worker#3 finished Round#0
+2026.04.25-11:41:36.306 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:36.307 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:36.307 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:36.307 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:36.307 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:36.307 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:36.307 info  [caliper] [worker-message-handler] 	Worker#2 finished Round#0
+2026.04.25-11:41:41.309 info  [caliper] [default-observer] 	Resetting txCount indicator count
+2026.04.25-11:41:41.311 info  [caliper] [report-builder] 	### Test result ###
+2026.04.25-11:41:41.317 info  [caliper] [report-builder] 	
++------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+| Name       | Succ | Fail | Send Rate (TPS) | Max Latency (s) | Min Latency (s) | Avg Latency (s) | Throughput (TPS) |
+|------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| GetVersion | 500  | 0    | 50.4            | 0.04            | 0.00            | 0.01            | 50.4             |
++------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+
+2026.04.25-11:41:41.318 info  [caliper] [round-orchestrator] 	Finished round 1 (GetVersion) in 10.029 seconds
+2026.04.25-11:41:41.318 info  [caliper] [monitor.js] 	Stopping all monitors
+2026.04.25-11:41:41.318 info  [caliper] [round-orchestrator] 	Waiting 5 seconds for the next round...
+2026.04.25-11:41:46.321 info  [caliper] [round-orchestrator] 	Started round 2 (GetCurrentEGOsList)
+2026.04.25-11:41:46.322 info  [caliper] [worker-message-handler] 	Preparing Worker#0 for Round#1
+2026.04.25-11:41:46.322 info  [caliper] [worker-message-handler] 	Preparing Worker#1 for Round#1
+2026.04.25-11:41:46.323 info  [caliper] [worker-message-handler] 	Preparing Worker#2 for Round#1
+2026.04.25-11:41:46.323 info  [caliper] [worker-message-handler] 	Preparing Worker#3 for Round#1
+2026.04.25-11:41:46.326 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:46.326 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:46.326 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:46.327 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:46.327 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:46.329 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:46.329 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:46.329 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:46.329 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:46.329 info  [caliper] [caliper-worker] 	Info: worker 2 prepare test phase for round 1 is starting...
+2026.04.25-11:41:46.330 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:46.330 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:46.330 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:46.330 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:46.330 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:46.331 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:46.331 info  [caliper] [caliper-worker] 	Info: worker 2 prepare test phase for round 1 is completed
+2026.04.25-11:41:46.331 info  [caliper] [worker-message-handler] 	Worker#2 prepared for Round#1
+2026.04.25-11:41:46.331 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:46.331 info  [caliper] [caliper-worker] 	Info: worker 3 prepare test phase for round 1 is starting...
+2026.04.25-11:41:46.331 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:46.332 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 1 is starting...
+2026.04.25-11:41:46.332 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:46.332 info  [caliper] [caliper-worker] 	Info: worker 1 prepare test phase for round 1 is starting...
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:46.333 info  [caliper] [caliper-worker] 	Info: worker 3 prepare test phase for round 1 is completed
+2026.04.25-11:41:46.333 info  [caliper] [worker-message-handler] 	Worker#3 prepared for Round#1
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:46.333 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:46.334 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 1 is completed
+2026.04.25-11:41:46.334 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:46.334 info  [caliper] [worker-message-handler] 	Worker#0 prepared for Round#1
+2026.04.25-11:41:46.334 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:46.334 info  [caliper] [caliper-worker] 	Info: worker 1 prepare test phase for round 1 is completed
+2026.04.25-11:41:46.334 info  [caliper] [worker-message-handler] 	Worker#1 prepared for Round#1
+2026.04.25-11:41:46.334 info  [caliper] [worker-orchestrator] 	4 workers prepared, progressing to test phase.
+2026.04.25-11:41:46.334 info  [caliper] [round-orchestrator] 	Monitors successfully started
+2026.04.25-11:41:46.335 info  [caliper] [worker-message-handler] 	Worker#0 is starting Round#1
+2026.04.25-11:41:46.335 info  [caliper] [worker-message-handler] 	Worker#1 is starting Round#1
+2026.04.25-11:41:46.335 info  [caliper] [worker-message-handler] 	Worker#2 is starting Round#1
+2026.04.25-11:41:46.335 info  [caliper] [worker-message-handler] 	Worker#3 is starting Round#1
+2026.04.25-11:41:46.337 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:46.338 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:46.338 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:46.338 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:41:46.338 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:46.340 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:46.340 info  [caliper] [caliper-worker] 	Worker #2 starting workload loop
+2026.04.25-11:41:46.340 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:46.340 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:46.340 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:46.342 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:46.342 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:46.342 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:46.343 info  [caliper] [caliper-worker] 	Worker #0 starting workload loop
+2026.04.25-11:41:46.343 info  [caliper] [caliper-worker] 	Worker #3 starting workload loop
+2026.04.25-11:41:46.343 info  [caliper] [caliper-worker] 	Worker #1 starting workload loop
+2026.04.25-11:41:51.336 info  [caliper] [default-observer] 	[GetCurrentEGOsList Round 1 Transaction Info] - Submitted: 162 Succ: 160 Fail:0 Unfinished:2
+2026.04.25-11:41:56.338 info  [caliper] [default-observer] 	[GetCurrentEGOsList Round 1 Transaction Info] - Submitted: 364 Succ: 360 Fail:0 Unfinished:4
+2026.04.25-11:41:59.844 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:59.844 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:59.844 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:59.845 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:59.845 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:59.845 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:59.845 info  [caliper] [worker-message-handler] 	Worker#2 finished Round#1
+2026.04.25-11:41:59.847 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:59.847 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:59.847 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:59.847 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:59.847 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:59.847 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:59.847 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:59.847 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:59.847 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:59.847 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:59.847 info  [caliper] [worker-message-handler] 	Worker#0 finished Round#1
+2026.04.25-11:41:59.848 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:59.848 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:59.848 info  [caliper] [worker-message-handler] 	Worker#3 finished Round#1
+2026.04.25-11:41:59.849 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:41:59.849 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:41:59.849 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:41:59.849 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:41:59.849 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:41:59.850 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:41:59.850 info  [caliper] [worker-message-handler] 	Worker#1 finished Round#1
+2026.04.25-11:42:04.856 info  [caliper] [default-observer] 	Resetting txCount indicator count
+2026.04.25-11:42:04.856 info  [caliper] [report-builder] 	### Test result ###
+2026.04.25-11:42:04.858 info  [caliper] [report-builder] 	
++--------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+| Name               | Succ | Fail | Send Rate (TPS) | Max Latency (s) | Min Latency (s) | Avg Latency (s) | Throughput (TPS) |
+|--------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| GetCurrentEGOsList | 500  | 0    | 40.3            | 0.02            | 0.01            | 0.01            | 40.3             |
++--------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+
+2026.04.25-11:42:04.858 info  [caliper] [round-orchestrator] 	Finished round 2 (GetCurrentEGOsList) in 12.508 seconds
+2026.04.25-11:42:04.859 info  [caliper] [monitor.js] 	Stopping all monitors
+2026.04.25-11:42:04.859 info  [caliper] [round-orchestrator] 	Waiting 5 seconds for the next round...
+2026.04.25-11:42:09.863 info  [caliper] [round-orchestrator] 	Started round 3 (GetElectricityBacklog)
+2026.04.25-11:42:09.864 info  [caliper] [worker-message-handler] 	Preparing Worker#0 for Round#2
+2026.04.25-11:42:09.864 info  [caliper] [worker-message-handler] 	Preparing Worker#1 for Round#2
+2026.04.25-11:42:09.864 info  [caliper] [worker-message-handler] 	Preparing Worker#2 for Round#2
+2026.04.25-11:42:09.865 info  [caliper] [worker-message-handler] 	Preparing Worker#3 for Round#2
+2026.04.25-11:42:09.868 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:42:09.868 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:42:09.868 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:42:09.869 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:42:09.870 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:09.870 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:09.871 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:09.871 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:09.872 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:09.872 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:09.872 info  [caliper] [caliper-worker] 	Info: worker 2 prepare test phase for round 2 is starting...
+2026.04.25-11:42:09.872 info  [caliper] [caliper-worker] 	Info: worker 1 prepare test phase for round 2 is starting...
+2026.04.25-11:42:09.873 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:09.873 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 2 is starting...
+2026.04.25-11:42:09.873 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:09.873 info  [caliper] [caliper-worker] 	Info: worker 3 prepare test phase for round 2 is starting...
+2026.04.25-11:42:09.874 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:42:09.874 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:09.874 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:09.874 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:42:09.874 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:42:09.874 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:42:09.874 info  [caliper] [caliper-worker] 	Info: worker 2 prepare test phase for round 2 is completed
+2026.04.25-11:42:09.874 info  [caliper] [worker-message-handler] 	Worker#2 prepared for Round#2
+2026.04.25-11:42:09.874 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:42:09.874 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:09.874 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:09.874 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:42:09.874 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:42:09.874 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:42:09.874 info  [caliper] [caliper-worker] 	Info: worker 1 prepare test phase for round 2 is completed
+2026.04.25-11:42:09.874 info  [caliper] [worker-message-handler] 	Worker#1 prepared for Round#2
+2026.04.25-11:42:09.875 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:42:09.875 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:09.875 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:42:09.875 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:09.875 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:09.875 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:42:09.875 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:09.875 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:42:09.875 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:42:09.875 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:42:09.875 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:42:09.875 info  [caliper] [caliper-worker] 	Info: worker 3 prepare test phase for round 2 is completed
+2026.04.25-11:42:09.875 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:42:09.875 info  [caliper] [worker-message-handler] 	Worker#3 prepared for Round#2
+2026.04.25-11:42:09.875 info  [caliper] [caliper-worker] 	Info: worker 0 prepare test phase for round 2 is completed
+2026.04.25-11:42:09.875 info  [caliper] [worker-message-handler] 	Worker#0 prepared for Round#2
+2026.04.25-11:42:09.876 info  [caliper] [worker-orchestrator] 	4 workers prepared, progressing to test phase.
+2026.04.25-11:42:09.876 info  [caliper] [round-orchestrator] 	Monitors successfully started
+2026.04.25-11:42:09.876 info  [caliper] [worker-message-handler] 	Worker#0 is starting Round#2
+2026.04.25-11:42:09.876 info  [caliper] [worker-message-handler] 	Worker#1 is starting Round#2
+2026.04.25-11:42:09.877 info  [caliper] [worker-message-handler] 	Worker#2 is starting Round#2
+2026.04.25-11:42:09.877 info  [caliper] [worker-message-handler] 	Worker#3 is starting Round#2
+2026.04.25-11:42:09.879 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:42:09.879 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:42:09.879 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:42:09.879 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user eissuer_admin
+2026.04.25-11:42:09.881 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:09.881 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:09.881 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:09.882 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:09.883 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:09.883 info  [caliper] [caliper-worker] 	Worker #1 starting workload loop
+2026.04.25-11:42:09.883 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:09.883 info  [caliper] [caliper-worker] 	Worker #2 starting workload loop
+2026.04.25-11:42:09.884 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:09.884 info  [caliper] [caliper-worker] 	Worker #0 starting workload loop
+2026.04.25-11:42:09.884 info  [caliper] [connectors/peer-gateway/PeerGateway] 	Generating contract map for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:09.884 info  [caliper] [caliper-worker] 	Worker #3 starting workload loop
+2026.04.25-11:42:09.885 error [caliper] [connector-base] 	Unexpected error while sending request: Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:09.885 error [caliper] [connector-base] 	Unexpected error while sending request: Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:09.886 error [caliper] [connector-base] 	Unexpected error while sending request: Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:09.886 error [caliper] [connector-base] 	Unexpected error while sending request: Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:09.983 error [caliper] [caliper-worker] 	Unexpected error in worker #2 caused worker to finish round #2: Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:09.984 error [caliper] [connector-base] 	Unexpected error while sending request: Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:09.984 error [caliper] [caliper-worker] 	Unexpected error in worker #1 caused worker to finish round #2: Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:09.984 error [caliper] [connector-base] 	Unexpected error while sending request: Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:09.985 error [caliper] [caliper-worker] 	Unexpected error in worker #3 caused worker to finish round #2: Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:09.985 error [caliper] [caliper-worker] 	Unexpected error in worker #0 caused worker to finish round #2: Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:09.985 error [caliper] [connector-base] 	Unexpected error while sending request: Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:09.985 error [caliper] [connector-base] 	Unexpected error while sending request: Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:10.985 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:42:10.985 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:10.985 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:10.985 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:42:10.985 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:42:10.985 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:42:10.985 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:42:10.985 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:10.985 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:10.985 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:42:10.985 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:42:10.986 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:42:10.986 error [caliper] [worker-message-handler] 	Error while handling "test" message for Worker#1 (1131779): Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:10.986 error [caliper] [worker-message-handler] 	Error while handling "test" message for Worker#2 (1131780): Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:10.986 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:42:10.986 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:10.986 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:10.986 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:42:10.986 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:42:10.986 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:42:10.986 error [caliper] [worker-message-handler] 	Error while handling "test" message for Worker (1131778): Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:10.986 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user eissuer_admin
+2026.04.25-11:42:10.986 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _eproducer1MSP_eproducer1_admin
+2026.04.25-11:42:10.986 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gateway for user _ebuyer1MSP_ebuyer1_admin
+2026.04.25-11:42:10.987 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eissuer.go-platform.com
+2026.04.25-11:42:10.987 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.eproducer1.go-platform.com
+2026.04.25-11:42:10.987 info  [caliper] [connectors/peer-gateway/PeerGateway] 	disconnecting gRpc client at peer peer0.ebuyer1.go-platform.com
+2026.04.25-11:42:10.987 error [caliper] [worker-message-handler] 	Error while handling "test" message for Worker#3 (1131781): Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at PeerGateway._getContractForIdentityOnChannelWithChaincodeID (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:364:19)
+    at PeerGateway._submitOrEvaluateTransaction (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:285:42)
+    at PeerGateway._sendSingleRequest (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-fabric/lib/connector-versions/peer-gateway/PeerGateway.js:158:27)
+    at PeerGateway.sendRequests (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/core/connector-base.js:83:37)
+    at GetElectricityBacklog.submitTransaction (/root/hlf-go/repo/testing/caliper-workspace/workload/getElectricityBacklog.js:8:27)
+    at /root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:97:32
+    at Immediate.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/worker/caliper-worker.js:74:17)
+    at process.processImmediate (node:internal/timers:504:21)
+2026.04.25-11:42:15.987 info  [caliper] [default-observer] 	Resetting txCount indicator count
+2026.04.25-11:42:15.987 error [caliper] [round-orchestrator] 	Failed round 3 (GetElectricityBacklog): Error: Error: No contracts for invokerIdentity eproducer1_admin found. Identity and/or MspId does not exist
+    at WorkerOrchestrator.updateWorkerPhase (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/manager/orchestrators/worker-orchestrator.js:315:61)
+    at ProcessMessenger.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/manager/orchestrators/worker-orchestrator.js:120:18)
+    at ProcessMessenger.emit (node:events:508:28)
+    at ProcessMessenger.onMessage (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/messengers/messenger-interface.js:40:14)
+    at ChildProcess.<anonymous> (/root/hlf-go/repo/testing/caliper-workspace/node_modules/@hyperledger/caliper-core/lib/common/messengers/process/process-messenger.js:59:26)
+    at ChildProcess.emit (node:events:508:28)
+    at emit (node:internal/child_process:948:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:91:21)
+2026.04.25-11:42:15.988 info  [caliper] [report-builder] 	### All test results ###
+2026.04.25-11:42:15.988 info  [caliper] [report-builder] 	
++--------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+| Name               | Succ | Fail | Send Rate (TPS) | Max Latency (s) | Min Latency (s) | Avg Latency (s) | Throughput (TPS) |
+|--------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| GetVersion         | 500  | 0    | 50.4            | 0.04            | 0.00            | 0.01            | 50.4             |
+|--------------------|------|------|-----------------|-----------------|-----------------|-----------------|------------------|
+| GetCurrentEGOsList | 500  | 0    | 40.3            | 0.02            | 0.01            | 0.01            | 40.3             |
++--------------------+------+------+-----------------+-----------------+-----------------+-----------------+------------------+
+
+2026.04.25-11:42:15.992 info  [caliper] [report-builder] 	Generated report with path /root/hlf-go/repo/testing/caliper-workspace/report.html
+2026.04.25-11:42:15.992 info  [caliper] [monitor.js] 	Stopping all monitors
+2026.04.25-11:42:15.992 info  [caliper] [worker-orchestrator] 	Sending exit message to connected workers
+2026.04.25-11:42:15.993 info  [caliper] [round-orchestrator] 	Benchmark finished in 50.748 seconds. Total rounds: 3. Successful rounds: 2. Failed rounds: 1.
+2026.04.25-11:42:15.993 info  [caliper] [caliper-engine] 	Skipping end command due to benchmark flow conditioning
+2026.04.25-11:42:15.993 info  [caliper] [cli-launch-manager] 	Benchmark successfully finished!
+2026.04.25-11:42:15.993 info  [caliper] [worker-message-handler] 	Worker#0 is exiting
+2026.04.25-11:42:15.993 info  [caliper] [worker-message-handler] 	Worker#1 is exiting
+2026.04.25-11:42:15.993 info  [caliper] [worker-message-handler] 	Worker#2 is exiting
+2026.04.25-11:42:15.993 info  [caliper] [worker-message-handler] 	Worker#3 is exiting

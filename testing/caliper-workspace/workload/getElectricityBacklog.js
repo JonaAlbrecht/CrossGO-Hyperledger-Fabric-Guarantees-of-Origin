@@ -9,8 +9,7 @@ class GetElectricityBacklog extends WorkloadModuleBase {
       contractId: "golifecycle",
       contractFunction: "backlog:GetElectricityBacklog",
       contractArguments: [deviceId],
-      readOnly: true,
-      invokerIdentity: "eproducer1MSP_eproducer1_admin"
+      readOnly: true
     });
   }
 }
