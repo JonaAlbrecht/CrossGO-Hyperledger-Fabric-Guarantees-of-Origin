@@ -1,0 +1,45 @@
+test:
+  name: GO Platform v10.1 Write Operations - Default Identity
+  description: Test write operations using default eissuer identity from network config
+  workers:
+    number: 4
+
+  rounds:
+  # Sanity check - read operation
+  - label: GetVersion
+    description: admin:GetVersion (read, sanity check)
+    txNumber: 50
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 25
+    workload:
+      module: workload/getVersion.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+
+  # Write operation that works with eissuer (default identity)
+  - label: PublishOracleData
+    description: oracle:PublishOracleData (write, issuer role - default identity)
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 20
+    workload:
+      module: workload/publishOracleData.js
+    chaincodeId: golifecycle
+    channel: electricity-de
+
+  # Another read to verify writes
+  - label: GetCurrentEGOsList
+    description: issuance:GetCurrentEGOsList (read, verify state)
+    txNumber: 50
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 25
+    workload:
+      module: workload/getCurrentEGOsList.js
+    chaincodeId: golifecycle
+    channel: electricity-de
