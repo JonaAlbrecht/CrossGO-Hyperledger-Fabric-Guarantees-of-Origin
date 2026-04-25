@@ -11,6 +11,10 @@
 | **Write (Command-line)** | backlog:AddToBacklogElectricity | 25 | 5 | 31.0 | 0.10 | 31.0 |
 | **Write (Command-line)** | issuance:CreateElectricityGO | 19 | 11 | 4.2 | 0.13 | 4.2 |
 | **Write (Command-line)** | conversion:LockGOForConversion | - | - | Not tested* | - | - |
+| **Write (Command-line)** | conversion:MintFromConversion | - | - | Not tested* | - | - |
+| **Write (Command-line)** | conversion:FinalizeLock | - | - | Not tested* | - | - |
+| **Read (Peer CLI)** | conversion:GetConversionLock | - | - | Not tested* | - | - |
+| **Read (Peer CLI)** | conversion:ListConversionLocks | - | - | Not tested* | - | - |
 
 ## Notes
 
@@ -22,7 +26,13 @@
 - **CreateElectricityGO** requires 3-org state-based endorsement (SBE), explaining lower throughput and higher failure rate under concurrent load
 - **All read operations** achieved 100% success rate
 - **Write operations** show 63-100% success rates depending on endorsement complexity
-- *\*conversion:LockGOForConversion* not tested - requires cross-channel coordination, network was stopped after primary testing completed. Transient key identified as "LockForConversion" with fields: GOAssetID, DestinationChannel, DestinationCarrier, ConversionMethod, ConversionEfficiency, OwnerMSP. Requires producer role.
+- *\*Conversion operations* not tested - require complex cross-channel setup:
+  - **LockGOForConversion** (Phase 1): Locks source GO on electricity-de channel. Requires: existing eGO from CreateElectricityGO, producer role, transient key "LockForConversion" with fields {GOAssetID, DestinationChannel, DestinationCarrier, ConversionMethod, ConversionEfficiency, OwnerMSP}
+  - **MintFromConversion** (Phase 2): Mints destination GO on hydrogen-de channel. Requires: lock receipt from Phase 1, cross-channel lock validation
+  - **FinalizeLock** (Phase 3): Finalizes conversion on electricity-de channel. Requires: mint receipt from Phase 2
+  - **GetConversionLock/ListConversionLocks**: Query operations for conversion state
+  - Testing requires: full dual-channel deployment, initialized ledger, existing GOs, cross-channel coordinator setup
+  - Network was stopped after primary testing; full redeployment estimated at 30-60 minutes
 
 ## Performance Summary by Category
 
