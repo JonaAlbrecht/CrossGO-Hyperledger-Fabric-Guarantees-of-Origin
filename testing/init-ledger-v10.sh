@@ -44,13 +44,13 @@ peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
   -c '{"function":"device:RegisterOrgRole","Args":["eproducer1MSP","producer"]}' --waitForEvent
 sleep 1
 
-echo '=== device:RegisterOrgRole ebuyer1MSP => consumer (electricity-de) ==='
+echo '=== device:RegisterOrgRole ebuyer1MSP => buyer (electricity-de) ==='
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
   -C electricity-de -n golifecycle --tls --cafile "$ORDERER_CA" \
   --peerAddresses localhost:7051 --tlsRootCertFiles "$EISSUER_TLS" \
   --peerAddresses localhost:9051 --tlsRootCertFiles "$EPROD_TLS" \
   --peerAddresses localhost:13051 --tlsRootCertFiles "$EBUYER_TLS" \
-  -c '{"function":"device:RegisterOrgRole","Args":["ebuyer1MSP","consumer"]}' --waitForEvent
+  -c '{"function":"device:RegisterOrgRole","Args":["ebuyer1MSP","buyer"]}' --waitForEvent
 sleep 1
 
 echo '=== device:ListDevices (electricity-de) ==='
@@ -87,13 +87,13 @@ peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
   -c '{"function":"device:RegisterOrgRole","Args":["hproducer1MSP","producer"]}' --waitForEvent
 sleep 1
 
-echo '=== device:RegisterOrgRole hbuyer1MSP => consumer (hydrogen-de) ==='
+echo '=== device:RegisterOrgRole hbuyer1MSP => buyer (hydrogen-de) ==='
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride localhost \
   -C hydrogen-de -n golifecycle --tls --cafile "$ORDERER_CA" \
   --peerAddresses localhost:8051 --tlsRootCertFiles "$HISSUER_TLS" \
   --peerAddresses localhost:11051 --tlsRootCertFiles "$HPROD_TLS" \
   --peerAddresses localhost:14051 --tlsRootCertFiles "$HBUYER_TLS" \
-  -c '{"function":"device:RegisterOrgRole","Args":["hbuyer1MSP","consumer"]}' --waitForEvent
+  -c '{"function":"device:RegisterOrgRole","Args":["hbuyer1MSP","buyer"]}' --waitForEvent
 sleep 1
 
 echo '=== device:ListDevices (hydrogen-de) ==='
