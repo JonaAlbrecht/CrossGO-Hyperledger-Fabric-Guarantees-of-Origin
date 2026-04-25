@@ -4,7 +4,7 @@ test:
   workers:
     number: 4
 
-rounds:
+  rounds:
   # -- READ benchmarks (high TPS) ------------------------------------------
   - label: GetVersion
     description: admin:GetVersion (read)
