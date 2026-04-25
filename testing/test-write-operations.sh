@@ -4,6 +4,8 @@
 
 set -e
 
+export FABRIC_CFG_PATH=/root/hlf-go/repo/fabric-bin/config
+PEER_BIN="/root/hlf-go/repo/fabric-bin/bin/peer"
 CHANNEL_NAME="electricity-de"
 CC_NAME="golifecycle"
 ORDERER_CA="/root/hlf-go/repo/network/organizations/ordererOrganizations/go-platform.com/tlsca/tlsca.go-platform.com-cert.pem"
@@ -118,7 +120,7 @@ echo "Test 4: GetElectricityBacklog (read)"
 echo "------------------------------------"
 DEVICE_ID="DEV-ELEC-123"
 
-peer chaincode query \
+$PEER_BIN chaincode query \
   -C ${CHANNEL_NAME} \
   -n ${CC_NAME} \
   -c "{\"function\":\"backlog:GetElectricityBacklog\",\"Args\":[\"${DEVICE_ID}\"]}"
