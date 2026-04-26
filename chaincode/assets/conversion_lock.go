@@ -21,8 +21,8 @@ type ConversionLock struct {
 	SourceIssuerMSP      string  `json:"SourceIssuerMSP"`      // Source channel issuer
 	LockReceiptHash      string  `json:"LockReceiptHash"`      // SHA-256 cryptographic proof
 	CreatedAt            int64   `json:"CreatedAt"`            // Unix timestamp
-	FinalizedAt          int64   `json:"FinalizedAt,omitempty"` // Set when Phase 3 completes
-	MintedAssetID        string  `json:"MintedAssetID,omitempty"` // Destination GO ID, set after Phase 3
+	FinalizedAt          *int64  `json:"FinalizedAt,omitempty"` // Set when Phase 3 completes
+	MintedAssetID        *string `json:"MintedAssetID,omitempty"` // Destination GO ID, set after Phase 3
 	Status               string  `json:"Status"`               // "locked", "approved", "consumed", "expired"
 }
 
@@ -39,6 +39,7 @@ type ConversionLockReceipt struct {
 	ConversionMethod     string  `json:"ConversionMethod"`
 	ConversionEfficiency float64 `json:"ConversionEfficiency"`
 	OwnerMSP             string  `json:"OwnerMSP"`
+	DestinationOwnerMSP  string  `json:"DestinationOwnerMSP"` // MSP that will own the GO on the destination channel
 	SourceIssuerMSP      string  `json:"SourceIssuerMSP"`
 	LockReceiptHash      string  `json:"LockReceiptHash"`
 	TxID                 string  `json:"TxID"` // Source transaction ID for verification

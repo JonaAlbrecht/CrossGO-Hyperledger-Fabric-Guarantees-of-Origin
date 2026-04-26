@@ -63,6 +63,7 @@ func (c *ConversionCrossChannelContract) LockGOForConversion(ctx contractapi.Tra
 		ConversionMethod     string  `json:"ConversionMethod"`
 		ConversionEfficiency float64 `json:"ConversionEfficiency"`
 		OwnerMSP             string  `json:"OwnerMSP"`
+		DestinationOwnerMSP  string  `json:"DestinationOwnerMSP"` // MSP that will own the GO on the destination channel
 	}
 
 	var input lockInput
@@ -97,16 +98,20 @@ func (c *ConversionCrossChannelContract) LockGOForConversion(ctx contractapi.Tra
 
 	// Verify client is the owner or issuer
 	if clientMSP != input.OwnerMSP {
-		issuerRole, err := access.GetRole(ctx, clientMSP)
-		if err != nil || issuerRole != access.RoleIssuer {
+		roleBytes, _ := ctx.GetStub().GetState("orgRole_" + clientMSP)
+		if string(roleBytes) != access.RoleIssuer {
 			return fmt.Errorf("only the owner (%s) or issuer can lock GOs for conversion", input.OwnerMSP)
 		}
 	}
 
 	// Verify GO ownership
 	ownerCollection := access.GetCollectionForOrg(input.OwnerMSP)
-	if err := verifyGOOwnership(ctx, input.GOAssetID, input.OwnerMSP, ownerCollection); err != nil {
+	ok, err := verifyGOOwnership(ctx, input.GOAssetID, input.OwnerMSP, ownerCollection)
+	if err != nil {
 		return fmt.Errorf("ownership verification failed: %v", err)
+	}
+	if !ok {
+		return fmt.Errorf("GO %s is not owned by %s", input.GOAssetID, input.OwnerMSP)
 	}
 
 	// Read source GO private data to populate lock receipt
@@ -293,6 +298,10 @@ func (c *ConversionCrossChannelContract) LockGOForConversion(ctx contractapi.Tra
 	}
 
 	// Create lock receipt for relaying to destination channel
+	destOwnerMSP := input.DestinationOwnerMSP
+	if destOwnerMSP == "" {
+		destOwnerMSP = input.OwnerMSP
+	}
 	lockReceipt := &assets.ConversionLockReceipt{
 		LockID:                    lockID,
 		GOAssetID:                 input.GOAssetID,
@@ -303,6 +312,7 @@ func (c *ConversionCrossChannelContract) LockGOForConversion(ctx contractapi.Tra
 		ConversionMethod:          input.ConversionMethod,
 		ConversionEfficiency:      input.ConversionEfficiency,
 		OwnerMSP:                  input.OwnerMSP,
+		DestinationOwnerMSP:       destOwnerMSP,
 		SourceIssuerMSP:           sourceIssuerMSP,
 		LockReceiptHash:           lockReceiptHash,
 		TxID:                      txID,
@@ -398,8 +408,12 @@ func (c *ConversionCrossChannelContract) MintFromConversion(ctx contractapi.Tran
 		return fmt.Errorf("conversion already minted (mint receipt exists: %s)", mintReceiptKey)
 	}
 
-	// Get owner's collection on destination channel
-	ownerCollection := access.GetCollectionForOrg(lockReceipt.OwnerMSP)
+	// Determine owner on destination channel — use DestinationOwnerMSP if set, else fall back to OwnerMSP
+	destOwnerMSP := lockReceipt.DestinationOwnerMSP
+	if destOwnerMSP == "" {
+		destOwnerMSP = lockReceipt.OwnerMSP
+	}
+	ownerCollection := access.GetCollectionForOrg(destOwnerMSP)
 
 	// Read destination backlog for this carrier
 	clientMSP, err := access.GetClientMSPID(ctx)
@@ -419,13 +433,13 @@ func (c *ConversionCrossChannelContract) MintFromConversion(ctx contractapi.Tran
 	var mintedGOID string
 	switch lockReceipt.DestinationCarrier {
 	case "hydrogen":
-		mintedGOID, err = mintHydrogenFromConversion(ctx, &lockReceipt, destAmount, ownerCollection, now)
+		mintedGOID, err = mintHydrogenFromConversion(ctx, &lockReceipt, destAmount, ownerCollection, destOwnerMSP, now)
 	case "electricity":
-		mintedGOID, err = mintElectricityFromConversion(ctx, &lockReceipt, destAmount, ownerCollection, now)
+		mintedGOID, err = mintElectricityFromConversion(ctx, &lockReceipt, destAmount, ownerCollection, destOwnerMSP, now)
 	case "biogas":
-		mintedGOID, err = mintBiogasFromConversion(ctx, &lockReceipt, destAmount, ownerCollection, now)
+		mintedGOID, err = mintBiogasFromConversion(ctx, &lockReceipt, destAmount, ownerCollection, destOwnerMSP, now)
 	case "heating_cooling":
-		mintedGOID, err = mintHeatingCoolingFromConversion(ctx, &lockReceipt, destAmount, ownerCollection, now)
+		mintedGOID, err = mintHeatingCoolingFromConversion(ctx, &lockReceipt, destAmount, ownerCollection, destOwnerMSP, now)
 	default:
 		return fmt.Errorf("unsupported destination carrier: %s", lockReceipt.DestinationCarrier)
 	}
@@ -727,9 +741,9 @@ func queryConversionLocks(ctx contractapi.TransactionContextInterface, queryStri
 
 // mintHydrogenFromConversion creates a hydrogen GO from a conversion lock receipt.
 // Reads hydrogen backlog from THIS channel (destination channel).
-func mintHydrogenFromConversion(ctx contractapi.TransactionContextInterface, lockReceipt *assets.ConversionLockReceipt, destAmount float64, ownerCollection string, now int64) (string, error) {
-	// Read hydrogen backlog for the owner
-	backlogKey := assets.BacklogKeyHydrogen + "_" + lockReceipt.OwnerMSP
+func mintHydrogenFromConversion(ctx contractapi.TransactionContextInterface, lockReceipt *assets.ConversionLockReceipt, destAmount float64, ownerCollection string, destOwnerMSP string, now int64) (string, error) {
+	// Read hydrogen backlog for the destination owner
+	backlogKey := assets.BacklogKeyHydrogen + "_" + destOwnerMSP
 	backlogJSON, err := ctx.GetStub().GetPrivateData(ownerCollection, backlogKey)
 	if err != nil {
 		return "", fmt.Errorf("error reading hydrogen backlog: %v", err)
@@ -764,12 +778,11 @@ func mintHydrogenFromConversion(ctx contractapi.TransactionContextInterface, loc
 
 	// Calculate emissions (backlog emissions + source emissions)
 	backlogEmissionsPortion := (requiredKilos / backlog.AccumulatedKilosProduced) * backlog.AccumulatedEmissions
-	totalEmissions := backlogEmissionsPortion + lockReceipt.SourceEmissions
 
 	// Create private hydrogen GO
 	hGOPrivate := &assets.GreenHydrogenGOPrivateDetails{
 		AssetID:                     hGOID,
-		OwnerID:                     lockReceipt.OwnerMSP,
+		OwnerID:                     destOwnerMSP,
 		CreationDateTime:            now,
 		Kilosproduced:               requiredKilos,
 		EmissionsHydrogen:           backlogEmissionsPortion,
@@ -826,9 +839,9 @@ func mintHydrogenFromConversion(ctx contractapi.TransactionContextInterface, loc
 
 // mintElectricityFromConversion creates an electricity GO from a conversion lock receipt.
 // Reads electricity backlog from THIS channel (destination channel).
-func mintElectricityFromConversion(ctx contractapi.TransactionContextInterface, lockReceipt *assets.ConversionLockReceipt, destAmount float64, ownerCollection string, now int64) (string, error) {
-	// Read electricity backlog for the owner
-	backlogKey := assets.BacklogKeyElectricity + "_" + lockReceipt.OwnerMSP
+func mintElectricityFromConversion(ctx contractapi.TransactionContextInterface, lockReceipt *assets.ConversionLockReceipt, destAmount float64, ownerCollection string, destOwnerMSP string, now int64) (string, error) {
+	// Read electricity backlog for the destination owner
+	backlogKey := assets.BacklogKeyElectricity + "_" + destOwnerMSP
 	backlogJSON, err := ctx.GetStub().GetPrivateData(ownerCollection, backlogKey)
 	if err != nil {
 		return "", fmt.Errorf("error reading electricity backlog: %v", err)
@@ -860,7 +873,7 @@ func mintElectricityFromConversion(ctx contractapi.TransactionContextInterface, 
 	// Create private electricity GO
 	eGOPrivate := &assets.ElectricityGOPrivateDetails{
 		AssetID:                     eGOID,
-		OwnerID:                     lockReceipt.OwnerMSP,
+		OwnerID:                     destOwnerMSP,
 		CreationDateTime:            now,
 		AmountMWh:                   destAmount,
 		Emissions:                   totalEmissions,
@@ -913,9 +926,9 @@ func mintElectricityFromConversion(ctx contractapi.TransactionContextInterface, 
 
 // mintBiogasFromConversion creates a biogas GO from a conversion lock receipt.
 // Reads biogas backlog from THIS channel (destination channel).
-func mintBiogasFromConversion(ctx contractapi.TransactionContextInterface, lockReceipt *assets.ConversionLockReceipt, destAmount float64, ownerCollection string, now int64) (string, error) {
-	// Read biogas backlog for the owner
-	backlogKey := assets.BacklogKeyBiogas + "_" + lockReceipt.OwnerMSP
+func mintBiogasFromConversion(ctx contractapi.TransactionContextInterface, lockReceipt *assets.ConversionLockReceipt, destAmount float64, ownerCollection string, destOwnerMSP string, now int64) (string, error) {
+	// Read biogas backlog for the destination owner
+	backlogKey := assets.BacklogKeyBiogas + "_" + destOwnerMSP
 	backlogJSON, err := ctx.GetStub().GetPrivateData(ownerCollection, backlogKey)
 	if err != nil {
 		return "", fmt.Errorf("error reading biogas backlog: %v", err)
@@ -953,7 +966,7 @@ func mintBiogasFromConversion(ctx contractapi.TransactionContextInterface, lockR
 	// Create private biogas GO
 	bGOPrivate := &assets.BiogasGOPrivateDetails{
 		AssetID:                 bGOID,
-		OwnerID:                 lockReceipt.OwnerMSP,
+		OwnerID:                 destOwnerMSP,
 		CreationDateTime:        now,
 		VolumeNm3:               destVolumeNm3,
 		EnergyContentMWh:        destAmount,
@@ -1009,9 +1022,9 @@ func mintBiogasFromConversion(ctx contractapi.TransactionContextInterface, lockR
 
 // mintHeatingCoolingFromConversion creates a heating/cooling GO from a conversion lock receipt.
 // Reads heating/cooling backlog from THIS channel (destination channel).
-func mintHeatingCoolingFromConversion(ctx contractapi.TransactionContextInterface, lockReceipt *assets.ConversionLockReceipt, destAmount float64, ownerCollection string, now int64) (string, error) {
-	// Read heating/cooling backlog for the owner
-	backlogKey := assets.BacklogKeyHeatingCooling + "_" + lockReceipt.OwnerMSP
+func mintHeatingCoolingFromConversion(ctx contractapi.TransactionContextInterface, lockReceipt *assets.ConversionLockReceipt, destAmount float64, ownerCollection string, destOwnerMSP string, now int64) (string, error) {
+	// Read heating/cooling backlog for the destination owner
+	backlogKey := assets.BacklogKeyHeatingCooling + "_" + destOwnerMSP
 	backlogJSON, err := ctx.GetStub().GetPrivateData(ownerCollection, backlogKey)
 	if err != nil {
 		return "", fmt.Errorf("error reading heating/cooling backlog: %v", err)
@@ -1043,7 +1056,7 @@ func mintHeatingCoolingFromConversion(ctx contractapi.TransactionContextInterfac
 	// Create private heating/cooling GO
 	htGOPrivate := &assets.HeatingCoolingGOPrivateDetails{
 		AssetID:                        htGOID,
-		OwnerID:                        lockReceipt.OwnerMSP,
+		OwnerID:                        destOwnerMSP,
 		CreationDateTime:               now,
 		AmountMWh:                      destAmount,
 		Emissions:                      totalEmissions,
@@ -1076,7 +1089,7 @@ func mintHeatingCoolingFromConversion(ctx contractapi.TransactionContextInterfac
 	}
 
 	// Write heating/cooling GO to ledger
-	if err := util.WriteHTGOToLedger(ctx, htGOPublic, htGOPrivate, ownerCollection); err != nil {
+	if err := util.WriteHCGOToLedger(ctx, htGOPublic, htGOPrivate, ownerCollection); err != nil {
 		return "", fmt.Errorf("error writing heating/cooling GO: %v", err)
 	}
 
