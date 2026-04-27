@@ -1,0 +1,66 @@
+Available active EGOs: 12
+
+=== Iteration 1/10  GO=eGO_13b6adf6770cbbf2 ===
+  Phase1: 0.13s (ok)
+  Phase2: 0.142s (ok)
+  Phase3: 0.123s (ok)
+
+=== Iteration 2/10  GO=eGO_2864070ee5d26f84 ===
+  Phase1: 0.146s (ok)
+  Phase2: 0.129s (ok)
+  Phase3: 0.094s (ok)
+
+=== Iteration 3/10  GO=eGO_5307eb4189d1a9a3 ===
+  Phase1: 0.163s (ok)
+  Phase2: 0.136s (ok)
+  Phase3: 0.129s (ok)
+
+=== Iteration 4/10  GO=eGO_5a4df92b46e0ab71 ===
+  Phase1: 0.147s (ok)
+  Phase2: 0.132s (ok)
+  Phase3: 0.105s (ok)
+
+=== Iteration 5/10  GO=eGO_7e63d1daefea6733 ===
+  Phase1: 0.116s (ok)
+  Phase2: 0.109s (ok)
+  Phase3: 0.127s (ok)
+
+=== Iteration 6/10  GO=eGO_98c135e42ffd35cc ===
+  Phase1: 0.158s (ok)
+  Phase2: 0.138s (ok)
+  Phase3: 0.13s (ok)
+
+=== Iteration 7/10  GO=eGO_a3206c13023c5b32 ===
+  Phase1: 0.159s (ok)
+  Phase2: 0.147s (ok)
+  Phase3: 0.129s (ok)
+
+=== Iteration 8/10  GO=eGO_a3a319036b85129c ===
+  Phase1: 0.141s (ok)
+  Phase2: 0.139s (ok)
+  Phase3: 0.087s (ok)
+
+=== Iteration 9/10  GO=eGO_d2ecc9d3e0875bbd ===
+  Phase1: 0.157s (ok)
+  Phase2: 0.112s (ok)
+  Phase3: 0.149s (ok)
+
+=== Iteration 10/10  GO=eGO_db3477041200e658 ===
+  Phase1: 0.151s (ok)
+  Phase2: 0.153s (ok)
+  Phase3: 0.109s (ok)
+
+================================================================================
+PERFORMANCE TEST RESULTS  (N=10 iterations, total wall-clock = 103.546s)
+================================================================================
+
+| Test Category  | Function               | Success | Fail | Send Rate (TPS) | Avg Latency (s) | Throughput (TPS) |
+|-----------------------------------------------------------------------------------------------------------------|
+| Lock           | LockGOForConversion    |      10 |    0 |           0.097 |           0.147 |            6.812 |
+| Mint           | MintFromConversion     |      10 |    0 |           0.097 |           0.134 |            7.479 |
+| Finalize       | FinalizeLock           |      10 |    0 |           0.097 |           0.118 |            8.460 |
+
+  Overall wall-clock: 103.546s for 10 full conversion cycles (30 txns)
+  Effective end-to-end TPS (incl. ~3s waits/queries): 0.29
+
+Per-iteration data: /tmp/perf_results.csv

@@ -134,7 +134,7 @@ func (c *AdminContract) RegisterOrganization(ctx contractapi.TransactionContextI
 		AssetID:   orgKey,
 		Initiator: issuerMSP,
 		Timestamp: now,
-		Details: map[string]string{
+		Details: map[string]interface{}{
 			"orgMsp":  input.OrgMSP,
 			"orgType": input.OrgType,
 			"country": input.Country,

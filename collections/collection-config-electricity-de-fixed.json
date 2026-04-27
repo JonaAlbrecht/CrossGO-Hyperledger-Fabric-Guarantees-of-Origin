@@ -1,0 +1,41 @@
+[
+  {
+    "name": "publicGOcollection",
+    "policy": "OR('eissuerMSP.member', 'eproducer1MSP.member', 'ebuyer1MSP.member')",
+    "requiredPeerCount": 0,
+    "maxPeerCount": 3,
+    "blockToLive": 0,
+    "memberOnlyRead": true,
+    "memberOnlyWrite": true
+  },
+  {
+    "name": "privateDetails-eissuerMSP",
+    "policy": "OR('eissuerMSP.member')",
+    "requiredPeerCount": 1,
+    "maxPeerCount": 1,
+    "blockToLive": 1000000,
+    "memberOnlyRead": true,
+    "memberOnlyWrite": false,
+    "endorsementPolicy": { "signaturePolicy": "OR('eissuerMSP.member')" }
+  },
+  {
+    "name": "privateDetails-eproducer1MSP",
+    "policy": "OR('eproducer1MSP.member', 'eissuerMSP.member')",
+    "requiredPeerCount": 1,
+    "maxPeerCount": 2,
+    "blockToLive": 1000000,
+    "memberOnlyRead": true,
+    "memberOnlyWrite": false,
+    "endorsementPolicy": { "signaturePolicy": "AND('eproducer1MSP.member', 'eissuerMSP.member')" }
+  },
+  {
+    "name": "privateDetails-ebuyer1MSP",
+    "policy": "OR('ebuyer1MSP.member', 'eissuerMSP.member')",
+    "requiredPeerCount": 1,
+    "maxPeerCount": 2,
+    "blockToLive": 1000000,
+    "memberOnlyRead": true,
+    "memberOnlyWrite": false,
+    "endorsementPolicy": { "signaturePolicy": "AND('ebuyer1MSP.member', 'eissuerMSP.member')" }
+  }
+]

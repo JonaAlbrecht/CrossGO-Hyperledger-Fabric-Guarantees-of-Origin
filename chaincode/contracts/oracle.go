@@ -204,7 +204,7 @@ func (c *OracleContract) PublishOracleData(ctx contractapi.TransactionContextInt
 		AssetID:   recordID,
 		Initiator: issuerMSP,
 		Timestamp: now,
-		Details: map[string]string{
+		Details: map[string]interface{}{
 			"carrierType": normCarrier,
 			"zone":        input.Zone,
 			"dataSource":  input.DataSource,

@@ -8,9 +8,12 @@
 > UBA/HKNR), each operating its own database infrastructure. The comparison
 > baseline is therefore not a single centralised database but a federation of 27
 > independent systems — one per EU member state — as mandated by the Renewable
-> Energy Directive. The analysis uses the v5.0 chaincode as the reference
-> implementation and extrapolates from the Caliper benchmark data collected on a
-> 4-org, 4-orderer, single-VM deployment.
+> Energy Directive. The analysis uses the **v10.5.4 `golifecycle` chaincode** as the
+> reference implementation and combines (a) the Caliper read benchmarks and
+> peer-CLI single-phase write benchmarks collected on the original 4-org single-VM
+> deployment with (b) the **dual-channel cross-channel conversion benchmark**
+> (electricity-de + hydrogen-de, 6 peers, 4 Raft orderers) reported in Section 7
+> of the main paper.
 
 ---
 
@@ -79,7 +82,7 @@ The replication factor scales **linearly with the number of peers on a channel**
 
 ### 2.1 Electricity GO Storage Breakdown
 
-The following estimates are based on the v5.0 `ElectricityGO` and `ElectricityGOPrivateDetails` structs, including CEN-EN 16325 fields:
+The following estimates are based on the v10.5.4 `ElectricityGO` and `ElectricityGOPrivateDetails` structs, including CEN-EN 16325 fields:
 
 | Component | Centralised (PostgreSQL) | Fabric (per peer) | Overhead |
 |---|---|---|---|
@@ -243,7 +246,7 @@ The overhead exists because Fabric delivers properties that a centralised archit
 
 ## 6. Mitigation Strategies
 
-### 6.1 Implemented (v4.0–v5.0)
+### 6.1 Implemented (v4.0–v10.5.4)
 
 | Strategy | ADR | Impact |
 |---|---|---|
@@ -251,6 +254,7 @@ The overhead exists because Fabric delivers properties that a centralised archit
 | **blockToLive** | ADR-010 | Private data purged after ~70 days, limiting CouchDB growth |
 | **CQRS events** | ADR-016 | Off-chain read models reduce CouchDB query load |
 | **Hash-based IDs** | ADR-001 | Eliminates shared counter key — no write amplification from retries |
+| **Per-carrier channel split** (electricity-de / hydrogen-de) | ADR-025 + v10.x | Issuance, transfer, cancellation traffic for each carrier stays on its own ledger; conversion uses a 3-phase lock-mint-finalize protocol with a hash-bound `ConversionLock` receipt (v10.5.3+ stores `TxID` for hash reproducibility) |
 
 ### 6.2 Channel Sharding (ADR-025) — Primary Mitigation
 
@@ -284,7 +288,7 @@ The 1,000-participant scenario (every market actor running a full peer) is a des
 
 In a well-designed deployment, full peers number in the **tens** (national bodies + major market participants), not the thousands. The vast majority of market participants interact through gateway clients or REST APIs, without replicating any ledger data.
 
-### 6.4 Additional Planned Mitigations (v6.0–v7.0)
+### 6.4 Additional Planned Mitigations (post-v10.5)
 
 | Strategy | Impact | Storage Reduction |
 |---|---|---|
@@ -304,7 +308,25 @@ In a well-designed deployment, full peers number in the **tens** (national bodie
 
 ---
 
-## 7. Conclusion
+## 7. Throughput–Replication Trade-off and Regulatory Fit
+
+The v10.5.4 cross-channel conversion benchmark (Section 7 of the main paper) measured a per-phase chaincode throughput of **6.8–8.5 TPS** for `LockGOForConversion`, `MintFromConversion`, and `FinalizeLock`, and an end-to-end conversion rate of **~0.29 cycles/s** when the three phases are executed sequentially with the required inter-phase block-commit waits. This is roughly an order of magnitude below the single-phase write throughput of `oracle:PublishOracleData` (41.9 TPS) on the same hardware, and two orders of magnitude below the read throughput (40–50 TPS via Caliper).
+
+This throughput drop is **not a regression but the direct cost of the multi-channel architecture** described in Section 6.2 — and it is the right cost to pay. The cross-channel conversion has to atomically (a) lock and consume an electricity GO on `electricity-de`, (b) mint a hydrogen GO on `hydrogen-de` whose receipt hash is bound to the lock created on the source channel, and (c) finalize the lock on the source channel once the destination mint is committed. Each phase is a separate Fabric transaction on a separate ledger with its own endorsement, ordering, and commit pipeline; the floor on end-to-end latency is therefore set by *two* block intervals plus the cost of carrying a tamper-evident receipt across channels, not by chaincode CPU time.
+
+In exchange, the data-duplication picture inside each channel is dramatically better than the single-channel alternative. With per-carrier (and ultimately per-jurisdiction) channels, every peer only replicates the GOs of the carrier and country it actually participates in: an `eissuer`/`eproducer1`/`ebuyer1` peer never sees hydrogen GOs, and an `hissuer`/`hproducer1`/`hbuyer1` peer never sees electricity GOs. The replication factor inside each channel collapses from ≈27 (all EU orgs on one ledger) to ≈3–5 (the issuer plus the active market participants of that carrier in that country), and per-peer storage drops from the ~9.8 TB/year of the single-channel naïve case to ~725 GB/year (Section 3.3).
+
+Crucially, this architecture is **isomorphic to the real-world regulatory landscape**. Under the Renewable Energy Directive each EU member state designates *one* competent issuing body per energy carrier — Pronovo for Swiss electricity, UBA / HKNR for German electricity, the dena Biogasregister for German biogas, and so on. There is no central pan-European registry; cross-border movements are reconciled asynchronously via the AIB Hub. Mapping each (country, carrier) pair to its own Fabric channel, with the national issuing body of that pair as the only org that holds a private data collection containing **all** GO details on that channel, mirrors this institutional structure exactly:
+
+- The issuing body sees every record on its channel — which it must, because it is legally responsible for issuance, transfer validation, and cancellation auditing for that carrier in that jurisdiction.
+- Producers, traders, and buyers on the same channel see only their own private collections; their counterparties' confidential data is protected by PDC membership rules even though they share the public ledger.
+- Foreign issuing bodies and unrelated participants are not on the channel at all and therefore store nothing — the same data-minimisation property that today is achieved by running 27 unconnected national registries, but now with cryptographic atomicity, tamper-evident audit trails, and a well-defined cross-channel conversion protocol layered on top.
+
+In other words, the slower conversion path is **the price of *not* asking 27 national bodies to mirror each other's data**, and the privileged read access of the issuer on each channel is **the on-chain reflection of an off-chain regulatory mandate that already exists**. A single-channel design would buy ~10–100× higher conversion throughput, but only by collapsing 27 sovereign registries into one shared ledger that no national competent body has the authority to operate alone — which is precisely why the status quo is federated rather than centralised in the first place.
+
+---
+
+## 8. Conclusion
 
 A Hyperledger Fabric-based GO platform produces **approximately 9× more data per asset** than a traditional database (due to transaction envelopes, block headers, CouchDB JSON overhead, and private data hashes). In a 4-organisation national pilot, this translates to ~13× total storage overhead compared to a single national registry.
 
@@ -324,4 +346,4 @@ With both mitigations, the EU-wide network stores ~19.6 TB across all peers (~26
 
 ---
 
-*Analysis date: 2026-04-04. Based on v5.0 chaincode structure, Caliper benchmark data, AIB 2023 GO market statistics, and CouchDB storage characteristics.*
+*Analysis date: 2026-04-27. Based on v10.5.4 `golifecycle` chaincode structure, Caliper read benchmarks, peer-CLI single-phase and 3-phase cross-channel conversion benchmarks (10 cycles, 100% success, 6.8–8.5 TPS per phase), AIB 2023 GO market statistics, and CouchDB storage characteristics.*

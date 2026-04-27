@@ -265,7 +265,7 @@ func (c *BridgeContract) LockGO(ctx contractapi.TransactionContextInterface) (*C
 		GOType:    goType,
 		Initiator: issuerMSP,
 		Timestamp: now,
-		Details: map[string]string{
+		Details: map[string]interface{}{
 			"goAssetId":          input.GOAssetID,
 			"sourceChannel":      sourceChannel,
 			"destinationChannel": input.DestinationChannel,
