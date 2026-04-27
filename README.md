@@ -1,7 +1,5 @@
 # Blockchain-Based Guarantee of Origin Conversion Issuance
 
-**Master's Thesis — Jona Albrecht (2024)**
-
 A Hyperledger Fabric prototype for **cross-carrier interoperability** between Guarantee of Origin (GO) schemes, enabling verifiable data sharing and attribute transfer during energy carrier conversion (electricity → hydrogen).
 
 ## Overview
@@ -91,6 +89,3 @@ Built as part of a Design Science Research project investigating:
 | Client application | Bash scripts / Node.js (experimental) |
 | Deployment | Docker Compose |
 
-## License
-
-This project was developed as part of a Master's thesis at the intersection of blockchain technology and energy systems research.
