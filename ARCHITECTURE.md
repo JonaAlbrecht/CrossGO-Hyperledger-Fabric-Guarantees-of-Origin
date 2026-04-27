@@ -1,19 +1,23 @@
-# Architecture Redesign: GO Lifecycle Platform v7.0
+# CrossGO Architecture: HLF Guarantee-of-Origin Platform — v10.5.4
+
+> **Version stamp.** This document describes the architecture as of `golifecycle` chaincode **v10.5.4** (sequence 1, committed on `electricity-de`), benchmarked on a 6-peer / 4-Raft-orderer single-VM deployment on 2026-04-27. Sections 6–9 are kept verbatim as version-by-version history; **Sections 10–11 are the current architecture and the v10.5.4 benchmark results**.
 
 ## 1. Overview
 
-This document describes the comprehensive architectural overhaul of the Hyperledger Fabric–based Guarantee of Origin (GO) issuance, transfer and conversion system. The redesign transforms the project from a fixed-org monolithic prototype into a **tiered, multi-carrier, object-oriented platform** with a full-stack frontend. Versions 6.0 and 7.0 add production hardening and market integration features including cross-registry bridging, IoT device attestation, and an external data oracle.
+This document describes the comprehensive architectural overhaul of the Hyperledger Fabric–based Guarantee of Origin (GO) issuance, transfer and conversion system. The redesign transforms the project from a fixed-org monolithic prototype into a **per-(country, carrier) federated, multi-issuer, object-oriented platform** with a full-stack frontend. Versions 6.0–7.0 added production hardening and market integration; **v8–v10 introduced the multi-channel architecture, the unified `golifecycle` chaincode, and the three-phase cross-channel conversion protocol** that defines the current CrossGO design.
 
 ### Design Principles
-- **Tiered network**: Role-based organizations (Issuer, Producer, Consumer) instead of hardcoded org names
-- **Multi-carrier**: Extensible beyond electricity/hydrogen — support any energy carrier via a common GO interface (electricity, hydrogen, biogas as of v5.0)
-- **Object-oriented chaincode**: Separate asset types (Device, GO, Certificate) into dedicated files with shared base types
+- **Per-(country, carrier) federated network**: One Fabric channel per (country, energy carrier) pair (e.g., `electricity-de`, `hydrogen-de`); one designated issuing body per channel, mirroring the EU regulatory landscape (v10)
+- **Tiered organizations within each channel**: Role-based orgs (Issuer, Producer, Consumer) — e.g., `eissuer/eproducer1/ebuyer1` on the electricity channel, `hissuer/hproducer1/hbuyer1` on the hydrogen channel
+- **Multi-carrier**: Extensible to any energy carrier via a common GO interface (electricity, hydrogen, biogas, heating-and-cooling under RED III)
+- **Object-oriented chaincode**: Single unified `golifecycle` chaincode with namespace-separated contracts (`issuance`, `transfer`, `conversion`, `cancellation`, `query`, `backlog`, `device`, `admin`, `bridge`, `oracle`, `biogas`)
+- **Cross-channel conversion**: Three-phase `Lock → Mint → Finalize` protocol with hash-bound `ConversionLock` receipt (SHA-256 over the lock payload + originating TxID), enabling cross-carrier conversion across independent ledgers without a shared atomic transaction (v10.5.3+)
 - **Contention-free writes**: Deterministic hash-based IDs derived from transaction IDs — no shared state during ID generation (v3.0)
-- **Performance-validated**: Architecture verified by Hyperledger Caliper benchmarks across v3.0, v5.0, and v7.0; 100% write success rate at 50 TPS, reads at 2,000 TPS
-- **Bug-free**: Fix all 12 identified bugs from the current monolithic chaincode
+- **Performance-validated**: Caliper read benchmarks + peer-CLI single-phase write benchmarks (≤41.9 TPS sustained writes) + dual-channel cross-conversion benchmark (6.8 / 7.5 / 8.5 TPS per phase, 0.29 end-to-end cycles/s, 100 % success across 30 transactions) — see Section 11
+- **Throughput–replication–regulatory-fit triad**: Per-(country, carrier) channel sharding cuts per-peer storage at EU scale from ~9.8 TB/year (single-channel naïve) to ~725 GB/year, while confining each issuer's private-data view to its own jurisdiction — the architecturally correct operating point under RED III
 - **Full-stack**: TypeScript frontend using the Fabric Gateway client API
 - **Standards-aligned**: CEN-EN 16325 field validation, EECS energy source codes (v6.0)
-- **Cryptographically secure**: 128-bit random commitment salts, ECDSA P-256 device attestation (v6.0/v7.0)
+- **Cryptographically secure**: 128-bit random commitment salts, ECDSA P-256 device attestation (v6.0/v7.0), SHA-256 cross-channel lock receipts (v10)
 - **Cross-registry**: Bridge contract for GO import/export with external registries (v7.0)
 - **Oracle-verified**: External grid data cross-referencing for production claim validation (v7.0)
 
@@ -765,3 +769,155 @@ All changes validated by Hyperledger Caliper v0.6.0 on a 16-vCPU Hetzner VM:
 | Write latency (serial) | 2.09s | **0.10s** |
 
 Detailed results: see `testing/PERFORMANCE_REPORT.md`
+
+---
+
+## 10. v10.5.4 — Per-(Country, Carrier) Channel Architecture & Cross-Channel Conversion (CURRENT)
+
+> Sections 6–9 record the version-by-version evolution. **This section describes the current production architecture** as deployed on the Hetzner reference VM and benchmarked in [`testing/20260427_v10.5.4_perf_results.md`](testing/20260427_v10.5.4_perf_results.md). v10 supersedes the single-channel topology of v3–v7 and the chaincode rename of v8/v9; the chaincode is now a single unified package called `golifecycle`.
+
+### 10.1 Topology
+
+The reference deployment partitions the network along the `(country, energy carrier)` boundary, mirroring the EU regulatory landscape (one designated issuing body per country and energy carrier under RED III):
+
+| Channel | Member orgs (peers) | Role | Chaincode |
+|---|---|---|---|
+| `electricity-de` | `eissuerMSP` (peer0.eissuer), `eproducer1MSP` (peer0.eproducer1), `ebuyer1MSP` (peer0.ebuyer1) | Germany electricity GO registry | `golifecycle` v10.5.4 |
+| `hydrogen-de` | `hissuerMSP` (peer0.hissuer), `hproducer1MSP` (peer0.hproducer1), `hbuyer1MSP` (peer0.hbuyer1) | Germany hydrogen GO registry | `golifecycle` v10.5.4 |
+
+Ordering service: 4 Raft orderers (`orderer1..4.go-platform.com`) shared across both channels. State databases: CouchDB 3.3 (one per peer). Total: **6 peers + 6 CouchDB + 4 orderers = 16 long-running containers** (plus 6 `dev-peer.*-golifecycle_10.5.4-*` chaincode containers, one per peer, spawned on first invoke).
+
+Adding a new (country, carrier) registry — e.g. `electricity-fr`, `hydrogen-fr`, `heating-de`, `biogas-it` — is a pure additive operation: a new channel is provisioned, its issuing body org is added with its producer/consumer peers, and the same `golifecycle` chaincode is installed and committed. Existing channels are not modified.
+
+### 10.2 Unified `golifecycle` Chaincode
+
+The v3–v7 contract collection (`issuance`, `transfer`, `conversion`, `cancellation`, `query`, `device`, `admin`, `bridge`, `oracle`, `biogas`) was consolidated in v8 into a **single chaincode package** named `golifecycle` with namespace separation preserved at the contract layer. v10.5.4 uses **sequence 1** committed via the Fabric `_lifecycle` system chaincode. Clients invoke functions as `<namespace>:<Function>` (e.g., `issuance:CreateElectricityGO`, `conversion:LockGOForConversion`).
+
+Adding new contracts — e.g. a future `metering`, `audit`, or `mrv` namespace — increments the chaincode sequence on each affected channel without any change to existing namespaces.
+
+### 10.3 Cross-Channel Conversion Protocol (`Lock → Mint → Finalize`)
+
+The single most important architectural addition in v10 is the **three-phase cross-channel conversion protocol**, which turns carrier-to-carrier conversion (e.g. electricity → hydrogen, hydrogen → electricity, electricity → heating-and-cooling) into a verifiable transaction across two independent ledgers without requiring a shared atomic transaction or a global coordinator.
+
+#### Phase 1 — Lock (source channel, e.g. `electricity-de`)
+
+`conversion:LockGOForConversion(GOAssetID, AmountMWh, DestinationCarrier, ...)`
+
+- Source GO's status transitions `active` → `locked_conversion` on the source channel
+- A `ConversionLock` record is written:
+  ```go
+  type ConversionLock struct {
+      LockID              string
+      GOAssetID           string
+      SourceChannel       string
+      DestinationChannel  string
+      DestinationCarrier  string
+      AmountMWh           float64
+      Status              string  // "locked" | "minted" | "finalized" | "released"
+      LockedBy            string  // creator MSP
+      LockedAt            int64
+      TxID                string  // ← Phase-1 transaction ID, included in the receipt hash (v10.5.3 fix)
+      LockReceiptHash     string  // SHA-256 over a canonical JSON of (GOAssetID, Amount, DestChannel, DestCarrier, TxID, ...)
+  }
+  ```
+- Endorsement: source channel's issuer MSP + the locking org
+
+#### Phase 2 — Mint (destination channel, e.g. `hydrogen-de`)
+
+`conversion:MintFromConversion(MintInput)` — invoked with the source-side public/private GO data passed via Fabric `--transient` data (base64-encoded JSON):
+
+- Receives `LockID`, source `TxID`, source amount/emissions/method/device/period/grid-point, plus the destination-side amount derived from the carrier-specific conversion ratio (e.g. ~75 % efficiency for electrolyser-based H₂)
+- **Reproduces the `LockReceiptHash`** locally on the destination channel using the same canonical JSON encoding — this is why storing `TxID` in the lock record is essential (v10.5.3 fix; previously v10.5.2 failed with `lock receipt hash mismatch (tampering detected)` because the destination channel could not reproduce the hash without the source TxID)
+- Verifies the destination channel has sufficient backlog of the destination carrier (e.g. `backlog:AddToBacklogHydrogen` must have been pre-populated)
+- Mints the destination-carrier GO (e.g. an `hGO`) with the same provenance attributes (production period, grid connection point, country of origin), records the `LockID` as a back-reference
+- Endorsement: destination channel's issuer MSP
+
+#### Phase 3 — Finalize (source channel)
+
+`conversion:FinalizeConversion(LockID, MintTxID, MintChannel)` — invoked back on the source channel with proof that the mint succeeded:
+
+- Source GO's status transitions `locked_conversion` → `converted_consumed`
+- Lock record's `Status` transitions `locked` → `finalized`
+- The conversion is now **provably one-way**: the source GO can never again participate in another conversion or be transferred / cancelled
+
+Failure handling: a `ReleaseConversionLock(LockID)` function reverts the source GO from `locked_conversion` back to `active` and the lock record from `locked` → `released`, used when the destination-side mint cannot proceed (e.g. insufficient backlog).
+
+#### Cross-channel privacy guarantee
+
+Source-side **private** GO details (`AmountMWh`, `Emissions`, `ElectricityProductionMethod`, `DeviceID`, etc.) never leave `electricity-de`. Only their **cryptographic fingerprint** (the `LockReceiptHash`) is replayed into `hydrogen-de`'s mint phase, allowing the hydrogen issuer to verify provenance without ever observing the underlying private payload. This is the protocol-layer realisation of DP3 (privacy by defense-in-depth) across channel boundaries.
+
+### 10.4 Updated Repository Layout (delta vs. Section 2)
+
+```diff
+chaincode/contracts/
++ admin.go            # v10: GetVersion now reports "10.5.4"; cross-channel admin helpers
++ bridge.go           # v10: external-registry bridge updated for golifecycle namespace
+  conversion.go       # v10: 3-phase Lock/Mint/Finalize + ConversionLock with TxID field
++ oracle.go           # v10: oracle interface updated for hydrogen + heating-and-cooling
+collections/
++ collection-config-electricity-de-fixed.json
++ collection-config-hydrogen-de-fixed.json
+testing/
++ deploy-v10.5.3.sh, init-ledger-v10.5.3.sh, test-conversion-v10.5.3.sh
++ 20260427_v10.5.4_perf_results.md / 20260427_perf_results.csv / 20260427_perf_run.log
++ CROSS_CHANNEL_CONVERSION_SCALABILITY_RESULTS_v2.md
++ ~25 helper scripts (approve-commit-v10.sh, install-v10.5.sh, query-locks.sh, ...)
+Project-Description/
++ 20260425_CrossChannel_Conversion_Implementation.md
++ 20260427_v10.5.2_needed_fixes.md
++ 20260427_Discussion_Conclusion_v10_redline.md
++ DATA_DUPLICATION_CONSIDERATIONS.md (updated to v10.5.4 + new Section 7)
+```
+
+### 10.5 v10 Critical Bug-Fix Lessons
+
+Documented in [`Project-Description/20260427_v10.5.2_needed_fixes.md`](Project-Description/20260427_v10.5.2_needed_fixes.md):
+
+| Lesson | Symptom | Fix |
+|---|---|---|
+| Fabric pointer types not supported in chaincode return signatures | `unsupported type: *X` at install | Return value types instead of pointers |
+| `omitempty` doesn't omit non-pointer zero values | Phantom fields in JSON output break clients | Use pointer types where omission is required |
+| UTF-8 BOM breaks Fabric JSON parsing | `invalid character 'ï' looking for beginning of value` | Strip BOM from collection configs and shell scripts (see `testing/fix-bom.py`) |
+| Privacy-sensitive ops require `--transient` data | Public-state leakage via proposal payload | Encode private inputs as base64 JSON in `--transient` |
+| Hash integrity requires storing all hash inputs | `lock receipt hash mismatch (tampering detected)` on Phase-2 mint | Add `TxID` field to `ConversionLock` so the receipt hash is reproducible on the destination channel (v10.5.3) |
+
+---
+
+## 11. v10.5.4 Benchmark Results
+
+Source: [`testing/20260427_v10.5.4_perf_results.md`](testing/20260427_v10.5.4_perf_results.md), [`testing/20260427_perf_results.csv`](testing/20260427_perf_results.csv).
+
+### 11.1 Setup
+
+- Hetzner CX52 (16 vCPU, 32 GB RAM, single VM)
+- HLF 2.5.12, CouchDB 3.3, 4 Raft orderers (co-located), 6 peers (co-located)
+- Two channels (`electricity-de`, `hydrogen-de`)
+- Chaincode `golifecycle` v10.5.4, sequence 1
+- Cost model: no commission/slippage (chaincode-only benchmark)
+
+### 11.2 Headline numbers
+
+| Metric | Value |
+|---|---|
+| **Cycles** | 10 |
+| **Phases / cycle** | 3 (Lock, Mint, Finalize) |
+| **Total transactions** | **30** |
+| **Success rate** | **100 %** (30 / 30) |
+| **Wall-clock total** | 103.5 s |
+| **End-to-end conversion cadence** | **0.29 cycles/s** |
+| **Phase 1 (Lock) avg latency** | ~147 ms — Throughput **6.8 TPS** |
+| **Phase 2 (Mint) avg latency** | ~133 ms — Throughput **7.5 TPS** |
+| **Phase 3 (Finalize) avg latency** | ~118 ms — Throughput **8.5 TPS** |
+
+> **Send Rate vs Throughput.** The reported per-phase Throughput is the chaincode-isolated capacity (success ÷ Σ latency); the Send Rate (~0.29 tx/s) reflects the deliberately sequential, single-client harness with a 3 s commit wait inserted between phases. A Caliper run with concurrent workers and persistent gRPC connections (matching the read-row methodology) would be expected to approach the chaincode-bound ceiling of ≈ min(6.8, 7.5, 8.5) / 3 ≈ **2.3 cycles/s** — roughly 8× the measured cadence.
+
+### 11.3 EU-scale storage projection (cf. `Project-Description/DATA_DUPLICATION_CONSIDERATIONS.md` §3.3)
+
+| Architecture | Per-peer storage / yr | Aggregate / yr | vs. status quo (~750 GB across 27 nat'l registries) |
+|---|---|---|---|
+| Single-channel naïve EU deployment | ~9.8 TB | ~264 TB | ~352× |
+| **Per-(country, carrier) sharded (current)** | **~725 GB** | **~19.6 TB** | **~26×** |
+| Status quo (27 isolated national registries) | ~28 GB | ~750 GB | 1× |
+
+The lower cross-channel conversion throughput is the deliberate cost of partitioning the ledger by (country, carrier): it cuts per-peer storage by roughly an order of magnitude **and** confines each issuing body's private-data view to its own jurisdiction — the architecturally correct choice under RED III, where no member state's competent body has the legal mandate to hold another country's private GO data.
+
